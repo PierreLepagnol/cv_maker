@@ -1,0 +1,12 @@
+{
+  "papers": [
+    {
+      "title": "Small Language Models are Good Too: An Empirical Study of Zero-Shot Classification",
+      "authors": "Pierre Lepagnol, Thomas Gerald, Sahar Ghannay, Christophe Servan and Sophie Rosset",
+      "venue": "LREC-COLING",
+      "year": 2024,
+      "status": "accepted",
+      "url": null
+    }
+  ]
+}

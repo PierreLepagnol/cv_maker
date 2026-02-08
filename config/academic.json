@@ -1,0 +1,37 @@
+{
+  "variant": "academic",
+  "output_dir": "build/academic",
+  "template": "tlc",
+  "template_source": "cv_academic",
+  "sections": [
+    {
+      "name": "education",
+      "enabled": true,
+      "title": "Education"
+    },
+    {
+      "name": "papers",
+      "enabled": true,
+      "title": "Publications"
+    },
+    {
+      "name": "experience",
+      "enabled": true,
+      "title": "Professional Experience"
+    },
+    {
+      "name": "skills",
+      "enabled": true,
+      "title": "Technical Skills"
+    },
+    {
+      "name": "activities",
+      "enabled": true,
+      "title": "Activities"
+    },
+    {
+      "name": "objective",
+      "enabled": false
+    }
+  ]
+}

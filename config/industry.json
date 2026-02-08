@@ -1,0 +1,35 @@
+{
+  "variant": "industry",
+  "output_dir": "build/industry",
+  "template": "awesome-cv",
+  "template_source": "cv_industry",
+  "sections": [
+    {
+      "name": "skills",
+      "enabled": true,
+      "title": "Technical Skills"
+    },
+    {
+      "name": "experience",
+      "enabled": true,
+      "title": "Professional Experience"
+    },
+    {
+      "name": "education",
+      "enabled": true,
+      "title": "Education"
+    },
+    {
+      "name": "papers",
+      "enabled": false
+    },
+    {
+      "name": "activities",
+      "enabled": false
+    },
+    {
+      "name": "objective",
+      "enabled": false
+    }
+  ]
+}

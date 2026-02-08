@@ -1,0 +1,40 @@
+{
+  "experiences": [
+    {
+      "title": "Researcher & Data Science Consultant",
+      "company": "SCIAM",
+      "location": "Paris, France",
+      "start_date": "Feb. 2022",
+      "end_date": "Present",
+      "bullets": [
+        "Developer - Taskforce SAS to Python – Catalina Marketing (4 months): Migration of projects (data analysis, data science) from SAS to Python, contribution to the creation of a Python toolkit, use of advanced Pandas, PostgreSQL and Python OOP",
+        "Research in Artificial Intelligence / Data Science: Model learning with little data, of poor quality. Reading and summarizing papers (Active Learning / Weak Supervision / FlauBERT / Snorkel)"
+      ]
+    },
+    {
+      "title": "Deep Learning Engineering applied to Cybersecurity",
+      "company": "Direction Générale de l'Armement / Maitrise de l'information",
+      "location": "France",
+      "start_date": "Avr. 2021",
+      "end_date": "Sep. 2021",
+      "bullets": [
+        "Study of the robustness and embeddability of neural networks (Python / Tensorflow)",
+        "Design and training of a neural network for performing Side-Channel Attacks (cybersecurity)",
+        "Use of AI explanation and interpretation methods",
+        "Deployment of the solution in an embedded system (Jeston Nano)"
+      ]
+    },
+    {
+      "title": "Data Scientist",
+      "company": "Société Générale",
+      "location": "Paris, France",
+      "start_date": "Feb. 2017",
+      "end_date": "Sep. 2017",
+      "bullets": [
+        "Creation of a multi-banking indicator to improve the customer attrition model",
+        "Data processing with Spark / Text clustering (TF-IDF / Kmeans)",
+        "Contribution to the training of the Data Science team: Research and presentation on imbalanced classification (AE, SMOTE, Adasyn)"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "skills": [
+    {
+      "category": "Programming Languages",
+      "items": "Python, Rust, R & Scala, C"
+    },
+    {
+      "category": "Cloud & Database Services",
+      "items": "AWS & GCP, SQL/PostgreSQL, MongoDB, Hadoop"
+    },
+    {
+      "category": "Deep Learning",
+      "items": "PyTorch, TensorFlow"
+    },
+    {
+      "category": "Others",
+      "items": "Git, Linux, VSCode"
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "degrees": [
+    {
+      "degree": "PhD Candidate in Natural Language Processing",
+      "institution": "LISN - Paris-Saclay University",
+      "location": "Paris, France",
+      "date": "Feb. 2023 --- Present",
+      "details": null
+    },
+    {
+      "degree": "Master in Applied Math and Statistics",
+      "institution": "University of Rennes 1/2, INSA, ENSAI",
+      "location": "Rennes, France",
+      "date": "2019 --- 2021",
+      "details": null
+    }
+  ],
+  "awards": []
+}
