@@ -4,19 +4,20 @@ Automatically escapes special LaTeX characters so users can write plain text in 
 """
 
 LATEX_SPECIAL_CHARS = {
-    '&': r'\&',
-    '%': r'\%',
-    '$': r'\$',
-    '#': r'\#',
-    '_': r'\_',
-    '{': r'\{',
-    '}': r'\}',
-    '~': r'\textasciitilde{}',
-    '^': r'\textasciicircum{}',
+    "&": r"\&",
+    "%": r"\%",
+    "$": r"\$",
+    "#": r"\#",
+    "_": r"\_",
+    "{": r"\{",
+    "}": r"\}",
+    "~": r"\textasciitilde{}",
+    "^": r"\textasciicircum{}",
 }
 
 # Backslash must be handled separately to avoid double-escaping
-BACKSLASH_ESCAPE = r'\textbackslash{}'
+BACKSLASH_ESCAPE = r"\textbackslash{}"
+
 
 def escape_latex(text):
     """
@@ -33,23 +34,23 @@ def escape_latex(text):
         Escaped string safe for LaTeX
     """
     if not text:
-        return ''
+        return ""
 
     # Convert to string if not already
     text = str(text)
 
     # Don't escape URLs
-    if text.startswith('http://') or text.startswith('https://'):
+    if text.startswith("http://") or text.startswith("https://"):
         return text
 
     # Don't escape email addresses (simple heuristic)
-    if '@' in text and '.' in text and ' ' not in text:
+    if "@" in text and "." in text and " " not in text:
         return text
 
     # First escape backslashes to avoid double-escaping
     # But only if they're not already part of an escape sequence
-    if '\\' in text and not text.startswith('\\'):
-        result = text.replace('\\', BACKSLASH_ESCAPE)
+    if "\\" in text and not text.startswith("\\"):
+        result = text.replace("\\", BACKSLASH_ESCAPE)
     else:
         result = text
 
@@ -58,6 +59,7 @@ def escape_latex(text):
         result = result.replace(char, escaped)
 
     return result
+
 
 def escape_dict(data):
     """

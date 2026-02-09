@@ -5,6 +5,7 @@ Configuration and data loading utilities.
 import json
 from pathlib import Path
 
+
 def load_config(config_path):
     """
     Load configuration JSON file.
@@ -15,10 +16,11 @@ def load_config(config_path):
     Returns:
         Dict with configuration
     """
-    with open(config_path, 'r', encoding='utf-8') as f:
+    with open(config_path, "r", encoding="utf-8") as f:
         return json.load(f)
 
-def load_data(base_dir='data'):
+
+def load_data(base_dir="data"):
     """
     Load all JSON data files from data directory.
 
@@ -33,22 +35,43 @@ def load_data(base_dir='data'):
     data = {}
 
     data_files = [
-        'contact', 'skills', 'experience', 'education',
-        'papers', 'activities', 'objective'
+        "contact",
+        "skills",
+        "experience",
+        "education",
+        "papers",
+        "activities",
+        "objective",
+        # Optional alias for objective; if not present it will default to objective below.
+        "summary",
     ]
 
     for file_name in data_files:
         file_path = base_path / f"{file_name}.json"
         if file_path.exists():
-            with open(file_path, 'r', encoding='utf-8') as f:
+            with open(file_path, "r", encoding="utf-8") as f:
                 data[file_name] = json.load(f)
         else:
             # Provide sensible defaults for missing files
-            if file_name in ['skills', 'experience', 'education', 'papers', 'activities']:
+            if file_name in [
+                "skills",
+                "experience",
+                "education",
+                "papers",
+                "activities",
+            ]:
                 data[file_name] = {file_name: []}
-            elif file_name == 'contact':
+            elif file_name == "contact":
                 data[file_name] = {}
-            elif file_name == 'objective':
-                data[file_name] = {'text': ''}
+            elif file_name == "objective":
+                data[file_name] = {"text": ""}
+            elif file_name == "summary":
+                data[file_name] = {"text": ""}
+
+    # If no explicit summary.json exists, default summary to objective.
+    # This supports templates that input resume/summary.tex while keeping
+    # the user's source data in objective.json.
+    if not (base_path / "summary.json").exists():
+        data["summary"] = data.get("objective", {"text": ""})
 
     return data

@@ -7,15 +7,16 @@ Usage:
     python build.py all         # Build all variants
 """
 
-import sys
-import subprocess
 import json
+import subprocess
+import sys
 from pathlib import Path
 
 CONFIGS = {
-    'academic': 'config/academic.json',
-    'industry': 'config/industry.json'
+    "academic": "config/academic.json",
+    "industry": "config/industry.json",
 }
+
 
 def build_variant(variant_name):
     """
@@ -38,9 +39,9 @@ def build_variant(variant_name):
     # Step 1: Generate .tex files from JSON
     print("Step 1: Generating LaTeX files from JSON...")
     result = subprocess.run(
-        ['python3', 'scripts/generate_cv.py', '--config', config_path],
+        ["python3", "scripts/generate_cv.py", "--config", config_path],
         capture_output=True,
-        text=True
+        text=True,
     )
 
     if result.returncode != 0:
@@ -52,49 +53,53 @@ def build_variant(variant_name):
     # Step 2: Compile PDF
     with open(config_path) as f:
         config = json.load(f)
-    output_dir = Path(config['output_dir'])
-    template_type = config.get('template', 'tlc')
+    output_dir = Path(config["output_dir"])
+    template_type = config.get("template", "tlc")
 
     # Choose compiler based on template
-    if template_type == 'awesome-cv':
-        print("Step 2: Compiling PDF with xelatex...")
-        # Awesome-CV requires xelatex, run twice for references
+    if template_type in ("awesome-cv", "unified"):
+        print("Step 2: Compiling PDF with latexmk (xelatex)...")
         result = subprocess.run(
-            ['xelatex', '-interaction=nonstopmode', 'resume.tex'],
+            [
+                "latexmk",
+                "-xelatex",
+                "-interaction=nonstopmode",
+                "-halt-on-error",
+                "resume.tex",
+            ],
             cwd=output_dir,
             capture_output=True,
-            text=True
+            text=True,
         )
-        if result.returncode == 0:
-            # Second pass for references
-            subprocess.run(
-                ['xelatex', '-interaction=nonstopmode', 'resume.tex'],
-                cwd=output_dir,
-                capture_output=True,
-                text=True
-            )
     else:
-        print("Step 2: Compiling PDF with latexmk...")
+        print("Step 2: Compiling PDF with latexmk (pdflatex)...")
         result = subprocess.run(
-            ['latexmk', '-pdf', '-interaction=nonstopmode', 'resume.tex'],
+            [
+                "latexmk",
+                "-pdf",
+                "-interaction=nonstopmode",
+                "-halt-on-error",
+                "resume.tex",
+            ],
             cwd=output_dir,
             capture_output=True,
-            text=True
+            text=True,
         )
 
     if result.returncode != 0:
-        print(f"Warning: LaTeX compilation had warnings/errors")
+        print("Warning: LaTeX compilation had warnings/errors")
         # Print last 1000 chars of output for debugging
         if result.stdout:
             print(result.stdout[-1000:])
 
-    pdf_path = output_dir / 'resume.pdf'
+    pdf_path = output_dir / "resume.pdf"
     if pdf_path.exists():
         print(f"✓ Successfully built {variant_name} CV: {pdf_path}")
         return True
     else:
-        print(f"✗ Failed to generate PDF")
+        print("✗ Failed to generate PDF")
         return False
+
 
 def main():
     if len(sys.argv) < 2:
@@ -104,12 +109,13 @@ def main():
 
     variant = sys.argv[1]
 
-    if variant == 'all':
+    if variant == "all":
         success = all(build_variant(v) for v in CONFIGS.keys())
     else:
         success = build_variant(variant)
 
     sys.exit(0 if success else 1)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()
