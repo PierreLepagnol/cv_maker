@@ -1,10 +1,11 @@
 {
   "name": "Pierre Lepagnol",
   "role": "PhD Candidate & Data Science Consultant",
-  "phone": "+33 6 XX XX XX XX",
+  "phone": "+33 6 72 18 80 01",
   "city": "Paris, France",
-  "email": "pierre.lepagnol@example.com",
+  "email": "pierre@lepagnol.net",
   "linkedin": "pierre-lepagnol",
-  "github": "pierrelepa",
+  "github": "PierreLepagnol",
+  "huggingface": "https://huggingface.co/PierreLepagnol",
   "portfolio": null
 }

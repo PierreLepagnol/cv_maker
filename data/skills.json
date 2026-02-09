@@ -1,20 +1,20 @@
 {
   "skills": [
     {
-      "category": "Programming Languages",
-      "items": "Python, Rust, R & Scala, C"
+      "category": "Languages",
+      "items": "Python (PyTorch, VLLM, Transformers), Rust & C"
     },
     {
-      "category": "Cloud & Database Services",
-      "items": "AWS & GCP, SQL/PostgreSQL, MongoDB, Hadoop"
+      "category": "Cloud & DB Services",
+      "items": "AWS & GCP, SQL/PostgreSQL, MongoDB"
     },
     {
-      "category": "Deep Learning",
-      "items": "PyTorch, TensorFlow"
+      "category": "Tooling",
+      "items": "Git, Linux, Docker"
     },
     {
-      "category": "Others",
-      "items": "Git, Linux, VSCode"
+      "category": "Spoken Languages",
+      "items": "French (native), English (fluent), German (notions)"
     }
   ]
 }
