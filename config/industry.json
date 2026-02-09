@@ -7,7 +7,7 @@
   "section_entry_seps": {
     "education": "0.3em",
     "experience": "0.1em",
-    "activities": "",
+    "activities": "0.1em",
     "skills": "0.4em"
   },
   "section_item_seps": {

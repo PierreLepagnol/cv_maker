@@ -8,9 +8,7 @@
       "status": "accepted",
       "volume": "abs/2506.03035",
       "url": "https://arxiv.org/abs/2506.03035",
-      "bullets": [
-        "Proposed a retrieval-augmented prompt construction method for few-shot spoken language understanding; improved intent classification and slot filling accuracy over random-shot baselines."
-      ]
+      "bullets": []
     },
     {
       "title": "Small Language Models are Good Too: An Empirical Study of Zero-Shot Classification",
@@ -19,9 +17,7 @@
       "year": 2024,
       "status": "accepted",
       "url": "https://aclanthology.org/2024.lrec-main.1299/",
-      "bullets": [
-        "Systematically benchmarked small LMs (< 1B params) against GPT-class models on zero-shot text classification; demonstrated competitive performance at a fraction of compute cost."
-      ]
+      "bullets": []
     }
   ]
 }
