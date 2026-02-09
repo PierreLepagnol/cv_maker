@@ -1,0 +1,257 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{cv_style_industry}[2026/02/09 Industry style for unified markup]
+
+% Awesome-CV-inspired style layer for the unified semantic markup.
+% Not a 1:1 reimplementation; goal is "close" while keeping a single engine.
+
+\RequirePackage{fontspec}
+\RequirePackage{geometry}
+\RequirePackage{xcolor}
+\RequirePackage{hyperref}
+\RequirePackage{parskip}
+\RequirePackage{etoolbox}
+\RequirePackage{array}
+\RequirePackage{ragged2e}
+\RequirePackage{graphicx}
+\RequirePackage{fontawesome}
+\RequirePackage{fancyhdr}
+
+% Page layout (close to Awesome-CV defaults)
+\geometry{left=1.2cm, top=.8cm, right=1.2cm, bottom=1.8cm, footskip=.5cm}
+
+% Typography
+\RequirePackage[default,semibold]{sourcesanspro}
+\renewcommand{\familydefault}{\sfdefault}
+\setlength{\parindent}{0pt}
+
+% Colors
+\definecolor{cvaccent}{HTML}{DC3522} % awesome-red
+\definecolor{cvtext}{HTML}{333333}
+\definecolor{cvmuted}{HTML}{5D5D5D}
+\definecolor{cvlight}{HTML}{999999}
+
+\hypersetup{colorlinks=true, urlcolor=cvaccent}
+
+% Optional header font (Roboto vendored via fonts/)
+\providecommand{\cvheaderfont}{\sffamily}
+\providecommand{\cvheaderfontlight}{\sffamily}
+
+\IfFileExists{fonts/Roboto-Regular.ttf}{%
+  \newfontfamily\cvheaderfontRoboto[
+    Path=fonts/,
+    UprightFont=*-Regular,
+    ItalicFont=*-Italic,
+    BoldFont=*-Bold,
+    BoldItalicFont=*-BoldItalic,
+  ]{Roboto}%
+  \renewcommand{\cvheaderfont}{\cvheaderfontRoboto}%
+}{}
+
+\IfFileExists{fonts/Roboto-Thin.ttf}{%
+  \newfontfamily\cvheaderfontRobotoLight[
+    Path=fonts/,
+    UprightFont=*-Thin,
+    ItalicFont=*-ThinItalic,
+    BoldFont=*-Medium,
+    BoldItalicFont=*-MediumItalic,
+  ]{Roboto}%
+  \renewcommand{\cvheaderfontlight}{\cvheaderfontRobotoLight}%
+}{}
+
+% Spacing knobs (roughly aligned with Awesome-CV)
+\newcommand{\cvHeaderSocialSep}{\quad\textbar\quad}
+\newcommand{\cvHeaderAfterSocialSkip}{0.7em}
+\newcommand{\cvHeaderAfterQuoteSkip}{0.9em}
+
+% Hugging Face icon (generated to huggingface.pdf at build time; fall back to badge)
+\newcommand{\cvHuggingFaceIcon}{%
+  \begingroup
+  \IfFileExists{huggingface.pdf}{%
+    \raisebox{-0.20ex}{\includegraphics[height=1.35ex]{huggingface.pdf}}%
+  }{%
+    \setlength{\fboxsep}{0.18ex}%
+    \raisebox{-0.12ex}{\colorbox{cvaccent}{\textcolor{white}{\scriptsize\bfseries HF}}}%
+  }%
+  \endgroup
+}
+
+% Highlight first 3 letters in section titles
+\newbool{cvSectionColorHighlight}
+\setbool{cvSectionColorHighlight}{true}
+\def\cvsectioncolor#1#2#3{%
+  \ifbool{cvSectionColorHighlight}{{\color{cvaccent}#1#2#3}}{#1#2#3}%
+}
+
+% Column helpers (Awesome-CV-style)
+\newcolumntype{L}[1]{>{\RaggedRight\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{R}[1]{>{\RaggedLeft\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+
+\makeatletter
+\def\cvhrulefill#1{\leavevmode\leaders\hrule\@height#1\hfill\kern\z@}
+\makeatother
+
+%-------------------------------------------------------------------------------
+% Header / Footer
+%-------------------------------------------------------------------------------
+\newcommand{\cvmakeheader}{%
+  \thispagestyle{empty}%
+  \noindent
+  \begin{minipage}[c]{0.76\textwidth}
+    \raggedright
+    {\fontsize{32pt}{1em}\selectfont\cvheaderfontlight\color{cvlight} \contactfirstname}%
+    {\fontsize{32pt}{1em}\selectfont\cvheaderfont\bfseries\color{cvtext}~\contactlastname}\\[0.35em]
+
+    \ifdefempty{\contactrole}{}{{\fontsize{8pt}{1em}\selectfont\sourcesanspro\scshape\color{cvaccent} \contactrole}\\[0.35em]}
+
+    \ifdefempty{\contactcity}{}{{\fontsize{8pt}{1em}\selectfont\cvheaderfont\itshape\color{cvlight} \contactcity}\\[-0.1em]}
+
+    {\fontsize{6.8pt}{1em}\selectfont\cvheaderfont\color{cvtext}
+      \mbox{%
+      \newbool{cv@isstart}%
+      \setbool{cv@isstart}{true}%
+
+      \ifdefempty{\contactphone}{}{%
+        \ifbool{cv@isstart}{}{\cvHeaderSocialSep}%
+        \faMobile\,\contactphone%
+        \setbool{cv@isstart}{false}%
+      }%
+
+      \ifdefempty{\contactemail}{}{%
+        \ifbool{cv@isstart}{}{\cvHeaderSocialSep}%
+        \href{mailto:\contactemail}{\faEnvelope\,\contactemail}%
+        \setbool{cv@isstart}{false}%
+      }%
+
+      \ifdefempty{\contactportfoliohomepage}{}{%
+        \ifbool{cv@isstart}{}{\cvHeaderSocialSep}%
+        \href{\contactportfoliourl}{\faHome\,\contactportfoliohomepage}%
+        \setbool{cv@isstart}{false}%
+      }%
+
+      \ifdefempty{\contactgithub}{}{%
+        \ifbool{cv@isstart}{}{\cvHeaderSocialSep}%
+        \href{https://github.com/\contactgithub}{\faGithubSquare\,\contactgithub}%
+        \setbool{cv@isstart}{false}%
+      }%
+
+      \ifdefempty{\contactlinkedin}{}{%
+        \ifbool{cv@isstart}{}{\cvHeaderSocialSep}%
+        \href{https://www.linkedin.com/in/\contactlinkedin}{\faLinkedinSquare\,\contactlinkedin}%
+        \setbool{cv@isstart}{false}%
+      }%
+
+      \ifdefempty{\contacthuggingfaceurl}{}{%
+        \ifbool{cv@isstart}{}{\cvHeaderSocialSep}%
+        \href{\contacthuggingfaceurl}{\cvHuggingFaceIcon\,\contacthuggingfacelabel}%
+      }%
+      }%
+    }\\[\cvHeaderAfterSocialSkip]
+
+    \ifdefempty{\contactquote}{}{%
+      {\fontsize{9pt}{1em}\selectfont\sourcesanspro\itshape\color{cvtext} ``\contactquote''}\\[\cvHeaderAfterQuoteSkip]
+    }%
+  \end{minipage}%
+  \begin{minipage}[c]{0.24\textwidth}
+    \raggedleft
+    \IfFileExists{profile.png}{%
+      \begingroup
+      \setlength{\fboxsep}{0pt}%
+      \setlength{\fboxrule}{0.3pt}%
+      \fcolorbox{cvlight}{white}{\includegraphics[width=2.8cm]{profile.png}}%
+      \endgroup
+    }{}%
+  \end{minipage}\\[0.8em]
+}
+
+\newcommand*{\cvfooterstyle}[1]{{\fontsize{8pt}{1em}\selectfont\sourcesanspro\scshape\color{cvlight} #1}}
+
+\newcommand*{\makecvfooter}[3]{%
+  \pagestyle{fancy}%
+  \fancyhf{}%
+  \renewcommand{\headrulewidth}{0pt}%
+  \renewcommand{\footrulewidth}{0pt}%
+  \fancyfoot[L]{\cvfooterstyle{#1}}%
+  \fancyfoot[C]{\cvfooterstyle{#2}}%
+  \fancyfoot[R]{\cvfooterstyle{#3}}%
+}
+
+%-------------------------------------------------------------------------------
+% Unified semantic markup
+%-------------------------------------------------------------------------------
+\newcommand{\cvsection}[1]{%
+  \vspace{0.9em}%
+  \noindent{\Large\bfseries\color{cvtext}\cvsectioncolor #1}%
+  \hspace{0.7em}%
+  {\color{cvmuted}\cvhrulefill{0.9pt}}%
+  \par\vspace{0.4em}%
+}
+
+\newcommand{\cvsubsection}[1]{%
+  \vspace{0.6em}%
+  {\normalsize\bfseries\scshape\color{cvtext}#1}\par
+}
+
+\newenvironment{cventries}{\vspace{0.2em}}{\vspace{0.2em}}
+
+% \cventry{<position>}{<title/org>}{<location>}{<date>}{<desc>}
+\newcommand*{\cventry}[5]{%
+  \vspace{-1.2mm}%
+  \setlength{\tabcolsep}{0pt}%
+  \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}} L{\dimexpr\textwidth-4.5cm\relax} R{4.5cm}}
+    {\fontsize{10pt}{1em}\selectfont\bfseries\color{cvtext}#2} & {\fontsize{9pt}{1em}\selectfont\itshape\color{cvaccent}#3}\\
+    {\fontsize{8pt}{1em}\selectfont\scshape\color{cvmuted}#1} & {\fontsize{8pt}{1em}\selectfont\slshape\color{cvmuted}#4}\\
+    \multicolumn{2}{L{\textwidth}}{#5}%
+  \end{tabular*}%
+  \vspace{0.6em}%
+}
+
+\newenvironment{cvitems}{%
+  \vspace{-2mm}%
+  \begin{itemize}[leftmargin=2ex, nosep, noitemsep]
+    \setlength{\parskip}{0pt}%
+    \renewcommand{\labelitemi}{\textbullet}%
+    \small\color{cvmuted}%
+}{%
+  \end{itemize}%
+  \vspace{-1mm}%
+}
+
+\newenvironment{cvparagraph}{\small\color{cvmuted}}{\par\vspace{0.2em}}
+
+\newenvironment{cvskills}{%
+  \vspace{0.2em}%
+  \setlength{\tabcolsep}{1ex}%
+  \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}} L{0.27\textwidth} L{0.70\textwidth}}
+}{\end{tabular*}}
+
+\newcommand*{\cvskill}[2]{%
+  {\fontsize{10pt}{1em}\selectfont\bfseries\color{cvtext}#1} & {\fontsize{9pt}{1em}\selectfont\color{cvtext}#2}\\
+}
+
+%-------------------------------------------------------------------------------
+% Education-specific semantic macros
+%-------------------------------------------------------------------------------
+\newcommand*{\cveduentry}[5]{%
+  \cventry{#1}{#2}{#3}{#4}{%
+    \ifstrempty{#5}{}{\begin{cvitems}\item {#5}\end{cvitems}}%
+  }%
+}
+
+\newcommand*{\cvaward}[3]{%
+  \cventry{#1}{#2}{}{#3}{}%
+}
+
+% Honors list (used by some sections)
+\newcolumntype{C}[1]{>{\Centering\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+
+\newenvironment{cvhonors}{%
+  \vspace{0.2em}%
+  \setlength{\tabcolsep}{0pt}%
+  \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}} C{1.5cm} L{\dimexpr\textwidth-4.0cm\relax} R{2.5cm}}
+}{\end{tabular*}}
+
+\newcommand*{\cvhonor}[4]{%
+  {\fontsize{9pt}{1em}\selectfont\color{cvmuted}#4} &
+  {\fontsize{9pt}{1em}\selectfont\bfseries\color{cvtext}#1, \normalfont\color{cvmuted}#2} &
+  {\fontsize{9pt}{1em}\selectfont\slshape\color{cvaccent}#3}\\
+}

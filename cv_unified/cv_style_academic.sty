@@ -1,0 +1,101 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{cv_style_academic}[2026/02/09 Academic style for unified markup]
+
+% This style intentionally keeps the existing academic header layout.
+% It expects TLCresume.sty to be loaded by the main document.
+
+\RequirePackage{fancyhdr}
+\RequirePackage{etoolbox}
+
+% Hugging Face icon (generated to huggingface.pdf at build time; fall back to badge)
+\newcommand{\cvHuggingFaceIcon}{%
+  \begingroup
+  \IfFileExists{huggingface.pdf}{%
+    \raisebox{-0.20ex}{\includegraphics[height=1.35ex]{huggingface.pdf}}%
+  }{%
+    \setlength{\fboxsep}{0.18ex}%
+    \raisebox{-0.12ex}{\colorbox{highlight}{\textcolor{white}{\scriptsize\bfseries HF}}}%
+  }%
+  \endgroup
+}
+
+\newcommand{\cvmakeheader}{%
+  \fancypagestyle{first_page}{%
+    \fancyhf{}%
+    \lhead{%
+      \phone\\%
+      \city\\%
+      \href{mailto:\email}{\email}%
+    }%
+    \chead{%
+      \centering
+      {\Huge \skills \name}\\%
+      \vspace{.25em}%
+      {\color{highlight} \Large{\role}}%
+    }%
+    \rhead{%
+      \ifx\portfoliourl\empty\else
+        Portfolio: \href{\portfoliourl}{\portfolioname}\\%
+      \fi
+      \ifx\github\empty\else
+        \href{https://github.com/\github}{github.com/\github}\\%
+      \fi
+      \ifx\LinkedIn\empty\else
+        \href{https://www.linkedin.com/in/\LinkedIn}{linkedin.com/in/\LinkedIn}\\%
+      \fi
+      \ifx\huggingfaceurl\empty\else
+        \href{\huggingfaceurl}{\cvHuggingFaceIcon\,\huggingfacelabel}%
+      \fi
+    }%
+    \renewcommand{\headrulewidth}{1pt}%
+    \renewcommand{\headrule}{\hbox to\headwidth{\color{highlight}\leaders\hrule height \headrulewidth\hfill}}%
+    \setlength{\headheight}{90pt}%
+    \setlength{\headsep}{5pt}%
+  }%
+  \fancypagestyle{others}{%
+    \fancyhf{}%
+    \renewcommand{\headrulewidth}{0pt}%
+    \setlength{\headheight}{30pt}%
+    \setlength{\headsep}{5pt}%
+  }%
+}
+
+%----------------------
+% Unified semantic markup -> TLCresume formatting
+%----------------------
+\newcommand{\cvsection}[1]{\section{#1}}
+\newcommand{\cvsubsection}[1]{\subsection{#1}}
+
+\newenvironment{cventries}{}{}
+
+\newcommand*{\cventry}[5]{%
+  \subsection{{{#1 \hfill #4}}}%
+  \subtext{#2 \hfill #3}%
+  #5%
+  \vspace{0.25em}%
+}
+
+\newenvironment{cvitems}{\begin{zitemize}}{\end{zitemize}}
+
+\newenvironment{cvparagraph}{\par\noindent}{\par\vspace{0.25em}}
+
+\newenvironment{cvskills}{\begin{tabular}{p{11em} p{1em} p{43em}}}{\end{tabular}}
+\newcommand*{\cvskill}[2]{\skills{#1} & & #2 \\}
+
+%----------------------
+% Education-specific semantic macros
+%----------------------
+\newcommand*{\cveduentry}[5]{%
+  \skills{#1}, \textit{#2} \hfill #4\par
+  \ifstrempty{#5}{}{\textit{#5}\par}%
+  \vspace{0.25em}%
+}
+
+\newcommand*{\cvaward}[3]{%
+  \textit{#1, #2} \hfill #3\par
+  \vspace{0.25em}%
+}
+
+% Optional, for templates that reuse these names.
+\newenvironment{cvhonors}{}{}
+\newcommand*{\cvhonor}[4]{#1\par}

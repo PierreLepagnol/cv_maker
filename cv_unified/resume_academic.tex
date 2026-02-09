@@ -1,0 +1,47 @@
+\documentclass[10pt]{article}
+\usepackage[utf8]{inputenc}
+
+% Academic visual style (TLCresume) + unified semantic markup
+\usepackage{TLCresume}
+\usepackage{cv_core}
+\usepackage{cv_style_academic}
+
+%----------------------
+% Contact values (generated)
+%----------------------
+\input{contact_values}
+
+% Keep legacy macro names used by the academic header layout
+\let\name\contactfullname
+\let\phone\contactphone
+\let\city\contactcity
+\let\email\contactemail
+\let\github\contactgithub
+\let\LinkedIn\contactlinkedin
+\let\huggingfaceurl\contacthuggingfaceurl
+\let\huggingfacelabel\contacthuggingfacelabel
+\let\role\contactrole
+\let\portfoliourl\contactportfoliourl
+\let\portfolioname\contactportfolioname
+
+% Define academic header page styles
+\cvmakeheader
+
+\begin{document}\pagestyle{others}\thispagestyle{first_page}
+
+\cvsection{Education}
+\input{resume/education}
+
+\cvsection{Professional Experience}
+\input{resume/experience}
+
+\cvsection{Publications}
+\input{resume/papers}
+
+\cvsection{Projects}
+\input{resume/activities}
+
+\cvsection{Skills}
+\input{resume/skills}
+
+\end{document}
