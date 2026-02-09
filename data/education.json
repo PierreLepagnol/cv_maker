@@ -5,7 +5,10 @@
       "institution": "LISN - Paris-Saclay University",
       "location": "Paris, France",
       "date": "Feb. 2023 --- Present",
-      "details": null
+      "details": [
+        "Working on natural language processing and machine learning techniques for text analysis. ",
+        "My research focuses on developing models and algorithms to extract meaningful insights from large volumes of text data, with applications in various domains such as sentiment analysis, information retrieval, and language understanding."
+      ]
     },
     {
       "degree": "Master in Applied Math and Statistics",

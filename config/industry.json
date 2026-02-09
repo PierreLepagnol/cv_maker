@@ -4,5 +4,17 @@
   "template": "unified",
   "template_source": "cv_unified",
   "main_template": "resume_industry.tex",
+  "section_entry_seps": {
+    "education": "0.6em",
+    "experience": "0.1em",
+    "activities": "",
+    "skills": "0.9em"
+  },
+  "section_item_seps": {
+    "education": "0.1em",
+    "experience": "0.1em",
+    "activities": "0.1em",
+    "skills": "0.1em"
+  },
   "sections": []
 }

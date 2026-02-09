@@ -30,6 +30,9 @@
 \definecolor{cvmuted}{HTML}{5D5D5D}
 \definecolor{cvlight}{HTML}{999999}
 
+% Shared core macro customization
+\renewcommand{\cvHuggingFaceBadgeColor}{cvaccent}
+
 \hypersetup{colorlinks=true, urlcolor=cvaccent}
 
 % Optional header font (Roboto vendored via fonts/)
@@ -63,17 +66,6 @@
 \newcommand{\cvHeaderAfterSocialSkip}{0.7em}
 \newcommand{\cvHeaderAfterQuoteSkip}{0.9em}
 
-% Hugging Face icon (generated to huggingface.pdf at build time; fall back to badge)
-\newcommand{\cvHuggingFaceIcon}{%
-  \begingroup
-  \IfFileExists{huggingface.pdf}{%
-    \raisebox{-0.20ex}{\includegraphics[height=1.35ex]{huggingface.pdf}}%
-  }{%
-    \setlength{\fboxsep}{0.18ex}%
-    \raisebox{-0.12ex}{\colorbox{cvaccent}{\textcolor{white}{\scriptsize\bfseries HF}}}%
-  }%
-  \endgroup
-}
 
 % Highlight first 3 letters in section titles
 \newbool{cvSectionColorHighlight}
@@ -178,9 +170,12 @@
 %-------------------------------------------------------------------------------
 % Unified semantic markup
 %-------------------------------------------------------------------------------
-\newcommand{\cvsection}[1]{%
+% Optional argument sets \cventrysep for this section:
+%   \cvsection[0.6em]{Education}
+\newcommand{\cvsection}[2][]{%
+  \ifstrempty{#1}{\cvresetcventrysep}{\cvsetcventrysep{#1}}%
   \vspace{0.9em}%
-  \noindent{\Large\bfseries\color{cvtext}\cvsectioncolor #1}%
+  \noindent{\Large\bfseries\color{cvtext}\cvsectioncolor #2}%
   \hspace{0.7em}%
   {\color{cvmuted}\cvhrulefill{0.9pt}}%
   \par\vspace{0.4em}%
@@ -202,12 +197,18 @@
     {\fontsize{8pt}{1em}\selectfont\scshape\color{cvmuted}#1} & {\fontsize{8pt}{1em}\selectfont\slshape\color{cvmuted}#4}\\
     \multicolumn{2}{L{\textwidth}}{#5}%
   \end{tabular*}%
-  \vspace{0.6em}%
+  \vspace{\cventrysep}%
 }
 
 \newenvironment{cvitems}{%
   \vspace{-2mm}%
-  \begin{itemize}[leftmargin=2ex, nosep, noitemsep]
+  \begin{itemize}[
+    leftmargin=2ex,
+    topsep=0pt,
+    partopsep=0pt,
+    parsep=0pt,
+    itemsep=\cvitemssep
+  ]
     \setlength{\parskip}{0pt}%
     \renewcommand{\labelitemi}{\textbullet}%
     \small\color{cvmuted}%
@@ -231,14 +232,23 @@
 %-------------------------------------------------------------------------------
 % Education-specific semantic macros
 %-------------------------------------------------------------------------------
+% Education details (single bullet or bullet list)
+\newcommand{\cvedudetails}[1]{\begin{cvitems}\item {#1}\end{cvitems}}
+\newenvironment{cvedudetailslist}{\begin{cvitems}}{\end{cvitems}}
+\newcommand{\cvedudetail}[1]{\item {#1}}
+
 \newcommand*{\cveduentry}[5]{%
   \cventry{#1}{#2}{#3}{#4}{%
-    \ifstrempty{#5}{}{\begin{cvitems}\item {#5}\end{cvitems}}%
+    \ifstrempty{#5}{}{#5}%
   }%
+  % Tighter spacing between education entries than work experience
+  \vspace{-0.3em}%
 }
 
 \newcommand*{\cvaward}[3]{%
   \cventry{#1}{#2}{}{#3}{}%
+  % Keep awards list tight as well
+  \vspace{-0.3em}%
 }
 
 % Honors list (used by some sections)

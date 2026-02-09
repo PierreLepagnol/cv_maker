@@ -3,7 +3,64 @@
 
 % Keep the core minimal; style packages own layout.
 \RequirePackage{array}
+\RequirePackage{etoolbox}
 \RequirePackage{enumitem}
 \RequirePackage{graphicx}
 \RequirePackage{hyperref}
 \RequirePackage{ragged2e}
+\RequirePackage{xcolor}
+
+%-------------------------------------------------------------------------------
+% Shared knobs & helpers (used by multiple styles)
+%-------------------------------------------------------------------------------
+
+% Space between consecutive \cventry blocks.
+% - \cventrysepdefault: baseline value a section should start with
+% - \cventrysep: current value used by \cventry
+% Styles/templates can override per section via optional \cvsection arg.
+\newlength{\cventrysepdefault}
+\setlength{\cventrysepdefault}{0.9em}
+\newlength{\cventrysep}
+\setlength{\cventrysep}{\cventrysepdefault}
+
+\newcommand*{\cvsetcventrysep}[1]{\setlength{\cventrysep}{#1}}
+\newcommand*{\cvresetcventrysep}{\setlength{\cventrysep}{\cventrysepdefault}}
+
+% Space between consecutive items inside the \cvitems environment.
+% - \cvitemssepdefault: baseline value a section should start with
+% - \cvitemssep: current value used by \cvitems
+% Templates can override per section via \cvsectionitemssep{<length>}.
+\newlength{\cvitemssepdefault}
+\setlength{\cvitemssepdefault}{0pt}
+\newlength{\cvitemssep}
+\setlength{\cvitemssep}{\cvitemssepdefault}
+
+\newcommand*{\cvsetcvitemssep}[1]{\setlength{\cvitemssep}{#1}}
+\newcommand*{\cvresetcvitemssep}{\setlength{\cvitemssep}{\cvitemssepdefault}}
+\newcommand*{\cvsectionitemssep}[1]{%
+  \ifblank{#1}{\cvresetcvitemssep}{\cvsetcvitemssep{#1}}%
+}
+
+% \hfill is not allowed in PDF bookmark strings (hyperref).
+% Provide a clean text alternative for the PDF outline.
+\newcommand*{\cvtexorpdfline}[2]{%
+  \ifdefined\texorpdfstring
+    \texorpdfstring{#1}{#2}%
+  \else
+    #1%
+  \fi
+}
+
+% Hugging Face icon (generated to huggingface.pdf at build time; fall back to badge).
+% Styles can override the badge color by redefining \cvHuggingFaceBadgeColor.
+\providecommand{\cvHuggingFaceBadgeColor}{highlight}
+\newcommand{\cvHuggingFaceIcon}{%
+  \begingroup
+  \IfFileExists{huggingface.pdf}{%
+    \raisebox{-0.20ex}{\includegraphics[height=1.35ex]{huggingface.pdf}}%
+  }{%
+    \setlength{\fboxsep}{0.18ex}%
+    \raisebox{-0.12ex}{\colorbox{\cvHuggingFaceBadgeColor}{\textcolor{white}{\scriptsize\bfseries HF}}}%
+  }%
+  \endgroup
+}

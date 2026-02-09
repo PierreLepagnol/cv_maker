@@ -3,7 +3,10 @@ Section-specific LaTeX generation functions.
 Each function takes JSON data and returns LaTeX string.
 """
 
+from data_models import Contact
 from latex_escaper import escape_latex
+
+from latex_rendering import LatexBuilder, fmt_date_range, latex_href
 
 
 def generate_contact_macros(contact_data):
@@ -16,22 +19,22 @@ def generate_contact_macros(contact_data):
     Returns:
         String with LaTeX \\def commands
     """
+    contact = Contact.model_validate(contact_data or {})
+
     lines = [
-        f"\\def\\name{{{escape_latex(contact_data.get('name', 'Your Name'))}}}",
-        f"\\def\\phone{{{escape_latex(contact_data.get('phone', ''))}}}",
-        f"\\def\\city{{{escape_latex(contact_data.get('city', ''))}}}",
-        f"\\def\\email{{{contact_data.get('email', '')}}}",  # Don't escape email (escaper handles this)
-        f"\\def\\LinkedIn{{{contact_data.get('linkedin', '')}}}",
-        f"\\def\\github{{{contact_data.get('github', '')}}}",
-        f"\\def\\role{{{escape_latex(contact_data.get('role', ''))}}}",
+        f"\\def\\name{{{escape_latex(contact.name or 'Your Name')}}}",
+        f"\\def\\phone{{{escape_latex(contact.phone)}}}",
+        f"\\def\\city{{{escape_latex(contact.city)}}}",
+        f"\\def\\email{{{contact.email}}}",  # Don't escape email (escaper handles this)
+        f"\\def\\LinkedIn{{{contact.linkedin}}}",
+        f"\\def\\github{{{contact.github}}}",
+        f"\\def\\role{{{escape_latex(contact.role)}}}",
     ]
 
     # Handle optional portfolio
-    if contact_data.get("portfolio"):
-        lines.append(f"\\def\\portfoliourl{{{contact_data['portfolio']['url']}}}")
-        lines.append(
-            f"\\def\\portfolioname{{{escape_latex(contact_data['portfolio']['display_name'])}}}"
-        )
+    if contact.portfolio and contact.portfolio.url:
+        lines.append(f"\\def\\portfoliourl{{{contact.portfolio.url}}}")
+        lines.append(f"\\def\\portfolioname{{{escape_latex(contact.portfolio.display_name)}}}")
     else:
         lines.append("\\def\\portfoliourl{}")
         lines.append("\\def\\portfolioname{}")
@@ -90,15 +93,19 @@ def generate_skills_section(skills_data):
     Returns:
         String with LaTeX tabular
     """
-    lines = ["\\begin{tabular}{p{11em} p{1em} p{43em}}"]
-
-    for skill in skills_data.get("skills", []):
-        category = escape_latex(skill["category"])
-        items = escape_latex(skill["items"])
-        lines.append(f"\\skills{{{category}}} & & {items} \\\\")
-
-    lines.append("\\end{tabular}")
-    return "\n".join(lines)
+    b = LatexBuilder()
+    with b.env(
+        "tabular",
+        "p{11em} p{1em} p{43em}",
+        blank_after_begin=False,
+        blank_before_end=False,
+        blank_after_end=False,
+    ):
+        for skill in skills_data.get("skills", []) or []:
+            category = escape_latex(skill.get("category", ""))
+            items = escape_latex(skill.get("items", ""))
+            b.line(f"\\skills{{{category}}} & & {items} \\\\")
+    return b.render()
 
 
 def generate_experience_section(experience_data):
@@ -111,25 +118,33 @@ def generate_experience_section(experience_data):
     Returns:
         String with LaTeX experience entries
     """
-    lines = []
+    b = LatexBuilder()
+    for exp in experience_data.get("experiences", []) or []:
+        title = escape_latex(exp.get("title", ""))
+        company = escape_latex(exp.get("company", ""))
+        location = escape_latex(exp.get("location", ""))
+        date_range = fmt_date_range(exp.get("start_date"), exp.get("end_date"), sep=" --- ")
 
-    for exp in experience_data.get("experiences", []):
-        title = escape_latex(exp["title"])
-        company = escape_latex(exp["company"])
-        location = escape_latex(exp["location"])
-        date_range = f"{exp['start_date']} --- {exp['end_date']}"
+        b.command("subsection", f"{{{title} \\hfill {date_range}}}")
+        b.line(f"\\subtext{{{company} \\hfill {location}}}")
+        with b.env(
+            "zitemize",
+            blank_after_begin=False,
+            blank_before_end=False,
+            blank_after_end=False,
+        ):
+            bullets = exp.get("bullets", []) or []
+            if not isinstance(bullets, list):
+                bullets = [bullets]
+            for bullet in bullets:
+                bullet_tex = escape_latex(bullet)
+                if not bullet_tex:
+                    continue
+                b.line(f"\\item {bullet_tex}")
 
-        lines.append(f"\\subsection{{{{{title} \\hfill {date_range}}}}}")
-        lines.append(f"\\subtext{{{company} \\hfill {location}}}")
-        lines.append("\\begin{zitemize}")
+        b.line()
 
-        for bullet in exp["bullets"]:
-            lines.append(f"    \\item {escape_latex(bullet)}")
-
-        lines.append("\\end{zitemize}")
-        lines.append("")  # Blank line between experiences
-
-    return "\n".join(lines)
+    return b.render()
 
 
 def generate_education_section(education_data):
@@ -142,32 +157,29 @@ def generate_education_section(education_data):
     Returns:
         String with LaTeX education entries
     """
-    lines = []
+    b = LatexBuilder()
 
-    # Degrees
-    for degree in education_data.get("degrees", []):
-        degree_name = escape_latex(degree["degree"])
-        institution = escape_latex(degree["institution"])
-        date = degree["date"]
+    for degree in education_data.get("degrees", []) or []:
+        degree_name = escape_latex(degree.get("degree", ""))
+        institution = escape_latex(degree.get("institution", ""))
+        date = str(degree.get("date", "") or "").strip()
 
-        lines.append(
-            f"\\skills{{{degree_name}}}, \\textit{{{institution}}} \\hfill {date}"
-        )
+        b.line(f"\\skills{{{degree_name}}}, \\textit{{{institution}}} \\hfill {date}")
 
-        if degree.get("details"):
-            lines.append(f"\\textit{{{escape_latex(degree['details'])}}}")
+        details = degree.get("details")
+        if details:
+            b.line(f"\\textit{{{escape_latex(details)}}}")
 
-        lines.append("")
+        b.line()
 
-    # Awards
-    for award in education_data.get("awards", []):
-        title = escape_latex(award["title"])
-        org = escape_latex(award["organization"])
-        date = award["date"]
-        lines.append(f"\\textit{{{title}, {org}}} \\hfill {date}")
-        lines.append("")
+    for award in education_data.get("awards", []) or []:
+        title = escape_latex(award.get("title", ""))
+        org = escape_latex(award.get("organization", ""))
+        date = str(award.get("date", "") or "").strip()
+        b.line(f"\\textit{{{title}, {org}}} \\hfill {date}")
+        b.line()
 
-    return "\n".join(lines)
+    return b.render()
 
 
 def generate_papers_section(papers_data):
@@ -180,28 +192,25 @@ def generate_papers_section(papers_data):
     Returns:
         String with LaTeX paper citations
     """
-    lines = []
+    b = LatexBuilder()
+    for paper in papers_data.get("papers", []) or []:
+        authors = escape_latex(paper.get("authors", ""))
+        title = escape_latex(paper.get("title", ""))
+        venue = escape_latex(paper.get("venue", ""))
+        year = str(paper.get("year", "") or "").strip()
+        status = str(paper.get("status", "published") or "published").strip()
 
-    for paper in papers_data.get("papers", []):
-        authors = escape_latex(paper["authors"])
-        title = escape_latex(paper["title"])
-        venue = escape_latex(paper["venue"])
-        year = paper["year"]
-        status = paper.get("status", "published")
-
-        # Format: Authors. "Title". Venue Year. (Status if not published)
         line = f'{authors}. \\textit{{"{title}"}}. {venue} {year}.'
-
         if status != "published":
             line += f" ({status.capitalize()})"
+        url = str(paper.get("url", "") or "").strip()
+        if url:
+            line += f" {latex_href(url, '[Link]')}"
 
-        if paper.get("url"):
-            line += f" \\href{{{paper['url']}}}{{[Link]}}"
+        b.line(line)
+        b.line()
 
-        lines.append(line)
-        lines.append("")
-
-    return "\n".join(lines)
+    return b.render()
 
 
 def generate_activities_section(activities_data):
@@ -214,15 +223,15 @@ def generate_activities_section(activities_data):
     Returns:
         String with LaTeX activity entries
     """
-    lines = []
-
-    for activity in activities_data.get("activities", []):
-        title = escape_latex(activity["title"])
-        date = activity["date"]
-        lines.append(f"{title} \\hfill {date}")
-        lines.append("")
-
-    return "\n".join(lines)
+    b = LatexBuilder()
+    for activity in activities_data.get("activities", []) or []:
+        title = escape_latex(activity.get("title", ""))
+        date = str(activity.get("date", "") or "").strip()
+        if not title and not date:
+            continue
+        b.line(f"{title} \\hfill {date}")
+        b.line()
+    return b.render()
 
 
 def generate_objective_section(objective_data):

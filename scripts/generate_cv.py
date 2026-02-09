@@ -13,6 +13,8 @@ from pathlib import Path
 
 from config_loader import load_config, load_data
 from latex_escaper import escape_latex
+from data_models import Contact
+from pydantic import ValidationError
 from section_generators import generate_contact_values_section
 
 from unified_generators import (
@@ -132,7 +134,9 @@ def copy_template_files(config, output_dir):
 
 def build_tokens(config, contact_data):
     """Build token replacements for resume templates."""
-    full_name_raw = contact_data.get("name", "Your Name")
+    contact = Contact.model_validate(contact_data or {})
+
+    full_name_raw = contact.name or "Your Name"
     full_name = escape_latex(full_name_raw)
 
     firstname_raw = ""
@@ -146,10 +150,9 @@ def build_tokens(config, contact_data):
     portfolio_url = ""
     portfolio_name = ""
     portfolio_homepage = ""
-    portfolio = contact_data.get("portfolio")
-    if isinstance(portfolio, dict):
-        portfolio_url = str(portfolio.get("url") or "")
-        portfolio_name = str(portfolio.get("display_name") or "")
+    if contact.portfolio:
+        portfolio_url = str(contact.portfolio.url or "")
+        portfolio_name = str(contact.portfolio.display_name or "")
 
     if portfolio_url and not portfolio_name:
         portfolio_name = portfolio_url.replace("https://", "").replace("http://", "")
@@ -165,9 +168,8 @@ def build_tokens(config, contact_data):
     huggingface_url = ""
     huggingface_handle = ""
     huggingface_label = ""
-    huggingface_raw = contact_data.get("huggingface")
-    if huggingface_raw:
-        hf = str(huggingface_raw).strip()
+    if contact.huggingface:
+        hf = str(contact.huggingface).strip()
         if hf.startswith("http://") or hf.startswith("https://"):
             huggingface_url = hf
         else:
@@ -185,13 +187,13 @@ def build_tokens(config, contact_data):
         "CONTACT_FULL_NAME": full_name,
         "CONTACT_FIRSTNAME": escape_latex(firstname_raw),
         "CONTACT_LASTNAME": escape_latex(lastname_raw),
-        "CONTACT_ROLE": escape_latex(contact_data.get("role", "")),
-        "CONTACT_QUOTE": escape_latex(contact_data.get("quote", "")),
-        "CONTACT_PHONE": escape_latex(contact_data.get("phone", "")),
-        "CONTACT_CITY": escape_latex(contact_data.get("city", "")),
-        "CONTACT_EMAIL": str(contact_data.get("email", "")),
-        "CONTACT_GITHUB": str(contact_data.get("github", "")),
-        "CONTACT_LINKEDIN": str(contact_data.get("linkedin", "")),
+        "CONTACT_ROLE": escape_latex(contact.role),
+        "CONTACT_QUOTE": escape_latex(contact.quote),
+        "CONTACT_PHONE": escape_latex(contact.phone),
+        "CONTACT_CITY": escape_latex(contact.city),
+        "CONTACT_EMAIL": str(contact.email),
+        "CONTACT_GITHUB": str(contact.github),
+        "CONTACT_LINKEDIN": str(contact.linkedin),
         "CONTACT_HUGGINGFACE_URL": huggingface_url,
         "CONTACT_HUGGINGFACE_HANDLE": escape_latex(huggingface_handle),
         "CONTACT_HUGGINGFACE_LABEL": escape_latex(huggingface_label),
@@ -201,6 +203,48 @@ def build_tokens(config, contact_data):
         # Existing footer token
         "FOOTER_CENTER": f"{full_name}~~~·~~~Résumé",
     }
+
+    # Optional per-section spacing controls (LaTeX lengths).
+    # Consumed by unified resume templates via:
+    #   \cvsection[{{SECTION_CVENTRYSEP_EXPERIENCE}}]{Professional Experience}
+    section_entry_seps = config.get("section_entry_seps", {}) or {}
+    if not isinstance(section_entry_seps, dict):
+        raise ValueError("config.section_entry_seps must be an object/dict")
+
+    # Optional per-section bullet spacing controls for \cvitems (LaTeX lengths).
+    # Consumed by unified resume templates via:
+    #   \cvsectionitemssep{ {{SECTION_CVITEMSSEP_EXPERIENCE}} }
+    section_item_seps = config.get("section_item_seps", {}) or {}
+    if not isinstance(section_item_seps, dict):
+        raise ValueError("config.section_item_seps must be an object/dict")
+
+    known_sections = [
+        "summary",
+        "objective",
+        "skills",
+        "experience",
+        "education",
+        "papers",
+        "activities",
+    ]
+    for section_name in known_sections:
+        token_key = f"SECTION_CVENTRYSEP_{section_name.upper()}"
+        tokens[token_key] = ""
+
+        token_key = f"SECTION_CVITEMSSEP_{section_name.upper()}"
+        tokens[token_key] = ""
+
+    for section_name, length_value in section_entry_seps.items():
+        if length_value is None:
+            continue
+        token_key = f"SECTION_CVENTRYSEP_{str(section_name).upper()}"
+        tokens[token_key] = str(length_value)
+
+    for section_name, length_value in section_item_seps.items():
+        if length_value is None:
+            continue
+        token_key = f"SECTION_CVITEMSSEP_{str(section_name).upper()}"
+        tokens[token_key] = str(length_value)
 
     extra_tokens = config.get("tokens", {})
     for key, value in extra_tokens.items():
@@ -339,7 +383,7 @@ def main():
         print(f"✓ Generated CV files in {output_dir}")
         compile_cmd = "latexmk -xelatex"
         print(f"  To compile: cd {output_dir} && {compile_cmd} resume.tex")
-    except (FileNotFoundError, ValueError) as exc:
+    except (FileNotFoundError, ValueError, ValidationError) as exc:
         print(f"Error: {exc}")
         sys.exit(1)
 

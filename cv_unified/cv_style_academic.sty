@@ -7,93 +7,119 @@
 \RequirePackage{fancyhdr}
 \RequirePackage{etoolbox}
 
-% Hugging Face icon (generated to huggingface.pdf at build time; fall back to badge)
-\newcommand{\cvHuggingFaceIcon}{%
-  \begingroup
-  \IfFileExists{huggingface.pdf}{%
-    \raisebox{-0.20ex}{\includegraphics[height=1.35ex]{huggingface.pdf}}%
-  }{%
-    \setlength{\fboxsep}{0.18ex}%
-    \raisebox{-0.12ex}{\colorbox{highlight}{\textcolor{white}{\scriptsize\bfseries HF}}}%
-  }%
-  \endgroup
+%-------------------------------------------------------------------------------
+% List spacing
+%-------------------------------------------------------------------------------
+% TLCresume defines a tight zitemize environment; for the unified academic style
+% we prefer a bit more breathing room between bullets.
+% Default bullet spacing for this style.
+\setlength{\cvitemssepdefault}{2pt}
+\cvresetcvitemssep
+\renewenvironment{zitemize}{%
+  \begin{itemize}%
+    \setlength{\topsep}{2pt}%
+    \setlength{\itemsep}{\cvitemssep}%
+    \setlength{\parsep}{0pt}%
+    \setlength{\parskip}{0pt}%
+}{%
+  \end{itemize}%
+  \vspace{0pt}%
 }
 
 \newcommand{\cvmakeheader}{%
-  \fancypagestyle{first_page}{%
-    \fancyhf{}%
-    \lhead{%
-      \phone\\%
-      \city\\%
-      \href{mailto:\email}{\email}%
+    \fancypagestyle{first_page}{%
+        \fancyhf{}%
+        \lhead{%
+            \phone\\%
+            \city\\%
+            \href{mailto:\email}{\email}%
+        }%
+        \chead{%
+            \centering
+            {\Huge \skills \name}\\%
+            \vspace{.25em}%
+            {\color{highlight} \Large{\role}}%
+        }%
+        \rhead{%
+            \ifx\portfoliourl\empty\else
+            Portfolio: \href{\portfoliourl}{\portfolioname}\\%
+            \fi
+            \ifx\github\empty\else
+            \href{https://github.com/\github}{github.com/\github}\\%
+            \fi
+            \ifx\LinkedIn\empty\else
+            \href{https://www.linkedin.com/in/\LinkedIn}{linkedin.com/in/\LinkedIn}\\%
+            \fi
+            \ifx\huggingfaceurl\empty\else
+            \href{\huggingfaceurl}{\cvHuggingFaceIcon\,\huggingfacelabel}%
+            \fi
+        }%
+        % No horizontal rule under the academic header
+        \renewcommand{\headrulewidth}{0pt}%
+        \renewcommand{\headrule}{}%
+        \setlength{\headheight}{90pt}%
+        % Space between header and body (first page)
+        \setlength{\headsep}{12pt}%
     }%
-    \chead{%
-      \centering
-      {\Huge \skills \name}\\%
-      \vspace{.25em}%
-      {\color{highlight} \Large{\role}}%
+    \fancypagestyle{others}{%
+        \fancyhf{}%
+        \renewcommand{\headrulewidth}{0pt}%
+        \setlength{\headheight}{30pt}%
+        \setlength{\headsep}{5pt}%
     }%
-    \rhead{%
-      \ifx\portfoliourl\empty\else
-        Portfolio: \href{\portfoliourl}{\portfolioname}\\%
-      \fi
-      \ifx\github\empty\else
-        \href{https://github.com/\github}{github.com/\github}\\%
-      \fi
-      \ifx\LinkedIn\empty\else
-        \href{https://www.linkedin.com/in/\LinkedIn}{linkedin.com/in/\LinkedIn}\\%
-      \fi
-      \ifx\huggingfaceurl\empty\else
-        \href{\huggingfaceurl}{\cvHuggingFaceIcon\,\huggingfacelabel}%
-      \fi
-    }%
-    \renewcommand{\headrulewidth}{1pt}%
-    \renewcommand{\headrule}{\hbox to\headwidth{\color{highlight}\leaders\hrule height \headrulewidth\hfill}}%
-    \setlength{\headheight}{90pt}%
-    \setlength{\headsep}{5pt}%
-  }%
-  \fancypagestyle{others}{%
-    \fancyhf{}%
-    \renewcommand{\headrulewidth}{0pt}%
-    \setlength{\headheight}{30pt}%
-    \setlength{\headsep}{5pt}%
-  }%
 }
 
 %----------------------
 % Unified semantic markup -> TLCresume formatting
 %----------------------
-\newcommand{\cvsection}[1]{\section{#1}}
-\newcommand{\cvsubsection}[1]{\subsection{#1}}
+% Optional argument sets \cventrysep for this section:
+%   \cvsection[0.6em]{Education}
+\newcommand{\cvsection}[2][]{%
+\ifstrempty{#1}{\cvresetcventrysep}{\cvsetcventrysep{#1}}%
+\section{#2}}
+\newcommand{\cvsubsection}[1]{
+\subsection{#1}}
 
 \newenvironment{cventries}{}{}
 
+% Space between consecutive \cventry blocks
+% (Defined in cv_core; override here if needed.)
+
 \newcommand*{\cventry}[5]{%
-  \subsection{{{#1 \hfill #4}}}%
-  \subtext{#2 \hfill #3}%
-  #5%
-  \vspace{0.25em}%
+    \subsection{\cvtexorpdfline{#1 \hfill #4}{#1 -- #4}}%
+    \subtext{\cvtexorpdfline{#2 \hfill #3}{#2 -- #3}}%
+    #5%
+    \vspace{\cventrysep}%
 }
 
-\newenvironment{cvitems}{\begin{zitemize}}{\end{zitemize}}
+\newenvironment{cvitems}{
+\begin{zitemize}}{
+\end{zitemize}}
 
 \newenvironment{cvparagraph}{\par\noindent}{\par\vspace{0.25em}}
 
-\newenvironment{cvskills}{\begin{tabular}{p{11em} p{1em} p{43em}}}{\end{tabular}}
+\newenvironment{cvskills}{
+\begin{tabular}{p{11em} p{1em} p{43em}}}{
+\end{tabular}}
 \newcommand*{\cvskill}[2]{\skills{#1} & & #2 \\}
+
+% Education details (single line or list)
+\newcommand{\cvedudetails}[1]{\textit{#1}\par}
+\newenvironment{cvedudetailslist}{\begin{cvitems}}{\end{cvitems}}
+\newcommand{\cvedudetail}[1]{\item {#1}}
 
 %----------------------
 % Education-specific semantic macros
 %----------------------
 \newcommand*{\cveduentry}[5]{%
-  \skills{#1}, \textit{#2} \hfill #4\par
-  \ifstrempty{#5}{}{\textit{#5}\par}%
-  \vspace{0.25em}%
+    \skills{#1}, \textit{#2} \hfill #4\par
+    \ifstrempty{#5}{}{#5}%
+    \vspace{0.25em}%
 }
 
 \newcommand*{\cvaward}[3]{%
-  \textit{#1, #2} \hfill #3\par
-  \vspace{0.25em}%
+    \textit{#1, #2} \hfill #3\par
+    \vspace{0.25em}%
 }
 
 % Optional, for templates that reuse these names.

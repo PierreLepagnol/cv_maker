@@ -7,8 +7,9 @@
       "start_date": "Feb. 2022",
       "end_date": "Present",
       "bullets": [
-        "Developer - Taskforce SAS to Python – Catalina Marketing (4 months): Migration of projects (data analysis, data science) from SAS to Python, contribution to the creation of a Python toolkit, use of advanced Pandas, PostgreSQL and Python OOP",
-        "Research in Artificial Intelligence / Data Science: Model learning with little data, of poor quality. Reading and summarizing papers (Active Learning / Weak Supervision / FlauBERT / Snorkel)"
+        "Veille technologique en intelligence artificielle (Language Models, Agentic Models, Computation Efficiency in AI, etc.)",
+        "Research in Artificial Intelligence / Data Science: Model learning with little data, of poor quality. Reading and summarizing papers (Active Learning / Weak Supervision / FlauBERT / Snorkel)",
+        "Developer - Taskforce SAS to Python – Catalina Marketing: Migration of projects (data analysis, data science) from SAS to Python, contribution to the creation of a Python toolkit, use of advanced Pandas, PostgreSQL and Python OOP"
       ]
     },
     {
@@ -31,8 +32,8 @@
       "start_date": "Feb. 2017",
       "end_date": "Sep. 2017",
       "bullets": [
-        "Creation of a multi-banking indicator to improve the customer attrition model",
-        "Data processing with Spark / Text clustering (TF-IDF / Kmeans)",
+        "Creation of a multi-banking indicator for the customer churn model with mostly text clustering.",
+        "Python, Spark",
         "Contribution to the training of the Data Science team: Research and presentation on imbalanced classification (AE, SMOTE, Adasyn)"
       ]
     }
