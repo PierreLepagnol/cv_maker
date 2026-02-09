@@ -59,7 +59,8 @@
         \renewcommand{\headrule}{}%
         \setlength{\headheight}{90pt}%
         % Space between header and body (first page)
-        \setlength{\headsep}{12pt}%
+        % Keep this tight so the first section starts closer to the header.
+        \setlength{\headsep}{6pt}%
     }%
     \fancypagestyle{others}{%
         \fancyhf{}%
@@ -87,7 +88,7 @@
 
 \newcommand*{\cventry}[5]{%
     \subsection{\cvtexorpdfline{#1 \hfill #4}{#1 -- #4}}%
-    \subtext{\cvtexorpdfline{#2 \hfill #3}{#2 -- #3}}%
+    \ifstrempty{#2#3}{}{\subtext{\cvtexorpdfline{#2 \hfill #3}{#2 -- #3}}}%
     #5%
     \vspace{\cventrysep}%
 }

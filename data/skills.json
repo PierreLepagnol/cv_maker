@@ -1,20 +1,20 @@
 {
   "skills": [
     {
+      "category": "ML & NLP",
+      "items": "Transformers, RAG, Knowledge Distillation, LLM Evaluation"
+    },
+    {
+      "category": "Frameworks",
+      "items": "PyTorch, Hugging Face (Transformers, Datasets, PEFT), DeepSpeed, FSDP, vLLM, LangChain, lm-eval-harness"
+    },
+    {
+      "category": "Systems & Infra",
+      "items": "SLURM / HPC Clusters, Linux, Docker, Git, AWS, GCP"
+    },
+    {
       "category": "Languages",
-      "items": "Python (PyTorch, VLLM, Transformers), Rust & C"
-    },
-    {
-      "category": "Cloud & DB Services",
-      "items": "AWS & GCP, SQL/PostgreSQL, MongoDB"
-    },
-    {
-      "category": "Tooling",
-      "items": "Git, Linux, Docker"
-    },
-    {
-      "category": "Spoken Languages",
-      "items": "French (native), English (fluent), German (notions)"
+      "items": "Python (primary), Rust, C, SQL"
     }
   ]
 }

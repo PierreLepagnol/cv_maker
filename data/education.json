@@ -2,20 +2,23 @@
   "degrees": [
     {
       "degree": "PhD Candidate in Natural Language Processing",
-      "institution": "LISN - Paris-Saclay University",
+      "institution": "LISN --- Paris-Saclay University",
       "location": "Paris, France",
       "date": "Feb. 2023 --- Present",
       "details": [
-        "Working on natural language processing and machine learning techniques for text analysis. ",
-        "My research focuses on developing models and algorithms to extract meaningful insights from large volumes of text data, with applications in various domains such as sentiment analysis, information retrieval, and language understanding."
+        "Research on efficient small language models for real-world NLP: few-shot classification, knowledge distillation, and retrieval-augmented generation.",
+        "Published at LREC-COLING 2024 (zero-shot classification with small LMs) and Interspeech 2025 (retrieval-enhanced few-shot SLU).",
+        "Benchmarked models across text classification, NER, and sentiment analysis; open-sourced fine-tuned models on Hugging Face."
       ]
     },
     {
-      "degree": "Master in Applied Math and Statistics",
-      "institution": "University of Rennes 1/2, INSA, ENSAI",
+      "degree": "M.Sc. in Applied Mathematics and Statistics",
+      "institution": "University of Rennes / INSA / ENSAI",
       "location": "Rennes, France",
       "date": "2019 --- 2021",
-      "details": null
+      "details": [
+        "Coursework: Optimization, Statistical Learning, Deep Learning, Stochastic Processes, Bayesian Methods."
+      ]
     }
   ],
   "awards": []

@@ -1,11 +1,14 @@
 {
   "name": "Pierre Lepagnol",
-  "role": "PhD Candidate & Data Science Consultant",
+  "role": "NLP Researcher --- Small Language Models, Few-Shot Learning & Evaluation",
   "phone": "+33 6 72 18 80 01",
   "city": "Paris, France",
   "email": "pierre@lepagnol.net",
   "linkedin": "pierre-lepagnol",
   "github": "PierreLepagnol",
   "huggingface": "https://huggingface.co/PierreLepagnol",
-  "portfolio": null
+  "portfolio": {
+    "url": "https://pierre.lepagnol.net",
+    "display_name": "pierre.lepagnol.net"
+  }
 }

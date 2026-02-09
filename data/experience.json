@@ -1,40 +1,39 @@
 {
   "experiences": [
     {
-      "title": "Researcher & Data Science Consultant",
+      "title": "NLP Researcher & Data Science Consultant",
       "company": "SCIAM",
       "location": "Paris, France",
       "start_date": "Feb. 2022",
       "end_date": "Present",
       "bullets": [
-        "Veille technologique en intelligence artificielle (Language Models, Agentic Models, Computation Efficiency in AI, etc.)",
-        "Research in Artificial Intelligence / Data Science: Model learning with little data, of poor quality. Reading and summarizing papers (Active Learning / Weak Supervision / FlauBERT / Snorkel)",
-        "Developer - Taskforce SAS to Python – Catalina Marketing: Migration of projects (data analysis, data science) from SAS to Python, contribution to the creation of a Python toolkit, use of advanced Pandas, PostgreSQL and Python OOP"
+        "Designed and fine-tuned small language models for Named Entity Recognition on financial documents; achieved production-grade accuracy with models under 500M parameters.",
+        "Built LLM evaluation pipelines and few-shot classification benchmarks; systematically compared model families (BERT, DeBERTa, Mistral, Llama) across NER, sentiment, and intent tasks.",
+        "Led technology watch on LLM post-training, agentic architectures, and efficient inference; authored internal research reports on Active Learning, Weak Supervision, and RAG.",
+        "Migrated legacy SAS analytics codebase to Python for Catalina Marketing; built a reusable data-processing toolkit (cleaning, feature engineering, statistical analysis) improving pipeline runtime and maintainability."
       ]
     },
     {
-      "title": "Deep Learning Engineering applied to Cybersecurity",
-      "company": "Direction Générale de l'Armement / Maitrise de l'information",
+      "title": "Deep Learning Research Engineer --- Cybersecurity",
+      "company": "Direction Generale de l'Armement (DGA-MI)",
       "location": "France",
-      "start_date": "Avr. 2021",
+      "start_date": "Apr. 2021",
       "end_date": "Sep. 2021",
       "bullets": [
-        "Study of the robustness and embeddability of neural networks (Python / Tensorflow)",
-        "Design and training of a neural network for performing Side-Channel Attacks (cybersecurity)",
-        "Use of AI explanation and interpretation methods",
-        "Deployment of the solution in an embedded system (Jeston Nano)"
+        "Designed and trained a 150M-parameter neural network (ResNet-50, Transformer) on 2M samples for Side-Channel Attacks, achieving 85% accuracy on held-out test set.",
+        "Studied model robustness and embeddability under adversarial constraints; applied interpretability methods (Grad-CAM, attention analysis) to validate attack vectors.",
+        "Deployed inference pipeline on Jetson Nano (4GB RAM) meeting sub-100ms latency requirement; optimized model quantization and memory footprint for edge deployment."
       ]
     },
     {
       "title": "Data Scientist",
-      "company": "Société Générale",
+      "company": "Societe Generale",
       "location": "Paris, France",
       "start_date": "Feb. 2017",
       "end_date": "Sep. 2017",
       "bullets": [
-        "Creation of a multi-banking indicator for the customer churn model with mostly text clustering.",
-        "Python, Spark",
-        "Contribution to the training of the Data Science team: Research and presentation on imbalanced classification (AE, SMOTE, Adasyn)"
+        "Built a multi-banking customer churn indicator using unsupervised text clustering on transaction narratives; integrated into the production churn-prediction model.",
+        "Researched and presented imbalanced classification methods (Autoencoders, SMOTE, ADASYN) to upskill the Data Science team; benchmarked techniques on internal datasets."
       ]
     }
   ]

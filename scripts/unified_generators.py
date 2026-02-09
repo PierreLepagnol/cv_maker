@@ -184,14 +184,46 @@ class PapersRenderer(ListSectionRenderer):
 
 class ActivitiesRenderer(ListSectionRenderer):
     key = "activities"
-    outer_env = None
+    outer_env = "cventries"
+    item_blank_line = False
+
+    def _split_title(self, raw_title: str):
+        """Split a one-line project string into (title, details).
+
+        Supports the existing data convention:
+          "Project Name --- One-line details"
+        """
+
+        title = str(raw_title or "").strip()
+        if not title:
+            return "", ""
+
+        if " --- " in title:
+            left, right = title.split(" --- ", 1)
+            return left.strip(), right.strip()
+
+        return title, ""
 
     def render_item(self, b: LatexBuilder, activity: Activity):
-        title = escape_latex(activity.title)
+        raw_title, raw_details = self._split_title(activity.title)
+        title = escape_latex(raw_title)
+        details = escape_latex(raw_details)
         date = str(activity.date or "").strip()
-        if not title and not date:
+
+        if not title and not date and not details:
             return False
-        b.line(f"{title} \\hfill {date}")
+
+        if details:
+            with b.command_body("cventry", title, "", "", date):
+                with b.env(
+                    "cvitems",
+                    blank_after_begin=False,
+                    blank_before_end=False,
+                    blank_after_end=False,
+                ):
+                    b.line(f"\\item {{{details}}}")
+        else:
+            b.command("cventry", title, "", "", date, "")
         return True
 
 
