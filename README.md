@@ -44,7 +44,8 @@ curriculum_vitae/
 │   ├── education.json         # Degrees and awards
 │   ├── papers.json            # Publications
 │   ├── activities.json        # Activities
-│   └── objective.json         # Optional objective statement
+│   ├── objective.json         # Academic objective (optional)
+│   └── summary.json           # Industry summary (optional; falls back to objective)
 │
 ├── config/                     # CV variant configurations
 │   ├── academic.json          # Academic CV (education first, includes papers)
@@ -54,11 +55,18 @@ curriculum_vitae/
 │   ├── generate_cv.py
 │   ├── latex_escaper.py
 │   ├── section_generators.py
+│   ├── unified_generators.py
 │   └── config_loader.py
 │
-├── templates/                  # LaTeX template files (reference only)
-│   ├── TLCresume.sty
-│   └── _header.tex
+├── cv_unified/                  # Unified LaTeX engine + switchable styles
+│   ├── resume_academic.tex     # Academic wrapper (TLC-like look)
+│   ├── resume_industry.tex     # Industry wrapper (Awesome-inspired look)
+│   ├── cv_core.sty
+│   ├── cv_style_academic.sty
+│   ├── cv_style_industry.sty
+│   ├── TLCresume.sty           # Vendored dependency (academic)
+│   ├── fonts/                  # Vendored fonts (industry)
+│   └── profile.png             # Optional photo (industry)
 │
 ├── build/                      # Generated files (gitignored)
 │   ├── academic/              # Academic variant output
@@ -73,10 +81,14 @@ curriculum_vitae/
 
 ### Template-driven main files
 
-`cv_academic/resume.tex` and `cv_industry/resume.tex` are treated as templates. The build copies them into `build/<variant>/resume.tex` and replaces tokens in the main file and any included files:
+The build copies a variant-specific LaTeX wrapper into `build/<variant>/resume.tex` and replaces tokens in the main file and any included files.
 
-- `{{CONTACT_MACROS}}`: generated from `data/contact.json`
-- `{{FOOTER_CENTER}}`: footer text for Awesome-CV (uses your name)
+Default variants use the unified engine + unified markup:
+
+- Academic: `cv_unified/resume_academic.tex`
+- Industry: `cv_unified/resume_industry.tex`
+
+- `{{FOOTER_CENTER}}`: footer text (uses your name)
 
 Section order comes from the `\input{...}` lines in the template itself. Any `\input` file whose name matches a JSON-backed section is generated into that exact path; other `\input` files are copied as-is from the template directory.
 `config/*.json` section lists are ignored in favor of the template order.
