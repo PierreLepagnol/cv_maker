@@ -38,7 +38,8 @@
             \centering
             {\Huge \skills \name}\\%
             \vspace{.25em}%
-            {\color{highlight} \Large{\role}}%
+            % The role/title can be long; keep it compact in academic header.
+            {\color{highlight} \normalsize{\role}}%
         }%
         \rhead{%
             \ifx\portfoliourl\empty\else
@@ -106,7 +107,32 @@
 
 % Education details (single line or list)
 \newcommand{\cvedudetails}[1]{\textit{#1}\par}
-\newenvironment{cvedudetailslist}{\begin{cvitems}}{\end{cvitems}}
+% Space between items inside education details lists.
+% By default, details lists inherit the current \cvitems spacing (including any
+% per-section override via \cvsectionitemssep). Set \cvsetcvedudetailssep{<len>}
+% to override only education details lists.
+\newlength{\cvedudetailssep}
+\newif\ifcvedudetailssepset
+\cvedudetailssepsetfalse
+\newcommand*{\cvsetcvedudetailssep}[1]{%
+  \setlength{\cvedudetailssep}{#1}%
+  \cvedudetailssepsettrue%
+}
+\newcommand*{\cvresetcvedudetailssep}{\cvedudetailssepsetfalse}
+\newcommand*{\cvsectionedudetailssep}[1]{%
+  \ifblank{#1}{\cvresetcvedudetailssep}{\cvsetcvedudetailssep{#1}}%
+}
+
+\newenvironment{cvedudetailslist}{%
+  \begingroup%
+  \ifcvedudetailssepset
+    \cvsetcvitemssep{\cvedudetailssep}%
+  \fi
+  \begin{cvitems}%
+}{%
+  \end{cvitems}%
+  \endgroup%
+}
 \newcommand{\cvedudetail}[1]{\item {#1}}
 
 %----------------------

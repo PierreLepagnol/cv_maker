@@ -30,7 +30,6 @@ from data_models import (
     Skill,
     SkillsData,
     TextSection,
-    Award,
 )
 
 
@@ -124,20 +123,6 @@ class DegreesRenderer(ListSectionRenderer):
         return True
 
 
-class AwardsRenderer(ListSectionRenderer):
-    key = "awards"
-
-    def render_item(self, b: LatexBuilder, award: Award):
-        title = escape_latex(award.title)
-        org = escape_latex(award.organization)
-        date = str(award.date or "").strip()
-
-        if not any([title, org, date]):
-            return False
-
-        b.command("cvaward", title, org, date)
-        return True
-
 
 class PapersRenderer(ListSectionRenderer):
     key = "papers"
@@ -227,7 +212,7 @@ class ActivitiesRenderer(ListSectionRenderer):
         return True
 
 
-EDUCATION_RENDERER = CompositeRenderer(DegreesRenderer(), AwardsRenderer())
+EDUCATION_RENDERER = CompositeRenderer(DegreesRenderer())
 
 
 def generate_unified_summary_section(summary_data):

@@ -5,7 +5,7 @@
   "template_source": "cv_unified",
   "main_template": "resume_academic.tex",
   "section_entry_seps": {
-    "education": "0.3em",
+    "education": "0.1em",
     "experience": "0.1em",
     "activities": "0.1em",
     "skills": "0.4em",
@@ -18,5 +18,6 @@
     "activities": "0.1em",
     "skills": "0.1em"
   },
+  "education_details_item_sep": "1pt",
   "sections": []
 }

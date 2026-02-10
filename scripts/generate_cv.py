@@ -218,6 +218,11 @@ def build_tokens(config, contact_data):
     if not isinstance(section_item_seps, dict):
         raise ValueError("config.section_item_seps must be an object/dict")
 
+    # Optional bullet spacing override for education *details* lists
+    # (\begin{cvedudetailslist} ...). If unset/blank, details lists inherit the
+    # current \cvitems spacing (i.e. section_item_seps.education).
+    education_details_item_sep = config.get("education_details_item_sep", None)
+
     known_sections = [
         "summary",
         "objective",
@@ -234,6 +239,9 @@ def build_tokens(config, contact_data):
         token_key = f"SECTION_CVITEMSSEP_{section_name.upper()}"
         tokens[token_key] = ""
 
+    # Education details list spacing token (used by unified templates)
+    tokens["SECTION_CVEDUDETAILSSEP_EDUCATION"] = ""
+
     for section_name, length_value in section_entry_seps.items():
         if length_value is None:
             continue
@@ -245,6 +253,9 @@ def build_tokens(config, contact_data):
             continue
         token_key = f"SECTION_CVITEMSSEP_{str(section_name).upper()}"
         tokens[token_key] = str(length_value)
+
+    if education_details_item_sep is not None:
+        tokens["SECTION_CVEDUDETAILSSEP_EDUCATION"] = str(education_details_item_sep)
 
     extra_tokens = config.get("tokens", {})
     for key, value in extra_tokens.items():
