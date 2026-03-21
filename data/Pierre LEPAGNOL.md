@@ -4,8 +4,6 @@
 
 **Distinction:** PhD.
 
----
-
 ## Compétences
 
 - Assimiler et vulgariser des concepts techniques complexes/état de l'art

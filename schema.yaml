@@ -1,0 +1,90 @@
+type: object
+required: [meta, experience, education, skills]
+additionalProperties: false
+properties:
+  meta:
+    type: object
+    required: [name, email]
+    additionalProperties: false
+    properties:
+      name: { type: string, minLength: 1 }
+      title: { type: string }
+      lang: { type: string }
+      email: { type: string, format: email }
+      phone: { type: string }
+      location: { type: string }
+      linkedin: { type: string }
+      github: { type: string }
+      huggingface: { type: string }
+      portfolio: { type: string }
+      show_summary: { type: boolean }
+  summary:
+    type: string
+  experience:
+    type: array
+    items:
+      type: object
+      required: [company, role, start]
+      additionalProperties: false
+      properties:
+        company: { type: string }
+        role: { type: string }
+        start: { type: string, pattern: '^\d{4}-\d{2}$' }
+        end: { type: string, pattern: '^(\d{4}-\d{2}|present)?$' }
+        highlights:
+          type: array
+          items: { type: string }
+  education:
+    type: array
+    items:
+      type: object
+      required: [institution, degree, year]
+      additionalProperties: false
+      properties:
+        institution: { type: string }
+        degree: { type: string }
+        year: { type: [string, integer] }
+        details:
+          type: array
+          items: { type: string }
+  publications:
+    type: array
+    items:
+      type: object
+      required: [title]
+      additionalProperties: false
+      properties:
+        title: { type: string }
+        authors: { type: string }
+        venue: { type: string }
+        year: { type: [string, integer] }
+        url: { type: string }
+  projects:
+    type: array
+    items:
+      type: object
+      required: [title]
+      additionalProperties: false
+      properties:
+        title: { type: string }
+        details: { type: string }
+  skills:
+    type: array
+    items:
+      type: object
+      required: [category, items]
+      additionalProperties: false
+      properties:
+        category: { type: string }
+        items:
+          type: array
+          items: { type: string }
+  languages:
+    type: array
+    items:
+      type: object
+      required: [name, level]
+      additionalProperties: false
+      properties:
+        name: { type: string }
+        level: { type: string }

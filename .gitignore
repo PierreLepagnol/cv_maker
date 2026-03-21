@@ -1,4 +1,5 @@
-# Build artifacts
+# Generated output
+out/
 build/
 *.aux
 *.log
@@ -12,6 +13,7 @@ build/
 __pycache__/
 *.pyc
 *.pyo
+.venv/
 
 # Editor
 .vscode/
@@ -22,4 +24,3 @@ __pycache__/
 # OS
 .DS_Store
 Thumbs.db
-cv_unified/*.bak*

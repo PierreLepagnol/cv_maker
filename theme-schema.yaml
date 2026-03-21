@@ -1,0 +1,127 @@
+type: object
+required: [colors, fonts, sizes, rules]
+additionalProperties: false
+properties:
+  colors:
+    type: object
+    required: [primary, accent, muted, rule]
+    additionalProperties:
+      type: string
+      pattern: '^#[0-9A-Fa-f]{6}$'
+    propertyNames:
+      pattern: '^[a-z][a-z0-9]*$'
+    properties:
+      primary:
+        type: string
+        pattern: '^#[0-9A-Fa-f]{6}$'
+      accent:
+        type: string
+        pattern: '^#[0-9A-Fa-f]{6}$'
+      muted:
+        type: string
+        pattern: '^#[0-9A-Fa-f]{6}$'
+      rule:
+        type: string
+        pattern: '^#[0-9A-Fa-f]{6}$'
+
+  fonts:
+    type: object
+    required: [heading, body, mono]
+    additionalProperties:
+      type: string
+      minLength: 1
+    propertyNames:
+      pattern: '^[a-z][a-z0-9]*$'
+    properties:
+      heading:
+        type: string
+        minLength: 1
+      body:
+        type: string
+        minLength: 1
+      mono:
+        type: string
+        minLength: 1
+
+  sizes:
+    type: object
+    required:
+      - name
+      - name_line
+      - title
+      - title_line
+      - section
+      - section_line
+      - body
+      - body_line
+      - small
+      - small_line
+      - margin_top
+      - margin_bottom
+      - margin_side
+    additionalProperties:
+      type: string
+      minLength: 1
+    propertyNames:
+      pattern: '^[a-z][a-z0-9_]*$'
+    properties:
+      name: { type: string, minLength: 1 }
+      name_line: { type: string, minLength: 1 }
+      title: { type: string, minLength: 1 }
+      title_line: { type: string, minLength: 1 }
+      section: { type: string, minLength: 1 }
+      section_line: { type: string, minLength: 1 }
+      body: { type: string, minLength: 1 }
+      body_line: { type: string, minLength: 1 }
+      small: { type: string, minLength: 1 }
+      small_line: { type: string, minLength: 1 }
+      margin_top: { type: string, minLength: 1 }
+      margin_bottom: { type: string, minLength: 1 }
+      margin_side: { type: string, minLength: 1 }
+
+  rules:
+    type: object
+    required: [section_rule_width, section_spacing, column_gap, column_ratios]
+    additionalProperties:
+      type: string
+      minLength: 1
+    propertyNames:
+      pattern: '^[a-z][a-z0-9_]*$'
+    properties:
+      section_rule_width: { type: string, minLength: 1 }
+      section_spacing: { type: string, minLength: 1 }
+      column_gap: { type: string, minLength: 1 }
+      column_ratios:
+        type: array
+        minItems: 2
+        maxItems: 2
+        items:
+          type: number
+
+  macros:
+    type: object
+    additionalProperties: false
+    properties:
+      cvname: &macro_config
+        type: object
+        required: [default, variants]
+        additionalProperties: false
+        properties:
+          default:
+            type: string
+            minLength: 1
+            pattern: '^[a-z][a-z0-9_]*$'
+          variants:
+            type: object
+            minProperties: 1
+            propertyNames:
+              pattern: '^[a-z][a-z0-9_]*$'
+            additionalProperties:
+              type: object
+      cvtitle: *macro_config
+      cvmeta: *macro_config
+      cvbody: *macro_config
+      cvsmall: *macro_config
+      cventry: *macro_config
+      cvskill: *macro_config
+      cvsectiontitle: *macro_config

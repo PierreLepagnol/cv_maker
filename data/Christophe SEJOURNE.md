@@ -2,8 +2,6 @@
 
 **EXPERT IA**
 
----
-
 ## Compétences
 
 - Vision stratégique en IA

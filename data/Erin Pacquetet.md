@@ -4,8 +4,6 @@
 
 **Distinction:** PhD.
 
----
-
 ## Compétences
 
 - Data Science

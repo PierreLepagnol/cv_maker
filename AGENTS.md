@@ -4,11 +4,9 @@ This document provides essential information for AI coding agents working on thi
 
 ## Project Overview
 
-A data-driven CV generator that separates content (JSON) from presentation (LaTeX), enabling multiple CV variants (academic, industry) from a single data source.
+A data-driven CV generator that separates content (JSON) from presentation (LaTeX), enabling multiple CV variants (academic, industry, sciam) from a single data source.
 
-**Tech Stack**: Python 3.13+, LaTeX (latexmk/xelatex), JSON, uv package manager
-
----
+**Tech Stack**: Python 3.14+, LaTeX (latexmk/xelatex), JSON, uv package manager
 
 ## Build Commands
 
@@ -34,38 +32,25 @@ make clean
 ### Python Environment
 
 ```bash
-# Install dependencies (if any added)
+# Sync dependencies and install the cv_generator package
 uv sync
 
-# Run generation script directly
-uv run scripts/generate_cv.py --config config/academic.json
-```
+# Run generator directly (useful for debugging)
+uv run python -m cv_generator --config config/academic.json
 
-### Manual LaTeX Compilation
-
-```bash
-# Unified template (academic)
+# Manual LaTeX compilation
 cd build/academic && latexmk -xelatex resume.tex
-
-# Unified template (industry)
-cd build/industry && latexmk -xelatex resume.tex
 ```
-
----
 
 ## Testing
 
-**⚠️ No test suite currently exists.**
+**No test suite currently exists.**
 
 When adding tests in the future:
 - Use pytest as the testing framework
 - Place test files in `tests/` directory
 - Name test files as `test_*.py`
-- Run tests with: `uv run pytest`
-- Run single test file: `uv run pytest tests/test_specific.py`
-- Run single test function: `uv run pytest tests/test_file.py::test_function_name`
-
----
+- Run with: `uv run pytest`
 
 ## Code Style Guidelines
 
@@ -78,198 +63,111 @@ When adding tests in the future:
 
 ### Python Style
 
-**Naming Conventions:**
-- `snake_case` for functions, variables, module names
-- `UPPER_CASE` for constants and global dictionaries
-- Descriptive names that reveal intent (e.g., `generate_contact_macros`, `escape_latex`)
-
-**Imports:**
+**Imports (within the package):** Use relative imports.
 ```python
-# Standard library imports first (alphabetical)
-import argparse
-import json
-import re
-import sys
-from pathlib import Path
-
-# Local imports last
-from config_loader import load_config, load_data
-from latex_escaper import escape_latex
+from .escape import escape_latex
+from .models import Contact
+from .rendering import LatexBuilder
 ```
 
-**String Formatting:**
-- Use f-strings for string interpolation: `f"Error: {exc}"`
-- Use raw strings for regex patterns: `r"\input\s*{([^}]+)}"`
-
-**Path Handling:**
-- Always use `pathlib.Path` for file operations
-- Example: `output_dir = Path(config['output_dir'])`
-
-**Error Handling:**
-```python
-# Catch specific exceptions
-try:
-    config = load_config(args.config)
-except (FileNotFoundError, ValueError) as exc:
-    print(f"Error: {exc}")
-    sys.exit(1)
-```
+**Path Handling:** Always use `pathlib.Path`.
 
 **Docstrings:**
 ```python
-def function_name(arg1, arg2):
-    """
-    Brief description of function.
-
-    Args:
-        arg1: Description of arg1
-        arg2: Description of arg2
-
-    Returns:
-        Description of return value
-    """
+def generate_skills(skills_data):
+    """Generate skills as cvskills/cvskill rows."""
 ```
-
-**Type Hints:**
-- Currently NOT used in the codebase
-- If adding them, use standard typing module
-- Example: `def load_config(config_path: str) -> dict:`
 
 ### File Organization
 
 ```
 curriculum_vitae/
-├── data/              # JSON source files (user-editable)
-├── config/            # CV variant configurations
-├── scripts/           # Core generation logic (modular)
-│   ├── config_loader.py          # Configuration loading
-│   ├── latex_escaper.py          # LaTeX character escaping
-│   ├── section_generators.py     # Legacy TLC generators + shared token helpers
-│   └── unified_generators.py     # Unified semantic section generators
-├── cv_unified/         # Unified LaTeX engine + switchable styles
-├── build/             # Generated output (gitignored)
-├── build.py           # Main build script
-└── Makefile           # Build shortcuts
+├── cv/                      # LaTeX class + styles + assets
+│   ├── lepagnolcv.cls       # Core document class
+│   ├── cv_style_academic.sty
+│   ├── cv_style_industry.sty
+│   ├── cv_style_sciam.sty
+│   ├── fonts/               # Vendored fonts (Roboto, FontAwesome)
+│   ├── profile.png          # Optional profile photo
+│   └── huggingface.svg      # Optional HF icon
+├── data/                    # JSON source files (user-editable)
+├── config/                  # CV variant configurations
+│   ├── academic.json
+│   └── industry.json
+├── src/
+│   └── cv_generator/        # Python package
+│       ├── __init__.py
+│       ├── __main__.py      # CLI (python -m cv_generator)
+│       ├── config.py        # Config + data loading
+│       ├── escape.py        # LaTeX character escaping
+│       ├── models.py        # Pydantic data models
+│       ├── rendering.py     # LaTeX builder infrastructure
+│       └── generators.py    # Section generators + registry
+├── templates/               # Main .tex templates per variant
+│   ├── academic.tex
+│   ├── industry.tex
+│   └── sciam.tex
+├── build/                   # Generated output (gitignored)
+├── build.py                 # Main build script
+├── Makefile                 # Build shortcuts
+└── pyproject.toml           # Package config (hatchling)
 ```
 
 ### JSON Data Files
 
-**Formatting:**
-- Use 2-space indentation
-- Use lowercase keys with underscores: `"start_date"`
+- 2-space indentation, lowercase keys with underscores
 - Keep structure flat when possible
-- Required fields should come first
-
-**Example:**
-```json
-{
-  "name": "Full Name",
-  "role": "Job Title",
-  "email": "email@example.com",
-  "optional_field": null
-}
-```
 
 ### LaTeX Escaping Rules
 
 - **Always** use `escape_latex()` for user content
-- **Never** escape URLs (auto-detected by `http://` or `https://`)
-- **Never** escape email addresses (auto-detected)
+- **Never** escape URLs or email addresses
 - Special chars escaped: `& % $ # _ { } ~ ^`
-
----
 
 ## Module Responsibilities
 
-### `scripts/generate_cv.py`
-Main orchestrator: loads config, generates sections, renders templates with token replacement.
-
-### `scripts/config_loader.py`
-Loads JSON config and data files with sensible defaults for missing files.
-
-### `scripts/latex_escaper.py`
-Escapes special LaTeX characters while preserving URLs and emails.
-
-### `scripts/section_generators.py`
-Legacy TLC generators plus shared helpers (e.g. contact values token file).
-
-### `scripts/unified_generators.py`
-Generates semantic LaTeX sections (single markup) used by the unified templates.
-
-### `build.py`
-CLI entry point: coordinates generation + compilation for CV variants.
-
----
+| Module | Responsibility |
+|||
+| `__main__.py` | CLI: loads config, copies style files, renders templates, processes `\input{}` |
+| `config.py` | Loads JSON config and data files with sensible defaults |
+| `escape.py` | Escapes LaTeX special characters while preserving URLs/emails |
+| `models.py` | Pydantic models for all JSON sections |
+| `rendering.py` | `LatexBuilder`, `ListSectionRenderer`, `CompositeRenderer` |
+| `generators.py` | `generate_*` functions + `SECTION_GENERATORS` registry |
 
 ## Common Tasks
 
 ### Adding a New Section
 
-1. Add JSON data file: `data/new_section.json`
-2. Create generator function in `scripts/unified_generators.py`:
-   ```python
-   def generate_new_section(section_data):
-       """Generate new section LaTeX."""
-       # Implementation
-       return latex_string
-   ```
-3. Register in `UNIFIED_SECTION_GENERATORS` in `scripts/generate_cv.py`
-4. Add `\input{resume/new_section}` (or similar) to the unified template wrapper
-5. Update config to enable section
+1. Add `data/new_section.json`
+2. Add a Pydantic model in `models.py`
+3. Write `generate_new_section()` in `generators.py`
+4. Register it in `SECTION_GENERATORS`
+5. Add `\input{resume/new_section}` to the relevant template(s)
 
 ### Adding a New CV Variant
 
-1. Create config file: `config/new_variant.json`
-2. Create template directory: `cv_new_variant/`
-3. Add to `CONFIGS` dict in `build.py`:
-   ```python
-   CONFIGS = {
-       'academic': 'config/academic.json',
-       'industry': 'config/industry.json',
-       'new_variant': 'config/new_variant.json'
-   }
-   ```
-4. Build with: `uv run build.py new_variant`
+1. Create `config/new_variant.json`
+2. Create `templates/new_variant.tex`
+3. Add to `CONFIGS` in `build.py`
+4. Add `make new_variant` to `Makefile`
+5. `uv run build.py new_variant`
 
 ### Debugging LaTeX Errors
 
 ```bash
-# Check generation step
-uv run scripts/generate_cv.py --config config/academic.json
-
-# Check compilation step
-cd build/academic
-latexmk -xelatex resume.tex
-# View logs
-cat resume.log
+uv run python -m cv_generator --config config/academic.json
+cd build/academic && latexmk -xelatex resume.tex
 ```
-
----
 
 ## Git Commit Style
 
-- Use conventional commits format
-- Examples:
-  - `feat: add skills section generator`
-  - `fix: escape special characters in company names`
-  - `docs: update README with new build commands`
-  - `refactor: extract token rendering logic`
-
----
+Use conventional commits: `feat:`, `fix:`, `docs:`, `refactor:`, `chore:`
 
 ## Key Constraints
 
-1. **No external Python dependencies** - Keep using stdlib only
-2. **Preserve LaTeX template compatibility** - Don't break existing CV builds
-3. **Keep JSON simple** - Avoid nested structures when possible
-4. **Auto-escape by default** - All user content must go through `escape_latex()`
-5. **Template-driven** - Section order comes from `\input{}` statements in templates
-
----
-
-## Questions or Issues?
-
-Refer to:
-- `README.md` for user-facing documentation
-- `scripts/` modules for implementation details
-- `config/*.json` for variant examples
+1. **No external Python dependencies** beyond pydantic
+2. **Keep JSON simple** — avoid nested structures when possible
+3. **Auto-escape by default** — all user content goes through `escape_latex()`
+4. **XeLaTeX only** — pdflatex support is dropped
+5. **Template-driven section order** — comes from `\input{}` in `.tex` templates

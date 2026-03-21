@@ -2,8 +2,6 @@
 
 **Senior AI Engineer**
 
----
-
 ## Compétences
 
 - Ingénierie IA Générative

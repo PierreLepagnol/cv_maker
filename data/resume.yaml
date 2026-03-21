@@ -1,0 +1,111 @@
+meta:
+  name: "Pierre Lepagnol, PhD."
+  title: "NLP Researcher"
+  lang: "fr"
+  email: "pierre@lepagnol.net"
+  phone: "+33 6 72 18 80 01"
+  location: "Paris, France"
+  linkedin: "pierre-lepagnol"
+  github: "PierreLepagnol"
+  huggingface: "PierreLepagnol"
+  portfolio: "https://pierre.lepagnol.net"
+  show_summary: false
+
+summary: >
+  Research engineer focused on small language models, few-shot learning,
+  evaluation, and retrieval-augmented systems. I build practical NLP
+  pipelines that remain reliable under production constraints while
+  staying grounded in applied research.
+
+experience:
+  - company: "SCIAM"
+    role: "NLP Researcher and Data Science Consultant"
+    start: "2022-02"
+    end: "present"
+    highlights:
+      - "Designed and fine-tuned small language models for NER on financial documents with production-grade accuracy under 500M parameters."
+      - "Built LLM evaluation pipelines and few-shot benchmarks across classification, NER, sentiment, and intent tasks."
+      - "Prototyped retrieval-augmented generation systems and efficient inference stacks with Hugging Face, vLLM, and APIs."
+      - "Published four international papers across LREC-COLING, Interspeech, TALN, and LREC."
+
+  - company: "Direction Generale de l'Armement (DGA-MI)"
+    role: "Deep Learning Research Engineer - Cybersecurity"
+    start: "2021-04"
+    end: "2021-09"
+    highlights:
+      - "Designed and trained a 150M-parameter model for side-channel attacks, reaching 85 percent accuracy on held-out data."
+      - "Studied adversarial robustness and hardware deployment constraints for embedded systems."
+      - "Deployed optimized inference on Jetson Nano under tight latency and memory limits."
+
+  - company: "Societe Generale"
+    role: "Data Scientist"
+    start: "2017-02"
+    end: "2017-09"
+    highlights:
+      - "Built a customer churn indicator from transaction narratives using unsupervised text clustering."
+      - "Benchmarked imbalanced classification methods and shared practical training material with the data science team."
+
+education:
+  - institution: "LISN - Paris-Saclay University"
+    degree: "PhD in Natural Language Processing"
+    year: "2023-present"
+    details:
+      - "Research on efficient small language models for few-shot learning, retrieval-augmented generation, and evaluation."
+      - "Benchmarked models across text classification, NER, and sentiment analysis."
+
+  - institution: "University of Rennes/INSA/ENSAI"
+    degree: "MSc in Applied Maths and Statistics"
+    year: "2019-2021"
+    details:
+      - "Coursework in optimization, statistical learning, deep learning, stochastic processes, and Bayesian methods."
+
+publications:
+  - title: "Small Language Models are Good Too: An Empirical Study of Zero-Shot Classification"
+    authors: "Pierre Lepagnol, Thomas Gerald, Sahar Ghannay, Christophe Servan, Sophie Rosset"
+    venue: "LREC-COLING"
+    year: 2024
+    url: "https://aclanthology.org/2024.lrec-main.1299.pdf"
+
+  - title: "Leveraging IR to Enhance SLU Prompts in Few-Shot Learning"
+    authors: "Pierre Lepagnol, Sahar Ghannay, Thomas Gerald, Christophe Servan, Sophie Rosset"
+    venue: "Interspeech"
+    year: 2025
+    url: "https://arxiv.org/pdf/2506.03035"
+
+  - title: "Détection des contaminations de LLM par extraction de données : une revue de littérature pratique"
+    venue: "TALN"
+    year: 2025
+    url: "https://inria.hal.science/hal-05330614v1"
+
+  - title: "Format Matters: A Critical Evaluation of Output Formats for Prompting LLMs in SLU and NER"
+    venue: "LREC"
+    year: 2026
+    url: "https://hal.science/hal-05546569"
+
+projects:
+  - title: "Fine-Tuning Tiny Models for On-Device Inference"
+    details: "Optimized sub-500M models for mobile and edge deployment and published checkpoints on Hugging Face."
+  - title: "NER Evaluation Pipeline"
+    details: "Open-sourced reproducible training and evaluation tooling for named entity recognition benchmarks."
+  - title: "RAG Prototyping with LangChain"
+    details: "Built document QA pipelines and evaluated retrieval quality and answer faithfulness."
+  - title: "LLM Reliability and Data Leakage Watch"
+    details: "Studied contamination detection, inversion attacks, LoRA fine-tuning robustness, and applied LLM assistants."
+
+skills:
+  - category: "Programming Langages"
+    items: ["Python", "C"]
+  - category: "Data Science & ML"
+    items: ["PyTorch", "PySpark"]
+  - category: "IA Générative & LLM"
+    items: ["vLLM", "Hugging Face", "LangChain", "PydanticAI", "Unsloth"]
+  - category: "Cloud & DevOps"
+    items: ["AWS", "GCP", "Docker"]
+  - category: "Bases de données"
+    items: ["SQL", "MongoDB", "Hadoop"]
+  - category: "OS & Outils"
+    items: ["Linux", "Git", "SLURM"]
+  - category: "Outils IA"
+    items: ["Claude Code", "Open Code", "Cursor"]
+  - category: "Spoken Language"
+    items: ["French", "English", "a bit of German"]
