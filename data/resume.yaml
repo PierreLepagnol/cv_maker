@@ -49,25 +49,18 @@ education:
   - institution: "LISN - Paris-Saclay University"
     degree: "PhD in Natural Language Processing"
     year: "2023-present"
-    details:
-      - "Research on efficient small language models for few-shot learning, retrieval-augmented generation, and evaluation."
-      - "Benchmarked models across text classification, NER, and sentiment analysis."
 
   - institution: "University of Rennes/INSA/ENSAI"
     degree: "MSc in Applied Maths and Statistics"
     year: "2019-2021"
-    details:
-      - "Coursework in optimization, statistical learning, deep learning, stochastic processes, and Bayesian methods."
 
 publications:
   - title: "Small Language Models are Good Too: An Empirical Study of Zero-Shot Classification"
-    authors: "Pierre Lepagnol, Thomas Gerald, Sahar Ghannay, Christophe Servan, Sophie Rosset"
     venue: "LREC-COLING"
     year: 2024
     url: "https://aclanthology.org/2024.lrec-main.1299.pdf"
 
   - title: "Leveraging IR to Enhance SLU Prompts in Few-Shot Learning"
-    authors: "Pierre Lepagnol, Sahar Ghannay, Thomas Gerald, Christophe Servan, Sophie Rosset"
     venue: "Interspeech"
     year: 2025
     url: "https://arxiv.org/pdf/2506.03035"
@@ -107,5 +100,11 @@ skills:
     items: ["Linux", "Git", "SLURM"]
   - category: "Outils IA"
     items: ["Claude Code", "Open Code", "Cursor"]
-  - category: "Spoken Language"
-    items: ["French", "English", "a bit of German"]
+
+languages:
+  - name: "French"
+    level: "Native"
+  - name: "English"
+    level: "Professional"
+  - name: "German"
+    level: "Basic"

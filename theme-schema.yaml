@@ -26,7 +26,7 @@ properties:
 
   fonts:
     type: object
-    required: [heading, body, mono]
+    required: [heading, body]
     additionalProperties:
       type: string
       minLength: 1
@@ -37,9 +37,6 @@ properties:
         type: string
         minLength: 1
       body:
-        type: string
-        minLength: 1
-      mono:
         type: string
         minLength: 1
 

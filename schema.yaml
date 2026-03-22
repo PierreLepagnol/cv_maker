@@ -55,7 +55,6 @@ properties:
       additionalProperties: false
       properties:
         title: { type: string }
-        authors: { type: string }
         venue: { type: string }
         year: { type: [string, integer] }
         url: { type: string }

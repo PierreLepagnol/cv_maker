@@ -1,4 +1,4 @@
-\documentclass[12pt,a4paper]{resume}
+\documentclass[11pt,a4paper]{resume}
 
 {% macro render_summary(text) %}
 \cvbody[lead]{ {{ text | latex_escape }} }
@@ -7,13 +7,13 @@
 {% macro render_experience(items) %}
 \cvsectiontitle[{{ 'sidebar' if layout == 'twocol' else 'standard' }}]{Experience}
 {% for exp in items %}
-{% if not loop.first %}\vspace{ {{- theme.rules.entry_spacing -}} }{% endif %}
-\par\cventry
+{% if not loop.first %}\cvblocksep{ {{- theme.rules.experience_spacing -}} }{% endif %}
+\par\cventry[experience]
   { {{ exp.role | latex_escape }} }
   { {{ exp.start | format_date }}-{{ exp.end | default('present') | format_date }} }
   { {{ exp.company | latex_escape }} }
   {}
-{% for h in exp.highlights %}
+{% for h in exp.highlights | default([]) %}
 \cvsmall[detail]{$\bullet$ {{ h | latex_escape }}}\\
 {% endfor %}
 {% endfor %}
@@ -22,8 +22,8 @@
 {% macro render_education(items) %}
 \cvsectiontitle[{{ 'sidebar' if layout == 'twocol' else 'standard' }}]{Education}
 {% for edu in items %}
-{% if not loop.first %}\vspace{ {{- theme.rules.entry_spacing -}} }{% endif %}
-\par\cventry
+{% if not loop.first %}\cvblocksep{ {{- theme.rules.education_spacing -}} }{% endif %}
+\par\cventry[education]
   { {{ edu.degree | latex_escape }} }
   { {{ edu.year | string | latex_escape }} }
   { {{ edu.institution | latex_escape }} }
@@ -37,8 +37,9 @@
 {% macro render_publications(items) %}
 \cvsectiontitle[{{ 'sidebar' if layout == 'twocol' else 'standard' }}]{Publications}
 {% for paper in items %}
-\par\cventry[inline]
-  { {% if paper.url %}\href{ {{ paper.url }} }{ {{ paper.title | latex_escape }} }{% else %}{{ paper.title | latex_escape }}{% endif %} }
+{% if not loop.first %}\cvblocksep{ {{- theme.rules.publication_spacing -}} }{% endif %}
+\par\cventry[publication]
+  { {% if paper.url | default('') %}\href{ {{ paper.url }} }{ {{ paper.title | latex_escape }} }{% else %}{{ paper.title | latex_escape }}{% endif %} }
   { {{ paper.year | string | latex_escape }} }
   { {{ paper.venue | default('') | latex_escape }} }
   {}
@@ -48,7 +49,8 @@
 {% macro render_projects(items) %}
 \cvsectiontitle[{{ 'sidebar' if layout == 'twocol' else 'standard' }}]{Projects}
 {% for project in items %}
-\par\cventry[stacked]
+{% if not loop.first %}\cvblocksep{ {{- theme.rules.project_spacing -}} }{% endif %}
+\par\cventry[project]
   { {{ project.title | latex_escape }} }
   {}
   { {{ project.details | default('') | latex_escape }} }
@@ -74,12 +76,29 @@
 
 \begin{document}
 
+{% set contact_parts = [] %}
+{% if meta.email | default('') %}{% set contact_parts = contact_parts + [meta.email] %}{% endif %}
+{% if meta.phone | default('') %}{% set contact_parts = contact_parts + [meta.phone | latex_escape] %}{% endif %}
+{% if meta.location | default('') %}{% set contact_parts = contact_parts + [meta.location | latex_escape] %}{% endif %}
+{% set link_parts = [] %}
+{% if meta.linkedin | default('') %}{% set link_parts = link_parts + ['\\raisebox{-0.1em}{\\includegraphics[height=0.8em]{linkedin}} linkedin.com/in/' ~ (meta.linkedin | latex_escape)] %}{% endif %}
+{% if meta.github | default('') %}{% set link_parts = link_parts + ['\\raisebox{-0.1em}{\\includegraphics[height=0.8em]{github}} github.com/' ~ (meta.github | latex_escape)] %}{% endif %}
+{% if meta.huggingface | default('') %}{% set link_parts = link_parts + ['\\raisebox{-0.1em}{\\includegraphics[height=0.8em]{huggingface}} hf.co/' ~ (meta.huggingface | latex_escape)] %}{% endif %}
+
 \begin{minipage}[c]{0.82\textwidth}
-\cvname[hero]{ {{ meta.name | latex_escape }} }\\[4pt]
-\cvtitle[headline]{ {{ meta.title | latex_escape }} }\\[4pt]
-\cvmeta{ {{ meta.email }} ~|~ {{ meta.phone | latex_escape }} ~|~ {{ meta.location | latex_escape }} }\\
-\cvmeta[links]{ \raisebox{-0.1em}{\includegraphics[height=0.8em]{linkedin}} linkedin.com/in/{{ meta.linkedin | latex_escape }} ~|~ \raisebox{-0.1em}{\includegraphics[height=0.8em]{github}} github.com/{{ meta.github | latex_escape }} ~|~ \raisebox{-0.1em}{\includegraphics[height=0.8em]{huggingface}} hf.co/{{ meta.huggingface | latex_escape }} }\\
+\cvname[hero]{ {{ meta.name | latex_escape }} }\\[{{ theme.rules.header_item_gap }}]
+{% if meta.title | default('') %}
+\cvtitle[headline]{ {{ meta.title | latex_escape }} }\\[{{ theme.rules.header_item_gap }}]
+{% endif %}
+{% if contact_parts %}
+\cvmeta{ {{ contact_parts | join(' ~|~ ') }} }\\
+{% endif %}
+{% if link_parts %}
+\cvmeta[links]{ {{ link_parts | join(' ~|~ ') }} }\\
+{% endif %}
+{% if meta.portfolio | default('') %}
 \cvmeta[links]{ {{ meta.portfolio | latex_escape }} }
+{% endif %}
 \end{minipage}%
 \hfill
 \begin{minipage}[c]{0.15\textwidth}
@@ -87,10 +106,10 @@
 \includegraphics[width=\linewidth,clip,trim=0 0 0 0]{profile.png}
 \end{minipage}
 
-\vspace{12pt}
+\vspace{ {{- theme.rules.header_bottom_gap -}} }
 
 {% if layout == 'single' %}
-{% if summary and meta.show_summary != false %}{{- render_summary(summary) }}{% endif %}
+{% if summary | default('') and meta.show_summary | default(true) != false %}{{- render_summary(summary) }}{% endif %}
 {{- render_experience(experience) }}
 {{- render_education(education) }}
 {{- render_publications(publications | default([])) }}
@@ -103,7 +122,7 @@
 {{- render_languages(languages | default([])) }}
 {{- render_education(education) }}
 \switchcolumn
-{% if summary and meta.show_summary != false %}{{- render_summary(summary) }}{% endif %}
+{% if summary | default('') and meta.show_summary | default(true) != false %}{{- render_summary(summary) }}{% endif %}
 {{- render_experience(experience) }}
 {{- render_publications(publications | default([])) }}
 {{- render_projects(projects | default([])) }}
@@ -114,7 +133,7 @@
 {{- render_languages(languages | default([])) }}
 {{- render_education(education) }}
 \switchcolumn
-{% if summary and meta.show_summary != false %}{{- render_summary(summary) }}{% endif %}
+{% if summary | default('') and meta.show_summary | default(true) != false %}{{- render_summary(summary) }}{% endif %}
 {{- render_experience(experience) }}
 \end{paracol}
 {{- render_publications(publications | default([])) }}

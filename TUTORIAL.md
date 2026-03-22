@@ -37,6 +37,7 @@ You can also use preset aliases:
 ```bash
 uv run build.py academic
 uv run build.py industry
+uv run build.py industry-footer
 uv run build.py sciam
 ```
 
@@ -282,7 +283,7 @@ This macro is for two-line entries such as jobs, education items, publications, 
 
 Supported fields:
 
-- `layout`: `standard` or `stacked`
+- `layout`: `standard`, `stacked`, or `inline`
 - `font`
 - `size`
 - `line`
@@ -303,6 +304,7 @@ Supported fields:
 - `meta_color`
 - `line_gap`
 - `bottom_gap`
+- `bottom_mode`: `linebreak` or `paragraph`
 
 Example:
 
@@ -320,7 +322,7 @@ macros:
         bottom_gap: entry_stack_bottom_gap
 ```
 
-Use `stacked` when a narrow column needs a more vertical layout.
+Use `stacked` when a narrow column needs a more vertical layout. Use `inline` for compact one-line entries (e.g., publications). Use `bottom_mode: paragraph` to suppress the trailing newline and save vertical space.
 
 ### `cvskill`
 
@@ -513,6 +515,8 @@ It does two things:
 - defines Jinja macros like `render_experience(items)`
 - decides where each section goes depending on `layout`
 
+Three layouts are supported: `single` (one column, all sections stacked), `twocol` (two-column with sidebar left, main content right), and `twocol-footer` (same as `twocol` but publications and projects are placed below the columns as full-width content).
+
 Example from the current template:
 
 ```jinja
@@ -520,14 +524,32 @@ Example from the current template:
 {{ render_summary(summary) }}
 {{ render_experience(experience) }}
 {{ render_education(education) }}
-{% elif layout == 'twocol' %}
-\begin{paracol}{2}
-{{ render_summary(summary) }}
-{{ render_experience(experience) }}
-\switchcolumn
+{{ render_publications(publications | default([])) }}
+{{ render_projects(projects | default([])) }}
 {{ render_skills(skills) }}
 {{ render_languages(languages | default([])) }}
+{% elif layout == 'twocol' %}
+\begin{paracol}{2}
+{{ render_skills(skills) }}
+{{ render_languages(languages | default([])) }}
+{{ render_education(education) }}
+\switchcolumn
+{{ render_summary(summary) }}
+{{ render_experience(experience) }}
+{{ render_publications(publications | default([])) }}
+{{ render_projects(projects | default([])) }}
 \end{paracol}
+{% elif layout == 'twocol-footer' %}
+\begin{paracol}{2}
+{{ render_skills(skills) }}
+{{ render_languages(languages | default([])) }}
+{{ render_education(education) }}
+\switchcolumn
+{{ render_summary(summary) }}
+{{ render_experience(experience) }}
+\end{paracol}
+{{ render_publications(publications | default([])) }}
+{{ render_projects(projects | default([])) }}
 {% endif %}
 ```
 
@@ -548,8 +570,8 @@ The current `templates/resume.tex.j2` already demonstrates good variant usage.
 ```tex
 \cvname[hero]{ ... }
 \cvtitle[headline]{ ... }
-\cvmeta{ ... }
-\cvmeta[links]{ ... }
+\cvmeta{ email | phone | location }
+\cvmeta[links]{ linkedin | github | huggingface }
 ```
 
 ### Summary variant
@@ -558,28 +580,34 @@ The current `templates/resume.tex.j2` already demonstrates good variant usage.
 \cvbody[lead]{ ... }
 ```
 
-### Detail text variant
+### Detail text variant (bullet points under entries)
 
 ```tex
-\cvsmall[detail]{ ... }
+\cvsmall[detail]{$\bullet$ ... }\\
 ```
 
-### Narrow-column skill variant
+### Entry variants
 
 ```tex
-\cvskill[compact]{ ... }{ ... }
+\cventry{ role }{ dates }{ company }{}               % standard (experience)
+\cventry[compact]{ degree }{ year }{ institution }{}  % compact (education)
+\cventry[inline_compact]{ title }{ year }{ venue }{}  % inline compact (publications)
+\cventry[stacked]{ title }{}{ details }{}             % stacked (projects)
 ```
 
-### Narrow-column section-title variant
+### Skill variants
 
 ```tex
-\cvsectiontitle[sidebar]{Skills}
+\cvskill[compact]{ category }{ items }   % stacked layout (twocol sidebar)
+\cvskill[standard]{ language }{ level }  % inline layout
 ```
 
-### Stacked entry variant
+### Section-title variant
 
-```tex
-\cventry[stacked]{ ... }{ ... }{ ... }{ ... }
+The template picks the variant automatically based on layout:
+
+```jinja
+\cvsectiontitle[{{ 'sidebar' if layout == 'twocol' else 'standard' }}]{Skills}
 ```
 
 ## 14. Create a Brand New Theme
@@ -689,7 +717,7 @@ then `brand_blue` must exist in `colors`.
 
 These are the supported layout values:
 
-- `cventry`: `standard`, `stacked`
+- `cventry`: `standard`, `stacked`, `inline`
 - `cvskill`: `inline`, `stacked`
 - `cvsectiontitle`: `standard`, `sidebar`
 
@@ -764,22 +792,28 @@ sizes:
   hero_name_line: "31pt"
   title: "12pt"
   title_line: "15pt"
+  headline_title: "11pt"
+  headline_title_line: "14pt"
   section: "12pt"
   section_line: "14pt"
   sidebar_section: "10pt"
   sidebar_section_line: "12pt"
   body: "10pt"
   body_line: "13pt"
+  lead: "10.5pt"
+  lead_line: "14pt"
   small: "9pt"
   small_line: "11pt"
+  meta_links: "9.5pt"
+  meta_links_line: "12pt"
   margin_top: "1.5cm"
   margin_bottom: "1.5cm"
   margin_side: "1.8cm"
 
 rules:
   section_rule_width: "0.4pt"
-  section_spacing: "8pt"
-  column_gap: "18pt"
+  section_spacing: "10pt"
+  column_gap: "30pt"
   column_ratios: [0.36, 0.64]
   section_sidebar_gap_before: "4pt"
   section_sidebar_gap_after: "6pt"
@@ -792,6 +826,25 @@ macros:
       hero:
         size: hero_name
         line: hero_name_line
+        color: accent
+
+  cvtitle:
+    default: standard
+    variants:
+      standard: {}
+      headline:
+        size: headline_title
+        line: headline_title_line
+        color: primary
+        weight: bold
+
+  cvmeta:
+    default: standard
+    variants:
+      standard: {}
+      links:
+        size: meta_links
+        line: meta_links_line
         color: accent
 
   cvsectiontitle:
@@ -814,12 +867,13 @@ macros:
 
 ```jinja
 \cvname[hero]{ {{ meta.name | latex_escape }} }\\[4pt]
-\cvtitle{ {{ meta.title | latex_escape }} }\\[4pt]
-\cvmeta{ {{ meta.email }} ~|~ {{ meta.phone | latex_escape }} }\\
+\cvtitle[headline]{ {{ meta.title | latex_escape }} }\\[4pt]
+\cvmeta{ {{ meta.email }} ~|~ {{ meta.phone | latex_escape }} ~|~ {{ meta.location | latex_escape }} }\\
+\cvmeta[links]{ linkedin.com/in/{{ meta.linkedin | latex_escape }} ~|~ github.com/{{ meta.github | latex_escape }} }\\
 
-\cvsectiontitle[sidebar]{Skills}
+\cvsectiontitle[{{ 'sidebar' if layout == 'twocol' else 'standard' }}]{Skills}
 {% for group in skills %}
-\cvskill[compact]{ {{ group.category | latex_escape }} }{ {{ group['items'] | join(', ') | latex_escape }} }
+\cvskill[{{ 'compact' if layout == 'twocol' else 'standard' }}]{ {{ group.category | latex_escape }} }{ {{ group['items'] | join(', ') | latex_escape }} }
 {% endfor %}
 ```
 

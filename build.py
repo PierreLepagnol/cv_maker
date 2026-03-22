@@ -20,6 +20,7 @@ DATA_PATH = ROOT / "data" / "resume.yaml"
 SCHEMA_PATH = ROOT / "schema.yaml"
 THEME_SCHEMA_PATH = ROOT / "theme-schema.yaml"
 THEMES_DIR = ROOT / "themes"
+BASE_THEME_PATH = THEMES_DIR / "_base.yaml"
 TEMPLATE_PATH = ROOT / "templates" / "resume.tex.j2"
 OUTPUT_DIR = ROOT / "out"
 CV_DIR = ROOT / "cv"
@@ -118,8 +119,9 @@ BASE_MACRO_VARIANTS = {
         "line2_right_shape": "normal",
         "line2_right_color": "muted",
         "meta_color": "muted",
-        "line_gap": "0pt",
-        "bottom_gap": "2pt",
+        "line_gap": "entry_line_gap",
+        "bottom_gap": "entry_bottom_gap",
+        "bottom_mode": "linebreak",
     },
     "cvskill": {
         "layout": "inline",
@@ -145,7 +147,7 @@ BASE_MACRO_VARIANTS = {
         "rule_color": "rule",
         "rule_width": "section_rule_width",
         "rule_length": r"\linewidth",
-        "rule_gap_before": "2pt",
+        "rule_gap_before": "section_rule_gap",
         "rule_gap_after": "section_spacing",
     },
 }
@@ -166,6 +168,7 @@ FIELD_ENUMS = {
     "line2_right_shape": _SHAPE_VALUES,
     "case": {"normal", "uppercase", "smallcaps"},
     "layout": {"standard", "stacked", "inline", "sidebar"},
+    "bottom_mode": {"linebreak", "paragraph"},
 }
 COLOR_REF_FIELDS = {
     "color",
@@ -239,6 +242,16 @@ def latex_column_ratio(theme: dict) -> str:
 def merge_dicts(base: dict, override: dict) -> dict:
     merged = base.copy()
     merged.update(override)
+    return merged
+
+
+def merge_nested_dicts(base: dict, override: dict) -> dict:
+    merged = copy.deepcopy(base)
+    for key, value in override.items():
+        if isinstance(merged.get(key), dict) and isinstance(value, dict):
+            merged[key] = merge_nested_dicts(merged[key], value)
+        else:
+            merged[key] = copy.deepcopy(value)
     return merged
 
 
@@ -324,7 +337,11 @@ def validate_theme_semantics(theme: dict) -> None:
         for variant_name, variant in variants.items():
             validate_variant_fields(theme, macro_name, variant_name, variant)
             layout = variant.get("layout")
-            if macro_name == "cventry" and layout not in {"standard", "stacked", "inline"}:
+            if macro_name == "cventry" and layout not in {
+                "standard",
+                "stacked",
+                "inline",
+            }:
                 raise ValueError(
                     f"Unsupported cventry layout {layout!r} for {variant_name}"
                 )
@@ -339,10 +356,12 @@ def validate_theme_semantics(theme: dict) -> None:
 
 
 def load_theme(path: Path) -> dict:
-    theme = load_yaml(path)
+    if not BASE_THEME_PATH.exists():
+        raise FileNotFoundError(f"Missing base theme file: {BASE_THEME_PATH}")
+    theme = merge_nested_dicts(load_yaml(BASE_THEME_PATH), load_yaml(path))
     theme_schema = load_yaml(THEME_SCHEMA_PATH)
-    validate(instance=theme, schema=theme_schema)
     normalized = normalize_theme(theme)
+    validate(instance=normalized, schema=theme_schema)
     validate_theme_semantics(normalized)
     return normalized
 
@@ -487,6 +506,9 @@ def build_entry_variant_body(theme: dict, variant: dict) -> str:
     )
     line_gap = resolve_theme_value(theme, variant["line_gap"], ("rules", "sizes"))
     bottom_gap = resolve_theme_value(theme, variant["bottom_gap"], ("rules", "sizes"))
+    assert line_gap is not None
+    assert bottom_gap is not None
+    entry_tail = build_entry_tail(bottom_gap, variant["bottom_mode"])
 
     if variant["layout"] == "stacked":
         return rf"""
@@ -494,8 +516,8 @@ def build_entry_variant_body(theme: dict, variant: dict) -> str:
   {line1_left}\\[{line_gap}]
   \ifstrempty{{#3}}{{}}{{{line2_left}\\[{line_gap}]}}
   \ifstrempty{{#2}}{{
-    \ifstrempty{{#4}}{{}}{{{build_styled_text(theme, "#4", font=variant["font"], size=variant["meta_size"], line=variant["meta_line"], color=variant["meta_color"], weight="normal", shape="normal", case="normal")}\\[{bottom_gap}]}}
-  }}{{{meta_line}\\[{bottom_gap}]}}
+    \ifstrempty{{#4}}{{}}{{{build_styled_text(theme, "#4", font=variant["font"], size=variant["meta_size"], line=variant["meta_line"], color=variant["meta_color"], weight="normal", shape="normal", case="normal")}{entry_tail}}}
+  }}{{{meta_line}{entry_tail}}}
 }}
 """.strip()
 
@@ -505,7 +527,7 @@ def build_entry_variant_body(theme: dict, variant: dict) -> str:
   {line1_left}
   \hfill
   \ifstrempty{{#3}}{{}}{{{line2_left}\ifstrempty{{#2}}{{}}{{,\ }}}}{line1_right}
-  \\[{bottom_gap}]
+  {entry_tail}
 }}
 """.strip()
 
@@ -520,9 +542,15 @@ def build_entry_variant_body(theme: dict, variant: dict) -> str:
     {line2_left}
     \ifstrempty{{#4}}{{}}{{ \hfill {line2_right}}}
   }}
-  \\[{bottom_gap}]
+  {entry_tail}
 }}
 """.strip()
+
+
+def build_entry_tail(bottom_gap: str, bottom_mode: str) -> str:
+    if bottom_mode == "paragraph":
+        return rf"\par\vspace*{{{bottom_gap}}}"
+    return rf"\\[{bottom_gap}]"
 
 
 def build_skill_variant_body(theme: dict, variant: dict) -> str:
@@ -761,6 +789,7 @@ def generate_class(theme: dict) -> str:
     lines.extend(generate_macro_variant_definitions(theme))
     lines.append("")
     lines.extend(generate_macro_dispatchers(theme))
+    lines.append(r"\newcommand{\cvblocksep}[1]{\par\addvspace{#1}}")
     lines.append(rf"\setlength{{\columnsep}}{{{rules['column_gap']}}}")
     ratio_block = latex_column_ratio(theme)
     if ratio_block:
