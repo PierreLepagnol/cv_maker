@@ -1,0 +1,99 @@
+meta:
+  name: "Pierre Lepagnol, PhD."
+  title: "Chercheur en NLP"
+  lang: "fr"
+  email: "pierre@lepagnol.net"
+  phone: "+33 6 72 18 80 01"
+  location: "Paris, France"
+  linkedin: "pierre-lepagnol"
+  github: "PierreLepagnol"
+  huggingface: "PierreLepagnol"
+  portfolio: "https://pierre.lepagnol.net"
+  show_summary: false
+
+summary: >
+  Ingénieur de recherche spécialisé dans les petits modèles de langage, l'apprentissage
+  few-shot, l'évaluation et les systèmes de génération augmentée par récupération.
+  Je construis des pipelines NLP pratiques, fiables en conditions de production,
+  tout en restant ancré dans la recherche appliquée.
+
+experience:
+  - company: "SCIAM"
+    role: "Chercheur NLP et Consultant Data Science"
+    start: "2022-02"
+    end: "présent"
+    highlights:
+      - "Conception et fine-tuning de petits modèles de langage pour la NER sur des documents financiers, avec une précision de niveau production en dessous de 500M de paramètres."
+      - "Construction de pipelines d'évaluation de LLM et de benchmarks few-shot sur des tâches de classification, NER, sentiment et intention."
+      - "Prototypage de systèmes de génération augmentée par récupération et de stacks d'inférence efficaces avec Hugging Face, vLLM et des APIs."
+      - "Publication de quatre articles internationaux dans LREC-COLING, Interspeech, TALN et LREC."
+
+  - company: "Direction Générale de l'Armement (DGA-MI)"
+    role: "Ingénieur Recherche Deep Learning - Cybersécurité"
+    start: "2021-04"
+    end: "2021-09"
+    highlights:
+      - "Conception et entraînement d'un modèle à 150M de paramètres pour les attaques par canal auxiliaire, atteignant 85% de précision sur les données de test."
+      - "Étude de la robustesse adversariale et des contraintes de déploiement matériel pour les systèmes embarqués."
+      - "Déploiement d'une inférence optimisée sur Jetson Nano sous contraintes strictes de latence et de mémoire."
+
+  - company: "Société Générale"
+    role: "Data Scientist"
+    start: "2017-02"
+    end: "2017-09"
+    highlights:
+      - "Construction d'un indicateur d'attrition client à partir de libellés de transactions par clustering de texte non supervisé."
+      - "Comparaison de méthodes de classification sur données déséquilibrées et partage de supports de formation pratiques avec l'équipe data science."
+
+education:
+  - institution: "LISN - Université Paris-Saclay"
+    degree: "Doctorat en Traitement Automatique des Langues"
+    year: "2023-présent"
+
+  - institution: "Université de Rennes / INSA / ENSAI"
+    degree: "Master en Mathématiques Appliquées et Statistiques"
+    year: "2019-2021"
+
+publications:
+  - title: "Small Language Models are Good Too: An Empirical Study of Zero-Shot Classification"
+    venue: "LREC-COLING"
+    year: 2024
+    url: "https://aclanthology.org/2024.lrec-main.1299.pdf"
+
+  - title: "Leveraging IR to Enhance SLU Prompts in Few-Shot Learning"
+    venue: "Interspeech"
+    year: 2025
+    url: "https://arxiv.org/pdf/2506.03035"
+
+  - title: "Détection des contaminations de LLM par extraction de données : une revue de littérature pratique"
+    venue: "TALN"
+    year: 2025
+    url: "https://inria.hal.science/hal-05330614v1"
+
+  - title: "Format Matters: A Critical Evaluation of Output Formats for Prompting LLMs in SLU and NER"
+    venue: "LREC"
+    year: 2026
+    url: "https://hal.science/hal-05546569"
+
+projects:
+  - title: "Fine-Tuning de Petits Modèles pour l'Inférence Embarquée"
+    details: "Optimisation de modèles de moins de 500M paramètres pour le déploiement mobile et edge, avec publication des checkpoints sur Hugging Face."
+  - title: "Pipeline d'Évaluation NER"
+    details: "Publication en open-source d'outils reproductibles d'entraînement et d'évaluation pour les benchmarks de reconnaissance d'entités nommées."
+  - title: "Prototypage RAG avec LangChain"
+    details: "Construction de pipelines de question-réponse sur documents et évaluation de la qualité de récupération et de la fidélité des réponses."
+
+skills:
+  - category: "Langages & Framework"
+    items: ["Python", "C", "PyTorch", "PySpark"]
+  # - category: " Data Science"
+  - category: "IA Générative & LLM"
+    items: ["vLLM", "Hugging Face Libs", "Unsloth"]
+  - category: "Cloud & DevOps"
+    items: ["AWS", "GCP", "Docker"]
+  # - category: "Bases de données"
+  #   items: ["SQL", "MongoDB"]
+  - category: "OS & Outils"
+    items: ["Linux", "Git", "SLURM", "Open Code"]
+  - category: "Langues parlées"
+    items: ["Français", "Anglais", "Allemand"]

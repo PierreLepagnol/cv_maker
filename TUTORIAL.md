@@ -1,86 +1,69 @@
-# Full Tutorial: Use and Customize the CV Builder
+# CV Builder Tutorial
 
-This tutorial explains how to:
+This tutorial covers the whole system with the simplified theme model:
 
-- build the CV
+- build a CV
 - switch theme and layout
-- customize colors, sizes, spacing, and fonts
-- add named variants for `\cv*` macros
-- use those variants from the Jinja/LaTeX template
-- create a brand new theme safely
-
-The system is built around three layers:
-
-1. `data/resume.yaml`: your content
-2. `themes/*.yaml`: visual tokens and macro variants
-3. `templates/resume.tex.j2`: layout and macro usage
-
-`build.py` validates the data and theme, generates `resume.cls`, renders `resume.tex`, and compiles `resume.pdf`.
+- tune colors, typography, spacing, and column widths
+- add variants, styles, and layouts for `\cv*` macros
+- keep layout logic in the template
 
 ## 1. Quick Start
 
-Install dependencies and build one CV:
+Install dependencies and build one preset CV:
 
 ```bash
 uv sync
+uv run build.py industry
+```
+
+Or build with an explicit theme and layout:
+
+```bash
 uv run build.py --theme minimal --layout twocol
 ```
 
-The output goes to `out/` by default:
-
-- `out/resume.cls`
-- `out/resume.tex`
-- `out/resume.pdf`
-
-You can also use preset aliases:
-
-```bash
-uv run build.py academic
-uv run build.py industry
-uv run build.py industry-footer
-uv run build.py sciam
-```
-
-You can write the result to another directory:
+Write output somewhere else:
 
 ```bash
 uv run build.py --theme bold --layout single --output-dir .tmp/bold-single
 ```
 
-## 2. Project Structure
+Preset aliases available in `build.py`:
 
-The main files are:
+- `academic`
+- `industry`
+- `industry-footer`
+- `sciam`
 
-- `build.py`: loads YAML, validates it, generates LaTeX, compiles PDF
-- `data/resume.yaml`: resume content
-- `schema.yaml`: schema for the resume data
-- `theme-schema.yaml`: schema for theme files
-- `themes/minimal.yaml`: example theme with named variants
-- `themes/bold.yaml`: alternative theme
-- `themes/academic.yaml`: alternative theme
-- `templates/resume.tex.j2`: template that calls `\cv*` macros
-- `cv/fonts/`: vendored fonts copied into the output directory
+Generated files go to `out/` by default:
 
-## 3. The Mental Model
+- `out/resume.cls`
+- `out/resume.tex`
+- `out/resume.pdf`
 
-The important idea is this:
+## 2. Mental Model
 
-- content is data
-- appearance is theme data
-- structure is controlled by the template
-- macro names stay stable
-- variants let one macro render in different styles without changing its semantic meaning
+Keep the responsibilities separate:
 
-Example:
+1. `data/resume.yaml` stores content
+2. `themes/*.yaml` stores visual tokens plus macro styles and layouts
+3. `templates/resume.tex.j2` decides section order and layout
 
-```tex
-\cvskill{Frameworks}{PyTorch, Hugging Face, vLLM}
-\cvskill[compact]{Frameworks}{PyTorch, Hugging Face, vLLM}
-```
+The main simplification rule is:
 
-Both lines mean "render a skill row". The only difference is which named visual variant gets used.
+- text variants describe rendering
+- structured macros split style from layout
+- theme rules store reusable spacing values
+- the template decides where sections go
 
-## 4. How Building Works
+If you want to change wording, edit `data/resume.yaml`.
+
+If you want to change look and feel, edit `themes/*.yaml`.
+
+If you want to move sections around, edit `templates/resume.tex.j2`.
+
+## 3. Build Flow
 
 When you run:
 
@@ -88,43 +71,35 @@ When you run:
 uv run build.py --theme minimal --layout twocol
 ```
 
-the builder does this:
+the builder:
 
 1. loads `data/resume.yaml`
 2. validates it with `schema.yaml`
-3. loads `themes/minimal.yaml`
-4. validates it with `theme-schema.yaml`
-5. normalizes missing macro configs into default `standard` variants
-6. generates `resume.cls` with all variant-aware `\cv*` commands
+3. loads `themes/_base.yaml` and the chosen theme override
+4. validates the merged theme with `theme-schema.yaml`
+5. normalizes text variants plus structured macro style/layout defaults
+6. generates `resume.cls`
 7. renders `templates/resume.tex.j2` into `resume.tex`
 8. compiles with `latexmk -lualatex`
 
-## 5. Resume Content Basics
+## 4. Project Structure
 
-Your resume content lives in `data/resume.yaml`.
+Core files:
 
-Typical sections include:
+- `build.py`: loads YAML, validates, generates LaTeX, compiles PDF
+- `data/resume.yaml`: CV content
+- `schema.yaml`: resume schema
+- `theme-schema.yaml`: theme schema
+- `themes/_base.yaml`: shared visual defaults
+- `themes/minimal.yaml`: theme colors for the minimal preset
+- `themes/academic.yaml`: theme colors for the academic preset
+- `themes/bold.yaml`: theme colors for the sciam preset
+- `templates/resume.tex.j2`: section layout and macro usage
+- `cv/fonts/`: vendored fonts copied into the build output
 
-- `meta`
-- `summary`
-- `experience`
-- `education`
-- `publications`
-- `projects`
-- `skills`
-- `languages`
+## 5. Theme Anatomy
 
-This file contains only content. Do not put style variants in it.
-
-Good rule:
-
-- if you want to change wording, edit `data/resume.yaml`
-- if you want to change look and feel, edit `themes/*.yaml`
-- if you want to change ordering/layout, edit `templates/resume.tex.j2`
-
-## 6. Theme Basics
-
-A theme file has five top-level sections:
+A theme file has five top-level blocks:
 
 ```yaml
 colors:
@@ -136,7 +111,7 @@ macros:
 
 ### `colors`
 
-These are named color tokens.
+Named color tokens:
 
 ```yaml
 colors:
@@ -146,24 +121,19 @@ colors:
   rule: "#cccccc"
 ```
 
-These names are reused by macro variants.
-
 ### `fonts`
 
-These are logical font tokens:
+Logical font families used by macro variants:
 
 ```yaml
 fonts:
   heading: "Roboto"
   body: "Roboto"
-  mono: "Roboto"
 ```
-
-Macro variants refer to the token names like `heading` or `body`, not directly to fontspec commands.
 
 ### `sizes`
 
-These contain reusable typography and spacing tokens:
+Reusable typography and margin tokens:
 
 ```yaml
 sizes:
@@ -173,78 +143,124 @@ sizes:
   title_line: "15pt"
   body: "10pt"
   body_line: "13pt"
+  margin_top: "0.7cm"
+  margin_bottom: "0.7cm"
+  margin_side: "0.5cm"
 ```
 
-You can add your own custom size tokens such as `hero_name`, `sidebar_section`, or `meta_links_line`.
+Add extra tokens here when they are typography-related, such as `hero_name` or `sidebar_section_line`.
 
 ### `rules`
 
-These contain line and spacing tokens:
+Reusable layout and spacing tokens:
 
 ```yaml
 rules:
   section_rule_width: "0.4pt"
-  section_spacing: "8pt"
-  column_gap: "18pt"
+  section_rule_gap: "2pt"
+  section_spacing: "10pt"
+  column_gap: "30pt"
   column_ratios: [0.36, 0.64]
+  tight_spacing: "0pt"
+  project_spacing: "1pt"
+  stack_gap: "1pt"
+  entry_gap: "2pt"
+  block_spacing: "5pt"
+  sidebar_rule_gap: "4pt"
+  sidebar_spacing: "6pt"
+  header_gap: "4pt"
+  header_bottom_gap: "12pt"
 ```
 
-You can add custom tokens here too, such as `entry_stack_gap` or `section_sidebar_gap_after`.
+Use these canonical rule names in themes.
 
 ### `macros`
 
-This is where named variants live.
+This block defines public `\cv*` command configuration.
 
-Each macro has:
-
-- a `default` variant name
-- a `variants` map
+- text macros use `variants`
+- `cventry`, `cvskill`, and `cvsectiontitle` use `styles` and `layouts`
 
 Example:
 
 ```yaml
 macros:
   cvmeta:
-    default: standard
     variants:
-      standard: {}
       links:
         size: meta_links
         line: meta_links_line
         color: accent
 ```
 
-Here, `links` inherits from `standard` and overrides only three fields.
+You only need to define the fields you want to change.
+
+## 6. Defaults and Composition
+
+Text variants inherit from a generated base variant named `standard`.
+
+Structured macros compose two independent pieces:
+
+- `styles` inherit from a generated base style named `base`
+- `layouts` inherit from canonical mode defaults such as `standard`, `inline`, `stacked`, and `sidebar`
+
+That means you usually only override the fields you actually want to change.
+
+Canonical layout defaults are:
+
+- `cventry[...][standard]` and `cventry[...][inline]` use `tight_spacing` and `entry_gap`
+- `cventry[...][stacked]` uses `project_spacing` and `entry_gap`
+- `cvskill[...][stacked]` uses `stack_gap`
+- `cvsectiontitle[...][sidebar]` uses `sidebar_rule_gap` and `sidebar_spacing`
+
+So in most themes, styles only need to express visual differences and layouts only need to express structural differences.
+
+If a theme omits `macros`, `build.py` synthesizes the base text variants plus the base structured styles and canonical layouts automatically.
 
 ## 7. Public Macro API
 
-These are the public macros available in the template:
+These commands are available in the template:
 
 - `\cvname[variant]{text}`
 - `\cvtitle[variant]{text}`
 - `\cvmeta[variant]{text}`
 - `\cvbody[variant]{text}`
 - `\cvsmall[variant]{text}`
-- `\cventry[variant]{arg1}{arg2}{arg3}{arg4}`
-- `\cvskill[variant]{label}{value}`
-- `\cvsectiontitle[variant]{text}`
+- `\cventry[style][layout]{arg1}{arg2}{arg3}{arg4}`
+- `\cvskill[style][layout]{label}{value}`
+- `\cvsectiontitle[style][layout]{text}`
 
-The optional `[variant]` part can be omitted:
+If you omit optional arguments, the macro defaults are used.
+
+Example:
 
 ```tex
 \cvname{Pierre Lepagnol}
 \cvname[hero]{Pierre Lepagnol}
+
+\cvskill{ML and NLP}{Transformers, RAG, Evaluation}
+\cvskill[aside][stacked]{ML and NLP}{Transformers, RAG, Evaluation}
 ```
 
-If you omit the optional argument, the theme default is used.
+## 8. Canonical Layout Names
 
-## 8. Supported Variant Fields
+Use the canonical layout names in new templates and themes:
 
-This is the part you will customize most often.
+- `\cventry` layouts: `standard`, `inline`, `stacked`
+- `\cvskill` layouts: `inline`, `stacked`
+- `\cvsectiontitle` layouts: `standard`, `sidebar`
 
-### Text-style macros
+The base theme also defines these semantic style names:
 
-These macros share the same field shape:
+- `\cventry` styles: `base`
+- `\cvskill` styles: `base`, `aside`
+- `\cvsectiontitle` styles: `base`, `aside`
+
+## 9. Macro Field Reference
+
+### Text macros
+
+These share the same field shape:
 
 - `cvname`
 - `cvtitle`
@@ -254,10 +270,10 @@ These macros share the same field shape:
 
 Supported fields:
 
-- `font`: font token name from `fonts`
-- `size`: size token name from `sizes`
-- `line`: line-height token name from `sizes`
-- `color`: color token name from `colors`, or omit it
+- `font`
+- `size`
+- `line`
+- `color`
 - `weight`: `normal` or `bold`
 - `shape`: `normal`, `italic`, or `slanted`
 - `case`: `normal`, `uppercase`, or `smallcaps`
@@ -267,9 +283,7 @@ Example:
 ```yaml
 macros:
   cvtitle:
-    default: standard
     variants:
-      standard: {}
       headline:
         size: headline_title
         line: headline_title_line
@@ -279,65 +293,61 @@ macros:
 
 ### `cventry`
 
-This macro is for two-line entries such as jobs, education items, publications, and projects.
+Used for jobs, education items, publications, and projects.
 
-Supported fields:
+Supported style fields:
 
-- `layout`: `standard`, `stacked`, or `inline`
-- `font`
-- `size`
-- `line`
-- `meta_size`
-- `meta_line`
-- `line1_left_weight`
-- `line1_left_shape`
-- `line1_left_color`
-- `line1_right_weight`
-- `line1_right_shape`
-- `line1_right_color`
-- `line2_left_weight`
-- `line2_left_shape`
-- `line2_left_color`
-- `line2_right_weight`
-- `line2_right_shape`
-- `line2_right_color`
+- `font`, `size`, `line`
+- `meta_size`, `meta_line`
+- `line1_left_weight`, `line1_left_shape`, `line1_left_color`
+- `line1_right_weight`, `line1_right_shape`, `line1_right_color`
+- `line2_left_weight`, `line2_left_shape`, `line2_left_color`
+- `line2_right_weight`, `line2_right_shape`, `line2_right_color`
 - `meta_color`
+
+Supported layout fields:
+
+- `mode`: `standard`, `inline`, `stacked`
 - `line_gap`
 - `bottom_gap`
 - `bottom_mode`: `linebreak` or `paragraph`
 
-Example:
+Typical example:
 
 ```yaml
 macros:
   cventry:
-    default: standard
-    variants:
-      standard: {}
+    default_style: base
+    default_layout: standard
+    styles:
+      base:
+        line2_left_shape: italic
+        line2_left_color: muted
+        line1_right_color: muted
+    layouts:
+      inline:
+        mode: inline
       stacked:
-        layout: stacked
-        meta_size: entry_meta
-        meta_line: entry_meta_line
-        line_gap: entry_stack_gap
-        bottom_gap: entry_stack_bottom_gap
+        mode: stacked
 ```
 
-Use `stacked` when a narrow column needs a more vertical layout. Use `inline` for compact one-line entries (e.g., publications). Use `bottom_mode: paragraph` to suppress the trailing newline and save vertical space.
+Only override `line_gap` or `bottom_gap` when you want a special case beyond the canonical layout defaults.
 
 ### `cvskill`
 
-This macro renders a label/value pair like `Frameworks: PyTorch, vLLM`.
+Renders a label/value pair like `Frameworks: PyTorch, vLLM`.
 
-Supported fields:
+Supported style fields:
 
-- `layout`: `inline` or `stacked`
-- `font`
-- `size`
-- `line`
-- `label_weight`: `normal` or `bold`
+- `font`, `size`, `line`
+- `label_weight`
 - `label_color`
 - `value_color`
 - `separator`
+
+Supported layout fields:
+
+- `mode`: `inline` or `stacked`
 - `stack_gap`
 
 Example:
@@ -345,94 +355,100 @@ Example:
 ```yaml
 macros:
   cvskill:
-    default: standard
-    variants:
-      standard: {}
-      compact:
-        layout: stacked
+    default_style: base
+    default_layout: inline
+    styles:
+      base:
+        separator: " "
+        value_color: muted
+      aside:
         label_color: accent
         value_color: muted
-        stack_gap: skill_stack_gap
+    layouts:
+      stacked:
+        mode: stacked
 ```
 
 ### `cvsectiontitle`
 
-This macro renders section headings such as `Experience` or `Skills`.
+Renders headings like `Experience` or `Skills`.
 
-Supported fields:
+Supported style fields:
 
-- `layout`: `standard` or `sidebar`
-- `font`
-- `size`
-- `line`
-- `color`
-- `weight`
-- `shape`
-- `case`
-- `rule_enabled`: `true` or `false`
-- `rule_color`
-- `rule_width`
-- `rule_length`
-- `rule_gap_before`
-- `rule_gap_after`
+- `font`, `size`, `line`
+- `color`, `weight`, `shape`, `case`
+- `rule_enabled`
+- `rule_color`, `rule_width`, `rule_length`
+
+Supported layout fields:
+
+- `mode`: `standard` or `sidebar`
+- `rule_gap_before`, `rule_gap_after`
 
 Example:
 
 ```yaml
 macros:
   cvsectiontitle:
-    default: standard
-    variants:
-      standard: {}
-      sidebar:
-        layout: sidebar
+    default_style: base
+    default_layout: standard
+    styles:
+      aside:
         size: sidebar_section
         line: sidebar_section_line
         color: accent
         case: uppercase
         rule_color: accent
         rule_length: "0.38\\linewidth"
-        rule_gap_before: section_sidebar_gap_before
-        rule_gap_after: section_sidebar_gap_after
+    layouts:
+      sidebar:
+        mode: sidebar
 ```
 
-## 9. Inheritance Rules
+## 10. Template Layouts
 
-Macro variants inherit from `standard` automatically.
+The template controls structure.
 
-This means:
+Supported layouts:
 
-- keep `standard: {}` when defaults are already good
-- override only the fields you want to change
-- add reusable tokens to `sizes` or `rules` instead of repeating literal values everywhere
+- `single`: one column
+- `twocol`: two columns with sidebar on the left
+- `twocol-footer`: same two-column header/body, then full-width footer sections
 
-Example:
+The current template uses one shared condition for two-column behavior:
 
-```yaml
-macros:
-  cvname:
-    default: standard
-    variants:
-      standard: {}
-      hero:
-        size: hero_name
-        line: hero_name_line
-        color: accent
+```jinja
+{% set is_two_column = layout in ['twocol', 'twocol-footer'] %}
 ```
 
-This does not replace the whole `cvname` definition. It only changes those three fields.
+That keeps sidebar-style section titles and stacked skill rows consistent across both two-column layouts.
 
-## 10. Customize an Existing Theme
+Example template fragment:
 
-The easiest workflow is to start from an existing theme.
+```jinja
+{% set is_two_column = layout in ['twocol', 'twocol-footer'] %}
 
-### Step 1: duplicate a theme
+\cvsectiontitle[{{ 'aside' if is_two_column else 'base' }}][{{ 'sidebar' if is_two_column else 'standard' }}]{Skills}
+{% for group in skills %}
+\cvskill[{{ 'aside' if is_two_column else 'base' }}][{{ 'stacked' if is_two_column else 'inline' }}]
+  { {{ group.category | latex_escape }} }
+  { {{ group['items'] | join(', ') | latex_escape }} }
+{% endfor %}
+```
+
+If you want a section in a different place, edit the template, not the theme.
+
+## 11. Customize an Existing Theme
+
+The safest workflow is incremental.
+
+### Step 1: copy an existing theme
 
 ```bash
 cp themes/minimal.yaml themes/mytheme.yaml
 ```
 
-### Step 2: change the basic palette
+### Step 2: tune the palette
 
 ```yaml
 colors:
@@ -442,7 +458,7 @@ colors:
   rule: "#d4d9de"
 ```
 
-### Step 3: adjust typography tokens
+### Step 3: tune type and spacing tokens
 
 ```yaml
 sizes:
@@ -452,19 +468,24 @@ sizes:
   section_line: "13pt"
   body: "9.8pt"
   body_line: "12.8pt"
+
+rules:
+  column_ratios: [0.34, 0.66]
+  block_spacing: "6pt"
+  header_bottom_gap: "14pt"
 ```
 
-### Step 4: build it
+### Step 4: build and inspect
 
 ```bash
 uv run build.py --theme mytheme --layout twocol
 ```
 
-## 11. Add a New Variant to an Existing Macro
+## 12. Add a New Style
 
-Here is a full example that adds a new `caps` section-title style.
+Example: add a `caps` section-title style.
 
-### Step 1: add tokens
+### Step 1: add any new tokens you need
 
 ```yaml
 sizes:
@@ -472,8 +493,7 @@ sizes:
   caps_section_line: "12.5pt"
 
 rules:
-  caps_gap_before: "3pt"
-  caps_gap_after: "5pt"
+  caps_spacing: "5pt"
 ```
 
 ### Step 2: add the variant
@@ -481,297 +501,41 @@ rules:
 ```yaml
 macros:
   cvsectiontitle:
-    default: standard
-    variants:
-      standard: {}
+    styles:
       caps:
         size: caps_section
         line: caps_section_line
         color: primary
         case: uppercase
         rule_color: primary
-        rule_gap_before: caps_gap_before
-        rule_gap_after: caps_gap_after
 ```
 
-### Step 3: use it in the template
+### Step 3: optionally add a layout override
+
+```yaml
+macros:
+  cvsectiontitle:
+    layouts:
+      roomy_sidebar:
+        mode: sidebar
+        rule_gap_after: caps_spacing
+```
+
+### Step 4: use it in the template
 
 ```tex
-\cvsectiontitle[caps]{Projects}
+\cvsectiontitle[caps][standard]{Projects}
 ```
 
-### Step 4: build
+### Step 5: build
 
 ```bash
 uv run build.py --theme mytheme --layout single
 ```
 
-## 12. Change the Template Layout
+## 13. Example Theme Fragment
 
-The template is in `templates/resume.tex.j2`.
-
-It does two things:
-
-- defines Jinja macros like `render_experience(items)`
-- decides where each section goes depending on `layout`
-
-Three layouts are supported: `single` (one column, all sections stacked), `twocol` (two-column with sidebar left, main content right), and `twocol-footer` (same as `twocol` but publications and projects are placed below the columns as full-width content).
-
-Example from the current template:
-
-```jinja
-{% if layout == 'single' %}
-{{ render_summary(summary) }}
-{{ render_experience(experience) }}
-{{ render_education(education) }}
-{{ render_publications(publications | default([])) }}
-{{ render_projects(projects | default([])) }}
-{{ render_skills(skills) }}
-{{ render_languages(languages | default([])) }}
-{% elif layout == 'twocol' %}
-\begin{paracol}{2}
-{{ render_skills(skills) }}
-{{ render_languages(languages | default([])) }}
-{{ render_education(education) }}
-\switchcolumn
-{{ render_summary(summary) }}
-{{ render_experience(experience) }}
-{{ render_publications(publications | default([])) }}
-{{ render_projects(projects | default([])) }}
-\end{paracol}
-{% elif layout == 'twocol-footer' %}
-\begin{paracol}{2}
-{{ render_skills(skills) }}
-{{ render_languages(languages | default([])) }}
-{{ render_education(education) }}
-\switchcolumn
-{{ render_summary(summary) }}
-{{ render_experience(experience) }}
-\end{paracol}
-{{ render_publications(publications | default([])) }}
-{{ render_projects(projects | default([])) }}
-{% endif %}
-```
-
-If you want a section in a different place, edit the template, not the theme.
-
-Examples:
-
-- move `Projects` earlier in the single-column layout
-- use `\cventry[stacked]` for all publications
-- use `\cvsectiontitle[sidebar]` only on the right column
-
-## 13. Real Examples from the Current Template
-
-The current `templates/resume.tex.j2` already demonstrates good variant usage.
-
-### Header variants
-
-```tex
-\cvname[hero]{ ... }
-\cvtitle[headline]{ ... }
-\cvmeta{ email | phone | location }
-\cvmeta[links]{ linkedin | github | huggingface }
-```
-
-### Summary variant
-
-```tex
-\cvbody[lead]{ ... }
-```
-
-### Detail text variant (bullet points under entries)
-
-```tex
-\cvsmall[detail]{$\bullet$ ... }\\
-```
-
-### Entry variants
-
-```tex
-\cventry{ role }{ dates }{ company }{}               % standard (experience)
-\cventry[compact]{ degree }{ year }{ institution }{}  % compact (education)
-\cventry[inline_compact]{ title }{ year }{ venue }{}  % inline compact (publications)
-\cventry[stacked]{ title }{}{ details }{}             % stacked (projects)
-```
-
-### Skill variants
-
-```tex
-\cvskill[compact]{ category }{ items }   % stacked layout (twocol sidebar)
-\cvskill[standard]{ language }{ level }  % inline layout
-```
-
-### Section-title variant
-
-The template picks the variant automatically based on layout:
-
-```jinja
-\cvsectiontitle[{{ 'sidebar' if layout == 'twocol' else 'standard' }}]{Skills}
-```
-
-## 14. Create a Brand New Theme
-
-Use this workflow.
-
-### Step 1: copy an existing theme
-
-```bash
-cp themes/minimal.yaml themes/editorial.yaml
-```
-
-### Step 2: rename and tune tokens
-
-You can keep the same structure and change values gradually:
-
-- palette in `colors`
-- typography in `sizes`
-- spacing in `rules`
-- visual styles in `macros`
-
-### Step 3: keep macro signatures stable
-
-Do not invent a new public macro name like `\cvbadge` unless you also change the template and generator architecture.
-
-The intended customization path is:
-
-- keep `\cvname`, `\cventry`, `\cvskill`, etc.
-- add new named variants inside `macros`
-- call them from the template when needed
-
-### Step 4: build and iterate
-
-```bash
-uv run build.py --theme editorial --layout twocol
-```
-
-## 15. Use Tokens vs Literal Values
-
-In general:
-
-- use token names for reusable things
-- use raw literal values only for one-off lengths or separators
-
-Good examples:
-
-```yaml
-size: hero_name
-line: hero_name_line
-color: accent
-rule_gap_after: section_sidebar_gap_after
-```
-
-Also valid when needed:
-
-```yaml
-rule_length: "0.42\\linewidth"
-separator: " - "
-bottom_gap: "3pt"
-```
-
-## 16. Validation Rules You Should Know
-
-The builder fails early on invalid themes.
-
-Common checks:
-
-- `colors.*` must be hex colors like `#4a7c96`
-- `macros` can only define known macro names
-- each macro must have `default` and `variants`
-- the default variant name must exist
-- font references must exist in `fonts`
-- color references must exist in `colors`
-- layouts must be supported for that macro
-- `rules.column_ratios` must contain exactly two positive numbers
-
-This is helpful because most theme mistakes fail before LaTeX compilation starts.
-
-## 17. Troubleshooting
-
-### Unknown variant error
-
-Example:
-
-```tex
-\cvsectiontitle[fancy]{Projects}
-```
-
-If `fancy` is not defined in the active theme, the build fails.
-
-Fix:
-
-- define `fancy` in `macros.cvsectiontitle.variants`
-- or use an existing variant name
-
-### Unknown color token
-
-If you write:
-
-```yaml
-color: brand_blue
-```
-
-then `brand_blue` must exist in `colors`.
-
-### Unsupported layout
-
-These are the supported layout values:
-
-- `cventry`: `standard`, `stacked`, `inline`
-- `cvskill`: `inline`, `stacked`
-- `cvsectiontitle`: `standard`, `sidebar`
-
-### Font issues
-
-The current setup expects vendored fonts in `cv/fonts/` matching the configured families.
-
-If you change font names, make sure the output build can actually resolve the font family and style files.
-
-### LaTeX compile fails after theme validation passed
-
-Then the issue is usually in:
-
-- the template structure
-- a raw literal LaTeX value such as `rule_length`
-- a font resolution problem
-
-Inspect:
-
-- `out/resume.cls`
-- `out/resume.tex`
-- `out/resume.log`
-
-## 18. Backward Compatibility
-
-Themes do not strictly need a `macros` block.
-
-If `macros` is missing, `build.py` generates `standard` variants automatically from the older top-level tokens.
-
-That means you can migrate gradually:
-
-1. keep only `colors`, `fonts`, `sizes`, `rules`
-2. confirm the build still works
-3. add `macros` later when you want named variants
-
-## 19. Suggested Customization Workflow
-
-This is the safest workflow for iterative design:
-
-1. start from `themes/minimal.yaml`
-2. change only `colors`
-3. rebuild
-4. change `sizes` and `rules`
-5. rebuild
-6. add one new macro variant, such as `cvsectiontitle.sidebar_alt`
-7. use it in one place in `templates/resume.tex.j2`
-8. rebuild
-9. repeat
-
-Do not change everything at once. Small steps make it much easier to understand what each tweak changes.
-
-## 20. A Complete Example Theme Fragment
-
-This is a compact but realistic example:
+This is a compact theme fragment aligned with the simplified spacing model:
 
 ```yaml
 colors:
@@ -783,7 +547,6 @@ colors:
 fonts:
   heading: "Roboto"
   body: "Roboto"
-  mono: "Roboto"
 
 sizes:
   name: "24pt"
@@ -806,32 +569,38 @@ sizes:
   small_line: "11pt"
   meta_links: "9.5pt"
   meta_links_line: "12pt"
-  margin_top: "1.5cm"
-  margin_bottom: "1.5cm"
-  margin_side: "1.8cm"
+  entry_meta: "8.5pt"
+  entry_meta_line: "10pt"
+  margin_top: "0.7cm"
+  margin_bottom: "0.7cm"
+  margin_side: "0.5cm"
 
 rules:
   section_rule_width: "0.4pt"
+  section_rule_gap: "2pt"
   section_spacing: "10pt"
   column_gap: "30pt"
   column_ratios: [0.36, 0.64]
-  section_sidebar_gap_before: "4pt"
-  section_sidebar_gap_after: "6pt"
+  tight_spacing: "0pt"
+  project_spacing: "1pt"
+  stack_gap: "1pt"
+  entry_gap: "2pt"
+  block_spacing: "5pt"
+  sidebar_rule_gap: "4pt"
+  sidebar_spacing: "6pt"
+  header_gap: "4pt"
+  header_bottom_gap: "12pt"
 
 macros:
   cvname:
-    default: standard
     variants:
-      standard: {}
       hero:
         size: hero_name
         line: hero_name_line
         color: accent
 
   cvtitle:
-    default: standard
     variants:
-      standard: {}
       headline:
         size: headline_title
         line: headline_title_line
@@ -839,52 +608,118 @@ macros:
         weight: bold
 
   cvmeta:
-    default: standard
     variants:
-      standard: {}
       links:
         size: meta_links
         line: meta_links_line
         color: accent
 
+  cvskill:
+    default_style: base
+    default_layout: inline
+    styles:
+      base:
+        separator: " "
+        value_color: muted
+      aside:
+        label_color: accent
+        value_color: muted
+    layouts:
+      inline:
+        mode: inline
+      stacked:
+        mode: stacked
+
   cvsectiontitle:
-    default: standard
-    variants:
-      standard: {}
-      sidebar:
-        layout: sidebar
+    default_style: base
+    default_layout: standard
+    styles:
+      aside:
         size: sidebar_section
         line: sidebar_section_line
         color: accent
         case: uppercase
         rule_color: accent
         rule_length: "0.38\\linewidth"
-        rule_gap_before: section_sidebar_gap_before
-        rule_gap_after: section_sidebar_gap_after
+    layouts:
+      standard:
+        mode: standard
+      sidebar:
+        mode: sidebar
 ```
 
-## 21. A Complete Example Template Fragment
+## 14. Validation and Troubleshooting
 
-```jinja
-\cvname[hero]{ {{ meta.name | latex_escape }} }\\[4pt]
-\cvtitle[headline]{ {{ meta.title | latex_escape }} }\\[4pt]
-\cvmeta{ {{ meta.email }} ~|~ {{ meta.phone | latex_escape }} ~|~ {{ meta.location | latex_escape }} }\\
-\cvmeta[links]{ linkedin.com/in/{{ meta.linkedin | latex_escape }} ~|~ github.com/{{ meta.github | latex_escape }} }\\
+The builder fails early on invalid themes.
 
-\cvsectiontitle[{{ 'sidebar' if layout == 'twocol' else 'standard' }}]{Skills}
-{% for group in skills %}
-\cvskill[{{ 'compact' if layout == 'twocol' else 'standard' }}]{ {{ group.category | latex_escape }} }{ {{ group['items'] | join(', ') | latex_escape }} }
-{% endfor %}
+Useful checks:
+
+- `colors.*` must be hex colors like `#4a7c96`
+- macro names must be known
+- default variant/style/layout names must exist
+- font references must exist in `fonts`
+- color references must exist in `colors`
+- layout modes must be supported for that macro
+- `rules.column_ratios` must contain exactly two positive numbers
+
+Common issues:
+
+### Unknown style or layout
+
+Example:
+
+```tex
+\cvsectiontitle[fancy][sidebar]{Projects}
 ```
 
-## 22. Summary
+If `fancy` is not defined in the active theme, the build fails.
+
+Fix it by defining the style in `macros.cvsectiontitle.styles` or by using an existing name.
+
+### Unknown token
+
+If you reference a color, font, size, or rule token that does not exist, validation fails before LaTeX starts.
+
+### Font issues
+
+The current setup expects the configured font families to match the vendored files in `cv/fonts/`.
+
+### LaTeX compile failure after validation passes
+
+Then the issue is usually in:
+
+- the template structure
+- a raw literal LaTeX value such as `rule_length`
+- an asset or font resolution problem
+
+Inspect:
+
+- `out/resume.cls`
+- `out/resume.tex`
+- `out/resume.log`
+
+## 15. Suggested Workflow
+
+For safe iteration:
+
+1. start from `themes/minimal.yaml`
+2. change colors first
+3. rebuild
+4. change sizes and rules
+5. rebuild
+6. add one variant if needed
+7. change the template only after the theme feels right
+8. rebuild again
+
+Small steps make layout changes much easier to understand.
+
+## 16. Summary
 
 Use this checklist:
 
 - edit `data/resume.yaml` for content
-- edit `themes/*.yaml` for visual tokens and variants
-- edit `templates/resume.tex.j2` for layout and section ordering
-- call `\cv*` macros with or without named variants
+- edit `themes/*.yaml` for visual tokens, styles, and layouts
+- edit `templates/resume.tex.j2` for layout and section order
+- use canonical layout names in new code
+- use canonical `rules` tokens in new themes
 - build with `uv run build.py ...`
-
-If you want a good starting point, copy `themes/minimal.yaml`, keep the same `macros` structure, and change one token group at a time.

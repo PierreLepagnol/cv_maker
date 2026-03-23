@@ -35,19 +35,14 @@ rules:
   section_spacing: "10pt"
   column_gap: "30pt"
   column_ratios: [0.36, 0.64]
-  section_sidebar_gap_before: "4pt"
-  section_sidebar_gap_after: "6pt"
-  skill_stack_gap: "1pt"
-  entry_line_gap: "0pt"
-  entry_bottom_gap: "2pt"
-  entry_stack_gap: "1pt"
-  entry_stack_bottom_gap: "2pt"
-  entry_spacing: "0pt"
-  experience_spacing: "0pt"
-  education_spacing: "0pt"
-  publication_spacing: "0pt"
-  project_spacing: "0pt"
-  header_item_gap: "4pt"
+  tight_spacing: "0pt"
+  project_spacing: "-5pt"
+  stack_gap: "1pt"
+  entry_gap: "0pt"
+  block_spacing: "-10pt"
+  sidebar_rule_gap: "4pt"
+  sidebar_spacing: "6pt"
+  header_gap: "4pt"
   header_bottom_gap: "12pt"
 
 macros:
@@ -81,73 +76,49 @@ macros:
       detail:
         color: muted
   cventry:
-    variants:
+    default_style: base
+    default_layout: standard
+    styles:
+      base:
+        line2_left_shape: italic
+        line2_left_color: muted
+        line1_right_color: muted
+    layouts:
       standard:
-        line1_right_color: muted
-        line_gap: entry_line_gap
-        bottom_gap: entry_bottom_gap
-      experience:
-        line1_right_color: muted
-        line_gap: entry_line_gap
-        bottom_gap: entry_bottom_gap
-      compact:
-        bottom_mode: paragraph
-        bottom_gap: "0pt"
-      education:
-        bottom_mode: paragraph
-        bottom_gap: "0pt"
-      stacked:
-        layout: stacked
-        meta_size: entry_meta
-        meta_line: entry_meta_line
-        line_gap: entry_stack_gap
-        bottom_gap: entry_stack_bottom_gap
-      project:
-        layout: stacked
-        meta_size: entry_meta
-        meta_line: entry_meta_line
-        line_gap: entry_stack_gap
-        bottom_gap: entry_stack_bottom_gap
+        mode: standard
       inline:
-        layout: inline
-        line2_left_shape: italic
-        line2_left_color: muted
-        line1_right_color: muted
-        line_gap: entry_line_gap
-        bottom_gap: entry_bottom_gap
-      inline_compact:
-        layout: inline
-        line2_left_shape: italic
-        line2_left_color: muted
-        line1_right_color: muted
-        bottom_mode: paragraph
-        bottom_gap: entry_bottom_gap
-      publication:
-        layout: inline
-        line2_left_shape: italic
-        line2_left_color: muted
-        line1_right_color: muted
-        bottom_mode: paragraph
-        bottom_gap: entry_bottom_gap
+        mode: inline
+      stacked:
+        mode: stacked
   cvskill:
-    variants:
-      standard:
+    default_style: base
+    default_layout: inline
+    styles:
+      base:
         separator: " "
         value_color: muted
-      compact:
-        layout: stacked
+      aside:
         label_color: accent
         value_color: muted
-        stack_gap: skill_stack_gap
+    layouts:
+      inline:
+        mode: inline
+      stacked:
+        mode: stacked
   cvsectiontitle:
-    variants:
-      sidebar:
-        layout: sidebar
+    default_style: base
+    default_layout: standard
+    styles:
+      base: {}
+      aside:
         size: sidebar_section
         line: sidebar_section_line
         color: accent
         case: uppercase
         rule_color: accent
         rule_length: "0.38\\linewidth"
-        rule_gap_before: section_sidebar_gap_before
-        rule_gap_after: section_sidebar_gap_after
+    layouts:
+      standard:
+        mode: standard
+      sidebar:
+        mode: sidebar

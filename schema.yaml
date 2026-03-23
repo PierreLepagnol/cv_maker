@@ -30,7 +30,7 @@ properties:
         company: { type: string }
         role: { type: string }
         start: { type: string, pattern: '^\d{4}-\d{2}$' }
-        end: { type: string, pattern: '^(\d{4}-\d{2}|present)?$' }
+        end: { type: string, pattern: '^(\d{4}-\d{2}|present|présent)?$' }
         highlights:
           type: array
           items: { type: string }

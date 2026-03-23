@@ -99,7 +99,7 @@ properties:
     type: object
     additionalProperties: false
     properties:
-      cvname: &macro_config
+      cvname: &text_macro_config
         type: object
         required: [default, variants]
         additionalProperties: false
@@ -115,10 +115,36 @@ properties:
               pattern: '^[a-z][a-z0-9_]*$'
             additionalProperties:
               type: object
-      cvtitle: *macro_config
-      cvmeta: *macro_config
-      cvbody: *macro_config
-      cvsmall: *macro_config
-      cventry: *macro_config
-      cvskill: *macro_config
-      cvsectiontitle: *macro_config
+      cvtitle: *text_macro_config
+      cvmeta: *text_macro_config
+      cvbody: *text_macro_config
+      cvsmall: *text_macro_config
+      cventry: &style_layout_macro_config
+        type: object
+        required: [default_style, default_layout, styles, layouts]
+        additionalProperties: false
+        properties:
+          default_style:
+            type: string
+            minLength: 1
+            pattern: '^[a-z][a-z0-9_]*$'
+          default_layout:
+            type: string
+            minLength: 1
+            pattern: '^[a-z][a-z0-9_]*$'
+          styles:
+            type: object
+            minProperties: 1
+            propertyNames:
+              pattern: '^[a-z][a-z0-9_]*$'
+            additionalProperties:
+              type: object
+          layouts:
+            type: object
+            minProperties: 1
+            propertyNames:
+              pattern: '^[a-z][a-z0-9_]*$'
+            additionalProperties:
+              type: object
+      cvskill: *style_layout_macro_config
+      cvsectiontitle: *style_layout_macro_config

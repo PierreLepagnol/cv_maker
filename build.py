@@ -53,7 +53,7 @@ MACRO_ARITIES = {
     "cvskill": 2,
     "cvsectiontitle": 1,
 }
-BASE_MACRO_VARIANTS = {
+TEXT_MACRO_VARIANTS = {
     "cvname": {
         "font": "heading",
         "size": "name",
@@ -99,8 +99,9 @@ BASE_MACRO_VARIANTS = {
         "shape": "normal",
         "case": "normal",
     },
+}
+STYLE_LAYOUT_MACRO_STYLES = {
     "cventry": {
-        "layout": "standard",
         "font": "body",
         "size": "body",
         "line": "body_line",
@@ -119,12 +120,8 @@ BASE_MACRO_VARIANTS = {
         "line2_right_shape": "normal",
         "line2_right_color": "muted",
         "meta_color": "muted",
-        "line_gap": "entry_line_gap",
-        "bottom_gap": "entry_bottom_gap",
-        "bottom_mode": "linebreak",
     },
     "cvskill": {
-        "layout": "inline",
         "font": "body",
         "size": "body",
         "line": "body_line",
@@ -132,10 +129,8 @@ BASE_MACRO_VARIANTS = {
         "label_color": None,
         "value_color": None,
         "separator": ": ",
-        "stack_gap": "0pt",
     },
     "cvsectiontitle": {
-        "layout": "standard",
         "font": "heading",
         "size": "section",
         "line": "section_line",
@@ -147,14 +142,58 @@ BASE_MACRO_VARIANTS = {
         "rule_color": "rule",
         "rule_width": "section_rule_width",
         "rule_length": r"\linewidth",
-        "rule_gap_before": "section_rule_gap",
-        "rule_gap_after": "section_spacing",
     },
 }
-MACRO_ALLOWED_KEYS = {name: set(fields) for name, fields in BASE_MACRO_VARIANTS.items()}
+STYLE_LAYOUT_MACRO_LAYOUTS = {
+    "cventry": {
+        "standard": {
+            "mode": "standard",
+            "line_gap": "tight_spacing",
+            "bottom_gap": "entry_gap",
+            "bottom_mode": "linebreak",
+        },
+        "inline": {
+            "mode": "inline",
+            "line_gap": "tight_spacing",
+            "bottom_gap": "entry_gap",
+            "bottom_mode": "linebreak",
+        },
+        "stacked": {
+            "mode": "stacked",
+            "line_gap": "project_spacing",
+            "bottom_gap": "entry_gap",
+            "bottom_mode": "linebreak",
+        },
+    },
+    "cvskill": {
+        "inline": {"mode": "inline", "stack_gap": "tight_spacing"},
+        "stacked": {"mode": "stacked", "stack_gap": "stack_gap"},
+    },
+    "cvsectiontitle": {
+        "standard": {
+            "mode": "standard",
+            "rule_gap_before": "section_rule_gap",
+            "rule_gap_after": "section_spacing",
+        },
+        "sidebar": {
+            "mode": "sidebar",
+            "rule_gap_before": "sidebar_rule_gap",
+            "rule_gap_after": "sidebar_spacing",
+        },
+    },
+}
+TEXT_MACRO_DEFAULT_VARIANT_NAMES = {
+    name: "standard" for name in TEXT_MACRO_VARIANTS
+}
+STYLE_LAYOUT_DEFAULT_STYLE_NAME = "base"
+STYLE_LAYOUT_DEFAULT_LAYOUT_NAMES = {
+    "cventry": "standard",
+    "cvskill": "inline",
+    "cvsectiontitle": "standard",
+}
 _WEIGHT_VALUES = {"normal", "bold"}
 _SHAPE_VALUES = {"normal", "italic", "slanted"}
-FIELD_ENUMS = {
+STYLE_FIELD_ENUMS = {
     "weight": _WEIGHT_VALUES,
     "label_weight": _WEIGHT_VALUES,
     "line1_left_weight": _WEIGHT_VALUES,
@@ -167,8 +206,14 @@ FIELD_ENUMS = {
     "line2_left_shape": _SHAPE_VALUES,
     "line2_right_shape": _SHAPE_VALUES,
     "case": {"normal", "uppercase", "smallcaps"},
-    "layout": {"standard", "stacked", "inline", "sidebar"},
+}
+LAYOUT_FIELD_ENUMS = {
     "bottom_mode": {"linebreak", "paragraph"},
+}
+LAYOUT_MODE_VALUES = {
+    "cventry": {"standard", "stacked", "inline"},
+    "cvskill": {"inline", "stacked"},
+    "cvsectiontitle": {"standard", "sidebar"},
 }
 COLOR_REF_FIELDS = {
     "color",
@@ -180,6 +225,16 @@ COLOR_REF_FIELDS = {
     "meta_color",
     "label_color",
     "value_color",
+}
+TEXT_MACRO_ALLOWED_KEYS = {
+    name: set(fields) for name, fields in TEXT_MACRO_VARIANTS.items()
+}
+STYLE_LAYOUT_STYLE_KEYS = {
+    name: set(fields) for name, fields in STYLE_LAYOUT_MACRO_STYLES.items()
+}
+STYLE_LAYOUT_LAYOUT_KEYS = {
+    name: set(next(iter(layouts.values())))
+    for name, layouts in STYLE_LAYOUT_MACRO_LAYOUTS.items()
 }
 
 
@@ -255,77 +310,187 @@ def merge_nested_dicts(base: dict, override: dict) -> dict:
     return merged
 
 
+def normalize_text_macro(macro_name: str, macro_config: dict) -> dict:
+    raw_variants = macro_config.get("variants", {})
+    base_variant = TEXT_MACRO_VARIANTS[macro_name]
+    base_variant_name = TEXT_MACRO_DEFAULT_VARIANT_NAMES[macro_name]
+    base_input = merge_dicts(base_variant, raw_variants.get(base_variant_name, {}))
+    variants = {base_variant_name: base_input}
+    for variant_name, variant_values in raw_variants.items():
+        if variant_name == base_variant_name:
+            continue
+        variants[variant_name] = merge_dicts(base_input, variant_values)
+    return {
+        "default": macro_config.get("default", base_variant_name),
+        "variants": variants,
+    }
+
+
+def resolve_layout_config(macro_name: str, layout_name: str, layout: dict) -> dict:
+    mode = layout.get("mode")
+    if mode is None:
+        raise ValueError(f"Missing {macro_name}.{layout_name}.mode")
+    if mode not in LAYOUT_MODE_VALUES[macro_name]:
+        known = ", ".join(sorted(LAYOUT_MODE_VALUES[macro_name]))
+        raise ValueError(
+            f"Unsupported {macro_name} mode {mode!r} for {layout_name}. "
+            f"Expected one of: {known}"
+        )
+    return merge_dicts(STYLE_LAYOUT_MACRO_LAYOUTS[macro_name][mode], layout)
+
+
+def normalize_style_layout_macro(macro_name: str, macro_config: dict) -> dict:
+    raw_styles = macro_config.get("styles", {})
+    raw_layouts = macro_config.get("layouts", {})
+
+    base_style = STYLE_LAYOUT_MACRO_STYLES[macro_name]
+    base_input = merge_dicts(base_style, raw_styles.get(STYLE_LAYOUT_DEFAULT_STYLE_NAME, {}))
+    styles = {STYLE_LAYOUT_DEFAULT_STYLE_NAME: base_input}
+    for style_name, style_values in raw_styles.items():
+        if style_name == STYLE_LAYOUT_DEFAULT_STYLE_NAME:
+            continue
+        styles[style_name] = merge_dicts(base_input, style_values)
+
+    layouts = {}
+    for layout_name, base_layout in STYLE_LAYOUT_MACRO_LAYOUTS[macro_name].items():
+        layout_input = merge_dicts(base_layout, raw_layouts.get(layout_name, {}))
+        layouts[layout_name] = resolve_layout_config(macro_name, layout_name, layout_input)
+    for layout_name, layout_values in raw_layouts.items():
+        if layout_name in layouts:
+            continue
+        layouts[layout_name] = resolve_layout_config(macro_name, layout_name, layout_values)
+
+    return {
+        "default_style": macro_config.get(
+            "default_style", STYLE_LAYOUT_DEFAULT_STYLE_NAME
+        ),
+        "default_layout": macro_config.get(
+            "default_layout", STYLE_LAYOUT_DEFAULT_LAYOUT_NAMES[macro_name]
+        ),
+        "styles": styles,
+        "layouts": layouts,
+    }
+
+
 def normalize_theme(theme: dict) -> dict:
     normalized = copy.deepcopy(theme)
     macros = normalized.setdefault("macros", {})
-    for macro_name, base_variant in BASE_MACRO_VARIANTS.items():
+
+    for macro_name in TEXT_MACRO_VARIANTS:
         macro_config = copy.deepcopy(macros.get(macro_name, {}))
-        raw_variants = macro_config.get("variants", {})
-        standard_variant = merge_dicts(base_variant, raw_variants.get("standard", {}))
-        variants = {"standard": standard_variant}
-        for variant_name, variant_values in raw_variants.items():
-            if variant_name == "standard":
-                continue
-            variants[variant_name] = merge_dicts(standard_variant, variant_values)
-        macros[macro_name] = {
-            "default": macro_config.get("default", "standard"),
-            "variants": variants,
-        }
+        macros[macro_name] = normalize_text_macro(macro_name, macro_config)
+
+    for macro_name in STYLE_LAYOUT_MACRO_STYLES:
+        macro_config = copy.deepcopy(macros.get(macro_name, {}))
+        macros[macro_name] = normalize_style_layout_macro(macro_name, macro_config)
+
     return normalized
 
 
-def validate_variant_fields(
+def validate_common_field(
+    theme: dict, owner: str, field_name: str, value: str | bool | None
+) -> None:
+    if field_name == "font":
+        if value not in theme["fonts"]:
+            known = ", ".join(sorted(theme["fonts"]))
+            raise ValueError(
+                f"Unknown font token for {owner}.{field_name}: {value!r}. "
+                f"Expected one of: {known}"
+            )
+        return
+
+    if field_name in COLOR_REF_FIELDS:
+        if value is not None and value not in theme["colors"]:
+            known = ", ".join(sorted(theme["colors"]))
+            raise ValueError(
+                f"Unknown color token for {owner}.{field_name}: {value!r}. "
+                f"Expected one of: {known}"
+            )
+        return
+
+    if field_name == "rule_enabled":
+        if not isinstance(value, bool):
+            raise ValueError(f"Expected boolean for {owner}.{field_name}")
+        return
+
+    if not isinstance(value, str):
+        raise ValueError(f"Expected string for {owner}.{field_name}")
+
+
+def validate_text_variant_fields(
     theme: dict, macro_name: str, variant_name: str, variant: dict
 ) -> None:
-    allowed_keys = MACRO_ALLOWED_KEYS[macro_name]
+    allowed_keys = TEXT_MACRO_ALLOWED_KEYS[macro_name]
     unknown_keys = sorted(set(variant) - allowed_keys)
     if unknown_keys:
         joined = ", ".join(unknown_keys)
         raise ValueError(f"Unknown {macro_name}.{variant_name} fields: {joined}")
 
+    owner = f"{macro_name}.{variant_name}"
     for field_name, value in variant.items():
-        if field_name in FIELD_ENUMS:
-            if value not in FIELD_ENUMS[field_name]:
-                known = ", ".join(sorted(FIELD_ENUMS[field_name]))
+        if field_name in STYLE_FIELD_ENUMS:
+            if value not in STYLE_FIELD_ENUMS[field_name]:
+                known = ", ".join(sorted(STYLE_FIELD_ENUMS[field_name]))
                 raise ValueError(
-                    f"Invalid {macro_name}.{variant_name}.{field_name}: {value!r}. "
-                    f"Expected one of: {known}"
+                    f"Invalid {owner}.{field_name}: {value!r}. Expected one of: {known}"
                 )
             continue
+        validate_common_field(theme, owner, field_name, value)
 
-        if field_name == "font":
-            if value not in theme["fonts"]:
-                known = ", ".join(sorted(theme["fonts"]))
+
+def validate_style_fields(
+    theme: dict, macro_name: str, style_name: str, style: dict
+) -> None:
+    allowed_keys = STYLE_LAYOUT_STYLE_KEYS[macro_name]
+    unknown_keys = sorted(set(style) - allowed_keys)
+    if unknown_keys:
+        joined = ", ".join(unknown_keys)
+        raise ValueError(f"Unknown {macro_name}.styles.{style_name} fields: {joined}")
+
+    owner = f"{macro_name}.styles.{style_name}"
+    for field_name, value in style.items():
+        if field_name in STYLE_FIELD_ENUMS:
+            if value not in STYLE_FIELD_ENUMS[field_name]:
+                known = ", ".join(sorted(STYLE_FIELD_ENUMS[field_name]))
                 raise ValueError(
-                    f"Unknown font token for {macro_name}.{variant_name}.{field_name}: "
-                    f"{value!r}. Expected one of: {known}"
+                    f"Invalid {owner}.{field_name}: {value!r}. Expected one of: {known}"
                 )
             continue
+        validate_common_field(theme, owner, field_name, value)
 
-        if field_name in COLOR_REF_FIELDS:
-            if value is not None and value not in theme["colors"]:
-                known = ", ".join(sorted(theme["colors"]))
+
+def validate_layout_fields(
+    macro_name: str, layout_name: str, layout: dict
+) -> None:
+    allowed_keys = STYLE_LAYOUT_LAYOUT_KEYS[macro_name]
+    unknown_keys = sorted(set(layout) - allowed_keys)
+    if unknown_keys:
+        joined = ", ".join(unknown_keys)
+        raise ValueError(f"Unknown {macro_name}.layouts.{layout_name} fields: {joined}")
+
+    owner = f"{macro_name}.layouts.{layout_name}"
+    for field_name, value in layout.items():
+        if field_name == "mode":
+            if value not in LAYOUT_MODE_VALUES[macro_name]:
+                known = ", ".join(sorted(LAYOUT_MODE_VALUES[macro_name]))
                 raise ValueError(
-                    f"Unknown color token for {macro_name}.{variant_name}.{field_name}: "
-                    f"{value!r}. Expected one of: {known}"
+                    f"Invalid {owner}.{field_name}: {value!r}. Expected one of: {known}"
                 )
             continue
-
-        if field_name == "rule_enabled":
-            if not isinstance(value, bool):
+        if field_name in LAYOUT_FIELD_ENUMS:
+            if value not in LAYOUT_FIELD_ENUMS[field_name]:
+                known = ", ".join(sorted(LAYOUT_FIELD_ENUMS[field_name]))
                 raise ValueError(
-                    f"Expected boolean for {macro_name}.{variant_name}.{field_name}"
+                    f"Invalid {owner}.{field_name}: {value!r}. Expected one of: {known}"
                 )
             continue
-
         if not isinstance(value, str):
-            raise ValueError(
-                f"Expected string for {macro_name}.{variant_name}.{field_name}"
-            )
+            raise ValueError(f"Expected string for {owner}.{field_name}")
 
 
 def validate_theme_semantics(theme: dict) -> None:
-    for macro_name, config in theme["macros"].items():
+    for macro_name in TEXT_MACRO_VARIANTS:
+        config = theme["macros"][macro_name]
         default_variant = config["default"]
         variants = config["variants"]
         if default_variant not in variants:
@@ -335,24 +500,30 @@ def validate_theme_semantics(theme: dict) -> None:
                 f"Expected one of: {known}"
             )
         for variant_name, variant in variants.items():
-            validate_variant_fields(theme, macro_name, variant_name, variant)
-            layout = variant.get("layout")
-            if macro_name == "cventry" and layout not in {
-                "standard",
-                "stacked",
-                "inline",
-            }:
-                raise ValueError(
-                    f"Unsupported cventry layout {layout!r} for {variant_name}"
-                )
-            if macro_name == "cvskill" and layout not in {"inline", "stacked"}:
-                raise ValueError(
-                    f"Unsupported cvskill layout {layout!r} for {variant_name}"
-                )
-            if macro_name == "cvsectiontitle" and layout not in {"standard", "sidebar"}:
-                raise ValueError(
-                    f"Unsupported cvsectiontitle layout {layout!r} for {variant_name}"
-                )
+            validate_text_variant_fields(theme, macro_name, variant_name, variant)
+
+    for macro_name in STYLE_LAYOUT_MACRO_STYLES:
+        config = theme["macros"][macro_name]
+        default_style = config["default_style"]
+        default_layout = config["default_layout"]
+        styles = config["styles"]
+        layouts = config["layouts"]
+        if default_style not in styles:
+            known = ", ".join(sorted(styles))
+            raise ValueError(
+                f"Unknown default style {default_style!r} for {macro_name}. "
+                f"Expected one of: {known}"
+            )
+        if default_layout not in layouts:
+            known = ", ".join(sorted(layouts))
+            raise ValueError(
+                f"Unknown default layout {default_layout!r} for {macro_name}. "
+                f"Expected one of: {known}"
+            )
+        for style_name, style in styles.items():
+            validate_style_fields(theme, macro_name, style_name, style)
+        for layout_name, layout in layouts.items():
+            validate_layout_fields(macro_name, layout_name, layout)
 
 
 def load_theme(path: Path) -> dict:
@@ -510,7 +681,7 @@ def build_entry_variant_body(theme: dict, variant: dict) -> str:
     assert bottom_gap is not None
     entry_tail = build_entry_tail(bottom_gap, variant["bottom_mode"])
 
-    if variant["layout"] == "stacked":
+    if variant["mode"] == "stacked":
         return rf"""
 {{
   {line1_left}\\[{line_gap}]
@@ -521,7 +692,7 @@ def build_entry_variant_body(theme: dict, variant: dict) -> str:
 }}
 """.strip()
 
-    if variant["layout"] == "inline":
+    if variant["mode"] == "inline":
         return rf"""
 {{
   {line1_left}
@@ -578,7 +749,7 @@ def build_skill_variant_body(theme: dict, variant: dict) -> str:
     )
     stack_gap = resolve_theme_value(theme, variant["stack_gap"], ("rules", "sizes"))
 
-    if variant["layout"] == "stacked":
+    if variant["mode"] == "stacked":
         return rf"""
 {{
   {label}
@@ -618,7 +789,7 @@ def build_sectiontitle_variant_body(theme: dict, variant: dict) -> str:
         theme, variant["rule_gap_after"], ("rules", "sizes")
     )
     rule_block = rf"{{\color{{{rule_color}}}\rule{{{rule_length}}}{{{rule_width}}}}}"
-    if variant["layout"] == "sidebar":
+    if variant["mode"] == "sidebar":
         return (
             rf"\par\nointerlineskip\vspace*{{{gap_before}}}"
             rf"{rule_block}\par\nointerlineskip\vspace*{{{gap_after}}}"
@@ -641,6 +812,16 @@ def private_macro_definition(
     )
 
 
+def private_style_layout_definition(
+    macro_name: str, style_name: str, layout_name: str, arity: int, body: str
+) -> str:
+    params = "".join(f"#{index}" for index in range(1, arity + 1))
+    return (
+        rf"\expandafter\def\csname resume@{macro_name}@{style_name}@{layout_name}\endcsname"
+        rf"{params}{{{body}}}"
+    )
+
+
 def build_private_macro_body(theme: dict, macro_name: str, variant: dict) -> str:
     if macro_name in {"cvname", "cvtitle", "cvmeta", "cvbody", "cvsmall"}:
         return build_text_variant_body(theme, variant, "#1")
@@ -653,21 +834,39 @@ def build_private_macro_body(theme: dict, macro_name: str, variant: dict) -> str
     raise ValueError(f"Unsupported macro {macro_name!r}")
 
 
-def generate_macro_variant_definitions(theme: dict) -> list[str]:
+def generate_macro_definitions(theme: dict) -> list[str]:
     lines = []
-    for macro_name, config in theme["macros"].items():
+
+    for macro_name in TEXT_MACRO_VARIANTS:
+        config = theme["macros"][macro_name]
         arity = MACRO_ARITIES[macro_name]
         for variant_name, variant in config["variants"].items():
             body = build_private_macro_body(theme, macro_name, variant)
             lines.append(
                 private_macro_definition(macro_name, variant_name, arity, body)
             )
+
+    for macro_name in STYLE_LAYOUT_MACRO_STYLES:
+        config = theme["macros"][macro_name]
+        arity = MACRO_ARITIES[macro_name]
+        for style_name, style in config["styles"].items():
+            for layout_name, layout in config["layouts"].items():
+                body = build_private_macro_body(
+                    theme, macro_name, merge_dicts(style, layout)
+                )
+                lines.append(
+                    private_style_layout_definition(
+                        macro_name, style_name, layout_name, arity, body
+                    )
+                )
     return lines
 
 
 def generate_macro_dispatchers(theme: dict) -> list[str]:
     wrappers = []
-    for macro_name, arity in MACRO_ARITIES.items():
+
+    for macro_name in TEXT_MACRO_VARIANTS:
+        arity = MACRO_ARITIES[macro_name]
         default_variant = theme["macros"][macro_name]["default"]
         if arity == 1:
             wrappers.append(
@@ -696,6 +895,43 @@ def generate_macro_dispatchers(theme: dict) -> list[str]:
             continue
 
         raise ValueError(f"Unsupported macro arity for {macro_name}: {arity}")
+
+    for macro_name in STYLE_LAYOUT_MACRO_STYLES:
+        arity = MACRO_ARITIES[macro_name]
+        default_style = theme["macros"][macro_name]["default_style"]
+        default_layout = theme["macros"][macro_name]["default_layout"]
+        if arity == 1:
+            wrappers.append(
+                rf"\NewDocumentCommand{{\{macro_name}}}{{O{{{default_style}}}O{{{default_layout}}}m}}{{%"
+            )
+            wrappers.append(
+                rf"  \resumedispatchpairone{{{macro_name}}}{{#1}}{{#2}}{{#3}}%"
+            )
+            wrappers.append(r"}")
+            continue
+
+        if arity == 2:
+            wrappers.append(
+                rf"\NewDocumentCommand{{\{macro_name}}}{{O{{{default_style}}}O{{{default_layout}}}mm}}{{%"
+            )
+            wrappers.append(
+                rf"  \resumedispatchpairtwo{{{macro_name}}}{{#1}}{{#2}}{{#3}}{{#4}}%"
+            )
+            wrappers.append(r"}")
+            continue
+
+        if arity == 4:
+            wrappers.append(
+                rf"\NewDocumentCommand{{\{macro_name}}}{{O{{{default_style}}}O{{{default_layout}}}mmmm}}{{%"
+            )
+            wrappers.append(
+                rf"  \resumedispatchpairfour{{{macro_name}}}{{#1}}{{#2}}{{#3}}{{#4}}{{#5}}{{#6}}%"
+            )
+            wrappers.append(r"}")
+            continue
+
+        raise ValueError(f"Unsupported macro arity for {macro_name}: {arity}")
+
     return wrappers
 
 
@@ -723,6 +959,11 @@ def generate_dispatch_helpers() -> list[str]:
         r"    Define the variant in the active theme or remove the optional argument.%",
         r"  }%",
         r"}",
+        r"\newcommand{\resumeunknownstylelayout}[3]{%",
+        r"  \ClassError{resume}{Unknown #1 style/layout '#2'/'#3'}{%",
+        r"    Define the style and layout in the active theme or remove the optional arguments.%",
+        r"  }%",
+        r"}",
         r"\newcommand{\resumedispatchone}[3]{%",
         r"  \@ifundefined{resume@#1@#2}{%",
         r"    \resumeunknownvariant{#1}{#2}%",
@@ -742,6 +983,27 @@ def generate_dispatch_helpers() -> list[str]:
         r"    \resumeunknownvariant{#1}{#2}%",
         r"  }{%",
         r"    \csname resume@#1@#2\endcsname{#3}{#4}{#5}{#6}%",
+        r"  }%",
+        r"}",
+        r"\newcommand{\resumedispatchpairone}[4]{%",
+        r"  \@ifundefined{resume@#1@#2@#3}{%",
+        r"    \resumeunknownstylelayout{#1}{#2}{#3}%",
+        r"  }{%",
+        r"    \csname resume@#1@#2@#3\endcsname{#4}%",
+        r"  }%",
+        r"}",
+        r"\newcommand{\resumedispatchpairtwo}[5]{%",
+        r"  \@ifundefined{resume@#1@#2@#3}{%",
+        r"    \resumeunknownstylelayout{#1}{#2}{#3}%",
+        r"  }{%",
+        r"    \csname resume@#1@#2@#3\endcsname{#4}{#5}%",
+        r"  }%",
+        r"}",
+        r"\newcommand{\resumedispatchpairfour}[7]{%",
+        r"  \@ifundefined{resume@#1@#2@#3}{%",
+        r"    \resumeunknownstylelayout{#1}{#2}{#3}%",
+        r"  }{%",
+        r"    \csname resume@#1@#2@#3\endcsname{#4}{#5}{#6}{#7}%",
         r"  }%",
         r"}",
         r"\makeatother",
@@ -786,7 +1048,7 @@ def generate_class(theme: dict) -> str:
     lines.append("")
     lines.extend(generate_dispatch_helpers())
     lines.append("")
-    lines.extend(generate_macro_variant_definitions(theme))
+    lines.extend(generate_macro_definitions(theme))
     lines.append("")
     lines.extend(generate_macro_dispatchers(theme))
     lines.append(r"\newcommand{\cvblocksep}[1]{\par\addvspace{#1}}")
@@ -801,15 +1063,23 @@ _DATE_ORDERS = {
     "fr": "{month}/{year}",
     "en": "{year}/{month}",
 }
+_ONGOING_DATE_LABELS = {
+    "fr": "présent",
+    "en": "present",
+}
+_ONGOING_DATE_VALUES = frozenset(_ONGOING_DATE_LABELS.values())
 
 
 def make_format_date(lang: str):
     fmt = _DATE_ORDERS.get(lang, _DATE_ORDERS["en"])
+    ongoing_label = _ONGOING_DATE_LABELS.get(lang, _ONGOING_DATE_LABELS["en"])
 
     def format_date(value: str) -> str:
         if value and re.fullmatch(r"\d{4}-\d{2}", value):
             year, month = value.split("-")
             return fmt.format(year=year, month=month)
+        if value in _ONGOING_DATE_VALUES:
+            return ongoing_label
         return value if value else ""
 
     return format_date
@@ -863,8 +1133,8 @@ def compile_pdf(output_dir: Path) -> None:
         raise RuntimeError("LuaLaTeX compilation failed")
 
 
-def build(theme_name: str, layout: str, output_dir: Path) -> None:
-    resume = load_yaml(DATA_PATH)
+def build(theme_name: str, layout: str, output_dir: Path, data_path: Path = DATA_PATH) -> None:
+    resume = load_yaml(data_path)
     schema = load_yaml(SCHEMA_PATH)
     theme_path = THEMES_DIR / f"{theme_name}.yaml"
     if not theme_path.exists():
@@ -898,13 +1168,20 @@ def parse_args() -> argparse.Namespace:
         default=OUTPUT_DIR,
         help="Output directory (default: out)",
     )
+    parser.add_argument(
+        "--data",
+        type=Path,
+        default=DATA_PATH,
+        help="Path to resume YAML data file (default: data/resume.yaml)",
+    )
     return parser.parse_args()
 
 
 def main() -> None:
     try:
-        theme, layout, output_dir = resolve_args(parse_args())
-        build(theme, layout, output_dir)
+        args = parse_args()
+        theme, layout, output_dir = resolve_args(args)
+        build(theme, layout, output_dir, data_path=args.data)
     except Exception as exc:
         print(f"Error: {exc}")
         sys.exit(1)
