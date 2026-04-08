@@ -1,0 +1,112 @@
+meta:
+  name: "Pierre Lepagnol, PhD."
+  title: "ML Scientist — LLM Evaluation & Human Preference"
+  lang: "fr"
+  email: "pierre@lepagnol.net"
+  phone: "+33 6 72 18 80 01"
+  location: "Paris, France"
+  linkedin: "pierre-lepagnol"
+  github: "PierreLepagnol"
+  huggingface: "PierreLepagnol"
+  portfolio: "https://pierre.lepagnol.net"
+  show_summary: true
+
+summary: >
+  Passionate about **open science** and understanding what makes AI models genuinely useful.
+  I aim building rigorous evaluation protocols, publish reproducible research and bridging applied research with production systems.
+
+experience:
+  - company: "SCIAM"
+    role: "NLP Researcher and Data Science Consultant"
+    start: "2022-02"
+    end: "present"
+    highlights:
+      - "Designed and built LLM evaluation pipelines covering classification, NER, sentiment, and intent — including few-shot and zero-shot benchmarks across model families."
+      - "Developed novel evaluation protocols and metrics to assess LLM output quality beyond standard accuracy benchmarks."
+      - "Fine-tuned small language models (under 500M parameters) for NER on financial documents, rigorously evaluating trade-offs between model size, accuracy, and inference cost."
+      - "Studied LLM data contamination and reliability, designing detection frameworks to ensure evaluation integrity."
+      - "Published four international papers across LREC-COLING, Interspeech, TALN, and LREC."
+
+  - company: "Direction Génerale de l'Armement (DGA-MI)"
+    role: "Deep Learning Research Engineer - Cybersecurity"
+    start: "2021-04"
+    end: "2021-09"
+    highlights:
+      - "Designed and trained a 150M-parameter model with a novel training objective for side-channel attacks, reaching 85 percent accuracy on held-out data."
+      - "Conducted rigorous ablation studies on model architecture and training scheme."
+      - "Deployed optimized inference on Jetson Nano under tight latency and memory limits."
+
+  - company: "Societe Génerale"
+    role: "Data Scientist"
+    start: "2017-02"
+    end: "2017-09"
+    highlights:
+      - "Building scoring models for customers (Python, PySpark & Scikit-learn)"
+      - "Text Clustering (TF-IDF / Kmeans / HDBSCAN) and Statistical Testing"
+      - "Data Science Team Training: Imbalanced Classification, Deep Learning, Autoencoders, Data Augmentation (SMOTE, ADASYN, etc.)"
+
+education:
+  - institution: "LISN - Paris-Saclay University"
+    degree: "PhD in Natural Language Processing"
+    year: "2023-2026"
+
+  - institution: "University of Rennes/INSA/ENSAI"
+    degree: "MSc in Applied Maths and Statistics"
+    year: "2019-2021"
+
+publications:
+  - title: "Small Language Models are Good Too: An Empirical Study of Zero-Shot Classification"
+    venue: "LREC-COLING"
+    year: 2024
+    url: "https://aclanthology.org/2024.lrec-main.1299.pdf"
+
+  - title: "Leveraging IR to Enhance SLU Prompts in Few-Shot Learning"
+    venue: "Interspeech"
+    year: 2025
+    url: "https://arxiv.org/pdf/2506.03035"
+
+  - title: "Détection des contaminations de LLM par extraction de données : une revue de littérature pratique"
+    venue: "TALN"
+    year: 2025
+    url: "https://inria.hal.science/hal-05330614v1"
+
+  - title: "Format Matters: A Critical Evaluation of Output Formats for Prompting LLMs in SLU and NER"
+    venue: "LREC"
+    year: 2026
+    url: "https://hal.science/hal-05546569"
+
+projects:
+  - title: "LLM Evaluation Pipeline (Open Source)"
+    details: "Open-sourced reproducible benchmarking tooling for NLP tasks; covers dataset design, few-shot protocols, and rigorous evaluation across model families."
+  - title: "LLM Reliability and Data Leakage Watch"
+    details: "Studied contamination detection and benchmark integrity, designing statistical frameworks to detect training data leakage in LLM evaluation."
+  - title: "Fine-Tuning & Preference Alignment Experiments"
+    details: "Fine-tuned LLMs with LoRA and Unsloth; studied robustness of preference-aligned models under distribution shift."
+
+skills:
+  - category: "Programming Languages"
+    items: ["Python", "C"]
+  - category: "ML & Deep Learning"
+    items: ["PyTorch", "Transformers", "LoRA / PEFT", "Unsloth"]
+  - category: "LLM Evaluation & Benchmarking"
+    items:
+      [
+        "Benchmark Design",
+        "Few-Shot Protocols",
+        "Statistical Evaluation",
+        "Contamination Detection",
+      ]
+  - category: "Generative AI & LLM"
+    items: ["vLLM", "Hugging Face", "LangChain", "PydanticAI"]
+  - category: "Cloud & DevOps"
+    items: ["AWS", "GCP", "Docker", "SLURM"]
+  - category: "Data"
+    items: ["SQL", "MongoDB", "PySpark"]
+
+languages:
+  - name: "French"
+    level: "Native"
+  - name: "English"
+    level: "Professional"
+  - name: "German"
+    level: "Basic"

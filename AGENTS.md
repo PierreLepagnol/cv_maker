@@ -88,7 +88,7 @@ curriculum_vitae/
 │   ├── cv_style_industry.sty
 │   ├── cv_style_sciam.sty
 │   ├── fonts/               # Vendored fonts (Roboto, FontAwesome)
-│   ├── profile.png          # Optional profile photo
+│   ├── profile.jpg          # Optional profile photo
 │   └── huggingface.svg      # Optional HF icon
 ├── data/                    # JSON source files (user-editable)
 ├── config/                  # CV variant configurations

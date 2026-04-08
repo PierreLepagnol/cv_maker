@@ -158,6 +158,12 @@ STYLE_LAYOUT_MACRO_LAYOUTS = {
             "bottom_gap": "entry_gap",
             "bottom_mode": "linebreak",
         },
+        "inline_left": {
+            "mode": "inline_left",
+            "line_gap": "tight_spacing",
+            "bottom_gap": "entry_gap",
+            "bottom_mode": "linebreak",
+        },
         "stacked": {
             "mode": "stacked",
             "line_gap": "project_spacing",
@@ -182,9 +188,7 @@ STYLE_LAYOUT_MACRO_LAYOUTS = {
         },
     },
 }
-TEXT_MACRO_DEFAULT_VARIANT_NAMES = {
-    name: "standard" for name in TEXT_MACRO_VARIANTS
-}
+TEXT_MACRO_DEFAULT_VARIANT_NAMES = {name: "standard" for name in TEXT_MACRO_VARIANTS}
 STYLE_LAYOUT_DEFAULT_STYLE_NAME = "base"
 STYLE_LAYOUT_DEFAULT_LAYOUT_NAMES = {
     "cventry": "standard",
@@ -211,7 +215,7 @@ LAYOUT_FIELD_ENUMS = {
     "bottom_mode": {"linebreak", "paragraph"},
 }
 LAYOUT_MODE_VALUES = {
-    "cventry": {"standard", "stacked", "inline"},
+    "cventry": {"standard", "stacked", "inline", "inline_left"},
     "cvskill": {"inline", "stacked"},
     "cvsectiontitle": {"standard", "sidebar"},
 }
@@ -244,6 +248,13 @@ def latex_escape(text: str) -> str:
     for char, escaped in LATEX_ESCAPES.items():
         value = value.replace(char, escaped)
     return value.strip()
+
+
+def md_to_latex(text: str) -> str:
+    """Convert a subset of Markdown to LaTeX (currently: **bold**)."""
+    value = latex_escape(text)
+    value = re.sub(r"\*\*(.+?)\*\*", r"\\textbf{\1}", value)
+    return value
 
 
 def latex_href(url: str, label: str) -> str:
@@ -344,7 +355,9 @@ def normalize_style_layout_macro(macro_name: str, macro_config: dict) -> dict:
     raw_layouts = macro_config.get("layouts", {})
 
     base_style = STYLE_LAYOUT_MACRO_STYLES[macro_name]
-    base_input = merge_dicts(base_style, raw_styles.get(STYLE_LAYOUT_DEFAULT_STYLE_NAME, {}))
+    base_input = merge_dicts(
+        base_style, raw_styles.get(STYLE_LAYOUT_DEFAULT_STYLE_NAME, {})
+    )
     styles = {STYLE_LAYOUT_DEFAULT_STYLE_NAME: base_input}
     for style_name, style_values in raw_styles.items():
         if style_name == STYLE_LAYOUT_DEFAULT_STYLE_NAME:
@@ -354,11 +367,15 @@ def normalize_style_layout_macro(macro_name: str, macro_config: dict) -> dict:
     layouts = {}
     for layout_name, base_layout in STYLE_LAYOUT_MACRO_LAYOUTS[macro_name].items():
         layout_input = merge_dicts(base_layout, raw_layouts.get(layout_name, {}))
-        layouts[layout_name] = resolve_layout_config(macro_name, layout_name, layout_input)
+        layouts[layout_name] = resolve_layout_config(
+            macro_name, layout_name, layout_input
+        )
     for layout_name, layout_values in raw_layouts.items():
         if layout_name in layouts:
             continue
-        layouts[layout_name] = resolve_layout_config(macro_name, layout_name, layout_values)
+        layouts[layout_name] = resolve_layout_config(
+            macro_name, layout_name, layout_values
+        )
 
     return {
         "default_style": macro_config.get(
@@ -459,9 +476,7 @@ def validate_style_fields(
         validate_common_field(theme, owner, field_name, value)
 
 
-def validate_layout_fields(
-    macro_name: str, layout_name: str, layout: dict
-) -> None:
+def validate_layout_fields(macro_name: str, layout_name: str, layout: dict) -> None:
     allowed_keys = STYLE_LAYOUT_LAYOUT_KEYS[macro_name]
     unknown_keys = sorted(set(layout) - allowed_keys)
     if unknown_keys:
@@ -698,6 +713,16 @@ def build_entry_variant_body(theme: dict, variant: dict) -> str:
   {line1_left}
   \hfill
   \ifstrempty{{#3}}{{}}{{{line2_left}\ifstrempty{{#2}}{{}}{{,\ }}}}{line1_right}
+  {entry_tail}
+}}
+""".strip()
+
+    if variant["mode"] == "inline_left":
+        return rf"""
+{{
+  {line1_left}\ifstrempty{{#3}}{{}}{{,\ {line2_left}}}
+  \hfill
+  {line1_right}
   {entry_tail}
 }}
 """.strip()
@@ -1036,6 +1061,7 @@ def generate_class(theme: dict) -> str:
         r"\RequirePackage{etoolbox}",
         r"\RequirePackage{xparse}",
         r"\RequirePackage{graphicx}",
+        r"\RequirePackage{tikz}",
         r"\pagestyle{empty}",
         r"\setlength{\parindent}{0pt}",
         r"\setlength{\parskip}{0pt}",
@@ -1088,6 +1114,7 @@ def make_format_date(lang: str):
 def render_text(template_text: str, resume: dict, theme: dict, layout: str) -> str:
     env = Environment(undefined=StrictUndefined, trim_blocks=True, lstrip_blocks=True)
     env.filters["latex_escape"] = latex_escape
+    env.filters["md_to_latex"] = md_to_latex
     env.filters["format_date"] = make_format_date(
         resume.get("meta", {}).get("lang", "en")
     )
@@ -1100,7 +1127,7 @@ def copy_assets(output_dir: Path) -> None:
     fonts_src = CV_DIR / "fonts"
     if fonts_src.exists():
         shutil.copytree(fonts_src, output_dir / "fonts", dirs_exist_ok=True)
-    for asset_name in ["profile.png"]:
+    for asset_name in ["profile.jpg"]:
         asset = CV_DIR / asset_name
         if asset.exists():
             shutil.copy2(asset, output_dir / asset.name)
@@ -1133,7 +1160,9 @@ def compile_pdf(output_dir: Path) -> None:
         raise RuntimeError("LuaLaTeX compilation failed")
 
 
-def build(theme_name: str, layout: str, output_dir: Path, data_path: Path = DATA_PATH) -> None:
+def build(
+    theme_name: str, layout: str, output_dir: Path, data_path: Path = DATA_PATH
+) -> None:
     resume = load_yaml(data_path)
     schema = load_yaml(SCHEMA_PATH)
     theme_path = THEMES_DIR / f"{theme_name}.yaml"

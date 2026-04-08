@@ -3,14 +3,14 @@
 {% set is_two_column = layout in ['twocol', 'twocol-footer'] %}
 
 {% macro render_summary(text) %}
-\cvbody[lead]{ {{ text | latex_escape }} }
+\cvbody[lead]{ {{ text | md_to_latex }} }
 {% endmacro %}
 
 {% macro render_experience(items) %}
 \cvsectiontitle[{{ 'aside' if is_two_column else 'base' }}][{{ 'sidebar' if is_two_column else 'standard' }}]{Experience}
 {% for exp in items %}
 {% if not loop.first %}\cvblocksep{ {{- theme.rules.block_spacing -}} }{% endif %}
-\par\cventry[base][standard]
+\par\cventry[base][{{ 'standard' if is_two_column else 'inline_left' }}]
   { {{ exp.role | latex_escape }} }
   { {{ exp.start | format_date }}-{{ exp.end | default('present') | format_date }} }
   { {{ exp.company | latex_escape }} }
@@ -25,7 +25,7 @@
 \cvsectiontitle[{{ 'aside' if is_two_column else 'base' }}][{{ 'sidebar' if is_two_column else 'standard' }}]{Education}
 {% for edu in items %}
 {% if not loop.first %}\cvblocksep{ {{- theme.rules.block_spacing -}} }{% endif %}
-\par\cventry[base][standard]
+\par\cventry[base][{{ 'standard' if is_two_column else 'inline_left' }}]
   { {{ edu.degree | latex_escape }} }
   { {{ edu.year | string | latex_escape }} }
   { {{ edu.institution | latex_escape }} }
@@ -105,19 +105,23 @@
 \hfill
 \begin{minipage}[c]{0.15\textwidth}
 \raggedleft
-\includegraphics[width=\linewidth,clip,trim=0 0 0 0]{profile.png}
+\begin{tikzpicture}
+  \clip[rounded corners=6pt] (0,0) rectangle (\linewidth,\linewidth);
+  \node[anchor=south west,inner sep=0] at (0,0) {\includegraphics[width=\linewidth]{profile.jpg}};
+\end{tikzpicture}
 \end{minipage}
 
 \vspace{ {{- theme.rules.header_bottom_gap -}} }
 
 {% if layout == 'single' %}
-{% if summary | default('') and meta.show_summary | default(true) != false %}{{- render_summary(summary) }}{% endif %}
+{% if summary | default('') and meta.show_summary | default(true) != false %}{{- render_summary(summary) }}
+\vspace{ {{- theme.rules.section_spacing -}} }
+{% endif %}
+{{- render_skills(skills) }}
 {{- render_experience(experience) }}
 {{- render_education(education) }}
 {{- render_publications(publications | default([])) }}
 {{- render_projects(projects | default([])) }}
-{{- render_skills(skills) }}
-{{- render_languages(languages | default([])) }}
 {% elif layout == 'twocol' %}
 \begin{paracol}{2}
 {{- render_skills(skills) }}

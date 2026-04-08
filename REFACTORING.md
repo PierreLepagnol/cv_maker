@@ -151,7 +151,7 @@ Usage: `\documentclass{lepagnolcv}` + `\usepackage{cv_style_academic}`
 2. Update `config/academic.json` and `config/industry.json`: change `template_source` to `"cv"`, update `main_template` to reference `templates/`
 3. Update Makefile with `sciam` target
 4. Update `.gitignore` if needed
-5. Copy assets (profile.png, huggingface.svg) to appropriate locations
+5. Copy assets (profile.jpg, huggingface.svg) to appropriate locations
 
 **Verification:** `make all` builds all 3 variants successfully.
 

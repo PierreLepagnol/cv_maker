@@ -28,7 +28,7 @@ experience:
       - "Prototyped retrieval-augmented generation systems and efficient inference stacks with Hugging Face, vLLM, and APIs."
       - "Published four international papers across LREC-COLING, Interspeech, TALN, and LREC."
 
-  - company: "Direction Generale de l'Armement (DGA-MI)"
+  - company: "Direction Génerale de l'Armement (DGA-MI)"
     role: "Deep Learning Research Engineer - Cybersecurity"
     start: "2021-04"
     end: "2021-09"
@@ -37,7 +37,7 @@ experience:
       - "Studied adversarial robustness and hardware deployment constraints for embedded systems."
       - "Deployed optimized inference on Jetson Nano under tight latency and memory limits."
 
-  - company: "Societe Generale"
+  - company: "Societe Génerale"
     role: "Data Scientist"
     start: "2017-02"
     end: "2017-09"
@@ -48,7 +48,7 @@ experience:
 education:
   - institution: "LISN - Paris-Saclay University"
     degree: "PhD in Natural Language Processing"
-    year: "2023-present"
+    year: "2023-2026"
 
   - institution: "University of Rennes/INSA/ENSAI"
     degree: "MSc in Applied Maths and Statistics"

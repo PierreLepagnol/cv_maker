@@ -1,6 +1,6 @@
 MAKEFLAGS += -j
 
-DATA ?= data/resume.yaml
+DATA ?= data/resume-arena.yaml
 
 .PHONY: academic industry industry-footer sciam \
         academic-single academic-twocol academic-twocol-footer \
