@@ -1,0 +1,120 @@
+meta:
+  name: "Pierre Lepagnol, PhD."
+  title: "Forward Deployed Engineer - LLM Systems, Delivery & Production Reliability"
+  lang: "en"
+  email: "pierre@lepagnol.net"
+  phone: "+33 6 72 18 80 01"
+  location: "Paris, France"
+  linkedin: "pierre-lepagnol"
+  github: "PierreLepagnol"
+  huggingface: "PierreLepagnol"
+  portfolio: "https://pierre.lepagnol.net"
+  show_summary: false
+
+summary: >
+  AI engineer and consultant focused on deploying LLM-powered systems from
+  prototype to production. I work at the intersection of applied research,
+  customer delivery, and engineering: scoping use cases, building evaluation
+  pipelines, integrating models into practical workflows, and improving system
+  reliability under real-world constraints.
+
+experience:
+  - company: "LISN Lab, Paris-Saclay University"
+    role: "PhD Student"
+    start: "2022-02"
+    end: "present"
+    highlights:
+      - "Designed and built LLM evaluation pipelines across classical NLP tasks (classification, NER, sentiment)."
+      - "Studied model reliability through experiments on prompt sensitivity, output-format effects, and benchmark design, with a focus on reproducible evaluation."
+      - "Worked on Jean-Zay Supercomputer (1,456 x H100, 416 x A100, 1,832 x V100)"
+      - "Published four international papers across LREC-COLING 2024, Interspeech 2025, LREC 2026."
+
+  - company: "SCIAM"
+    role: "AI Engineer Consultant"
+    start: "2022-02"
+    end: "present"
+    highlights:
+      - "Delivered AI and NLP solutions as a consultant, translating ambiguous business needs into scoped experiments, deployable systems, and measurable outcomes."
+      - "Prototyped RAG systems and efficient inference stacks with Hugging Face, vLLM, and APIs for real production constraints."
+      - "Built LLM evaluation pipelines and few-shot benchmarks across classical NLP tasks to guide model and product decisions."
+      - "Fine-tuned compact language models for NER balancing quality, latency, and deployment cost under tight constraints."
+
+  - company: "French Ministry of Army - Direction Générale de l'Armement"
+    role: "AI Research Engineer - Cybersecurity"
+    start: "2021-04"
+    end: "2021-09"
+    highlights:
+      - "Designed and trained a 26M-parameter ResNet50 for side-channel attacks, reaching 85 percent accuracy on held-out data."
+      - "Studied adversarial robustness and hardware deployment constraints for embedded systems in critical environments."
+      - "Deployed optimized inference on Nvidia Jetson Nano under tight latency and memory limits."
+
+  - company: "Société Générale"
+    role: "Data Scientist"
+    start: "2017-02"
+    end: "2017-09"
+    highlights:
+      - "Developed customer scoring models using Python, PySpark, and Scikit-learn."
+      - "Performed text clustering using TF-IDF, K-means, embeddings, UMAP, and HDBSCAN."
+      - "Provided internal Data Science training on imbalanced classification, Deep Learning, Autoencoders, and Tabular Data Augmentation."
+
+education:
+  - institution: "LISN - Paris-Saclay University"
+    degree: "PhD in Natural Language Processing"
+    year: "2023-2026"
+
+  - institution: "University of Rennes/INSA/ENSAI"
+    degree: "MSc in Applied Maths and Statistics"
+    year: "2019-2021"
+
+publications:
+  - title: "Small Language Models are Good Too: An Empirical Study of Zero-Shot Classification"
+    venue: "LREC-COLING"
+    year: 2024
+    url: "https://aclanthology.org/2024.lrec-main.1299.pdf"
+
+  - title: "Leveraging IR to Enhance SLU Prompts in Few-Shot Learning"
+    venue: "Interspeech"
+    year: 2025
+    url: "https://arxiv.org/pdf/2506.03035"
+
+  - title: "Détection des contaminations de LLM par extraction de données : une revue de littérature pratique"
+    venue: "TALN"
+    year: 2025
+    url: "https://inria.hal.science/hal-05330614v1"
+
+  - title: "Format Matters: A Critical Evaluation of Output Formats for Prompting LLMs in SLU and NER"
+    venue: "LREC"
+    year: 2026
+    url: "https://hal.science/hal-05546569"
+
+  - title: "Small generative models for industrial applications"
+    venue: "My thesis manuscript"
+    year: 2026
+    url: "https://theses.hal.science/tel-05572429"
+
+projects:
+  - title: "RAG Prototyping with LangChain"
+    details: "Built document QA pipelines and evaluated retrieval quality and answer faithfulness for practical business workflows."
+  - title: "Fine-Tuning Tiny Models for On-Device Inference"
+    details: "Optimized sub-500M models for mobile and edge deployment and published checkpoints on Hugging Face."
+  - title: "LLM Reliability and Data Leakage Watch"
+    details: "Studied contamination detection, inversion attacks, and fine-tuning robustness to better understand failure modes in deployed LLM systems."
+
+skills:
+  - category: "Programming"
+    items: ["Python", "C", "SQL"]
+  - category: "LLM Systems & Delivery"
+    items:
+      [
+        "Hugging Face",
+        "vLLM",
+        "LangChain",
+        "API Integration",
+        "RAG Prototyping",
+      ]
+  - category: "ML & Deployment"
+    items: ["PyTorch", "Docker", "Linux", "SLURM", "Inference Optimization"]
+  - category: "Collaboration"
+    items: ["Technical Consulting", "Research-to-Production Handoffs"]
+  - category: "Languages"
+    items: ["French (Native)", "English (Professional)", "German (Basic)"]

@@ -51,7 +51,7 @@
 {% macro render_projects(items) %}
 \cvsectiontitle[{{ 'aside' if is_two_column else 'base' }}][{{ 'sidebar' if is_two_column else 'standard' }}]{Projects}
 {% for project in items %}
-{% if not loop.first %}\cvblocksep{ {{- theme.rules.project_spacing -}} }{% endif %}
+{% if not loop.first %}\cvblocksep{ {{- theme.rules.project_item_spacing -}} }{% endif %}
 \par\cventry[base][stacked]
   { {{ project.title | latex_escape }} }
   {}

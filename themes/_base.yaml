@@ -37,6 +37,7 @@ rules:
   column_ratios: [0.36, 0.64]
   tight_spacing: "0pt"
   project_spacing: "-3pt"
+  project_item_spacing: "-7pt"
   stack_gap: "1pt"
   entry_gap: "0pt"
   block_spacing: "-10pt"

@@ -1,7 +1,7 @@
 meta:
   name: "Pierre Lepagnol, PhD."
-  title: "ML Scientist — LLM Evaluation & Human Preference"
-  lang: "fr"
+  title: "ML Scientist - Evaluation, Human Preference & Model Reliability"
+  lang: "en"
   email: "pierre@lepagnol.net"
   phone: "+33 6 72 18 80 01"
   location: "Paris, France"
@@ -9,41 +9,53 @@ meta:
   github: "PierreLepagnol"
   huggingface: "PierreLepagnol"
   portfolio: "https://pierre.lepagnol.net"
-  show_summary: true
+  show_summary: false
 
 summary: >
-  Passionate about **open science** and understanding what makes AI models genuinely useful.
-  I aim building rigorous evaluation protocols, publish reproducible research and bridging applied research with production systems.
+  Research engineer focused on open science, LLM evaluation, and understanding
+  what makes models genuinely useful to people. I design rigorous experiments,
+  statistical evaluation protocols, and reproducible tooling to study model
+  behavior across reasoning, style, robustness, and reliability in real-world
+  settings.
 
 experience:
-  - company: "SCIAM"
-    role: "NLP Researcher and Data Science Consultant"
+  - company: "LISN Lab"
+    role: "PhD Student"
     start: "2022-02"
     end: "present"
     highlights:
-      - "Designed and built LLM evaluation pipelines covering classification, NER, sentiment, and intent — including few-shot and zero-shot benchmarks across model families."
-      - "Developed novel evaluation protocols and metrics to assess LLM output quality beyond standard accuracy benchmarks."
-      - "Fine-tuned small language models (under 500M parameters) for NER on financial documents, rigorously evaluating trade-offs between model size, accuracy, and inference cost."
-      - "Studied LLM data contamination and reliability, designing detection frameworks to ensure evaluation integrity."
-      - "Published four international papers across LREC-COLING, Interspeech, TALN, and LREC."
+      - "Designed and built LLM evaluation pipelines across classical NLP tasks, including different benchmarking protocols."
+      - "Studied model reliability through experiments on prompt sensitivity, output-format effects, with a focus on reproducible evaluation."
+      - "Worked on Jean-Zay Supercomputer (1,456 x H100, 416 x A100, 1,832 x V100)"
+      - "Published four international papers across LREC-COLING 2024, Interspeech 2025, LREC 2026."
 
-  - company: "Direction Génerale de l'Armement (DGA-MI)"
-    role: "Deep Learning Research Engineer - Cybersecurity"
+  - company: "SCIAM"
+    role: "AI Research Consultant"
+    start: "2022-02"
+    end: "present"
+    highlights:
+      - "Fine-tuned small language models for NER and analyzed trade-offs between capability, cost, and deployment constraints."
+      - "Architected RAG systems and optimized LLM inference using vLLM and Hugging Face APIs."
+      - "Migrated data analysis and data science projects from SAS to Python."
+      - "Utilized advanced Pandas, PostgreSQL, and Object-Oriented Programming (OOP)."
+
+  - company: "French Ministry of Army - Direction Générale de l'Armement"
+    role: "AI Research Engineer - Cybersecurity"
     start: "2021-04"
     end: "2021-09"
     highlights:
-      - "Designed and trained a 150M-parameter model with a novel training objective for side-channel attacks, reaching 85 percent accuracy on held-out data."
-      - "Conducted rigorous ablation studies on model architecture and training scheme."
-      - "Deployed optimized inference on Jetson Nano under tight latency and memory limits."
+      - "Designed and trained a 26M-parameter ResNet50 for side-channel attacks, reaching 85 percent accuracy on held-out data."
+      - "Studied adversarial robustness and hardware deployment constraints for embedded systems in critical environments."
+      - "Deployed optimized inference on Nvidia Jetson Nano under tight latency and memory limits."
 
-  - company: "Societe Génerale"
+  - company: "Société Générale"
     role: "Data Scientist"
     start: "2017-02"
     end: "2017-09"
     highlights:
-      - "Building scoring models for customers (Python, PySpark & Scikit-learn)"
-      - "Text Clustering (TF-IDF / Kmeans / HDBSCAN) and Statistical Testing"
-      - "Data Science Team Training: Imbalanced Classification, Deep Learning, Autoencoders, Data Augmentation (SMOTE, ADASYN, etc.)"
+      - "Developed customer scoring models using Python, PySpark, and Scikit-learn."
+      - "Performed text clustering using TF-IDF, K-means, embeddings, UMAP, and HDBSCAN."
+      - "Provided internal Data Science training on imbalanced classification, Deep Learning, Autoencoders, and Tabular Data Augmentation."
 
 education:
   - institution: "LISN - Paris-Saclay University"
@@ -75,13 +87,18 @@ publications:
     year: 2026
     url: "https://hal.science/hal-05546569"
 
+  - title: "Small generative models for industrial applications"
+    venue: "My thesis manuscript"
+    year: 2026
+    url: "https://theses.hal.science/tel-05572429"
+
 projects:
-  - title: "LLM Evaluation Pipeline (Open Source)"
-    details: "Open-sourced reproducible benchmarking tooling for NLP tasks; covers dataset design, few-shot protocols, and rigorous evaluation across model families."
   - title: "LLM Reliability and Data Leakage Watch"
-    details: "Studied contamination detection and benchmark integrity, designing statistical frameworks to detect training data leakage in LLM evaluation."
+    details: "Studied contamination detection and benchmark integrity"
   - title: "Fine-Tuning & Preference Alignment Experiments"
-    details: "Fine-tuned LLMs with LoRA and Unsloth; studied robustness of preference-aligned models under distribution shift."
+    details: "Fine-tuned LLMs with parameter-efficient methods and studied how preference-aligned models distribution shifts."
+  - title: "Implementing and documenting scientific papers"
+    details: "Lastly : Cross-LoRA: A Data-Free LoRA Transfer Framework across Heterogeneous LLMs"
 
 skills:
   - category: "Programming Languages"
@@ -91,22 +108,18 @@ skills:
   - category: "LLM Evaluation & Benchmarking"
     items:
       [
-        "Benchmark Design",
-        "Few-Shot Protocols",
         "Statistical Evaluation",
+        "Robustness Analysis",
         "Contamination Detection",
       ]
+  - category: "Human Preference & Post-Training"
+    items:
+      ["SFT", "RLHF", "RLVR (GRPO)", "Preference Alignment", "Model Comparison"]
   - category: "Generative AI & LLM"
     items: ["vLLM", "Hugging Face", "LangChain", "PydanticAI"]
   - category: "Cloud & DevOps"
     items: ["AWS", "GCP", "Docker", "SLURM"]
   - category: "Data"
     items: ["SQL", "MongoDB", "PySpark"]
-
-languages:
-  - name: "French"
-    level: "Native"
-  - name: "English"
-    level: "Professional"
-  - name: "German"
-    level: "Basic"
+  - category: "Languages"
+    items: ["French (Native)", "English (Professional)", "German (Basic)"]

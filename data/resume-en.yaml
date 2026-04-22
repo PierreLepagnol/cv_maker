@@ -23,27 +23,28 @@ experience:
     start: "2022-02"
     end: "present"
     highlights:
-      - "Designed and fine-tuned small language models for NER on financial documents with production-grade accuracy under 500M parameters."
-      - "Built LLM evaluation pipelines and few-shot benchmarks across classification, NER, sentiment, and intent tasks."
-      - "Prototyped retrieval-augmented generation systems and efficient inference stacks with Hugging Face, vLLM, and APIs."
-      - "Published four international papers across LREC-COLING, Interspeech, TALN, and LREC."
+      - "Designed and built LLM evaluation pipelines across classification, NER, sentiment, and intent tasks, including few-shot and zero-shot benchmarking protocols."
+      - "Studied model reliability through experiments on prompt sensitivity, output-format effects, and benchmark design, with a focus on reproducible evaluation."
+      - "Worked on Jean-Zay Supercomputer (1,456 x H100, 416 x A100, 1,832 x V100)"
+      - "Published four international papers across LREC-COLING 2024, Interspeech 2025, LREC 2026."
 
-  - company: "Direction Génerale de l'Armement (DGA-MI)"
-    role: "Deep Learning Research Engineer - Cybersecurity"
+  - company: "French Ministry of Army - Direction Générale de l'Armement"
+    role: "AI Research Engineer - Cybersecurity"
     start: "2021-04"
     end: "2021-09"
     highlights:
-      - "Designed and trained a 150M-parameter model for side-channel attacks, reaching 85 percent accuracy on held-out data."
-      - "Studied adversarial robustness and hardware deployment constraints for embedded systems."
-      - "Deployed optimized inference on Jetson Nano under tight latency and memory limits."
+      - "Designed and trained a 26M-parameter ResNet50 for side-channel attacks, reaching 85 percent accuracy on held-out data."
+      - "Studied adversarial robustness and hardware deployment constraints for embedded systems in critical environments."
+      - "Deployed optimized inference on Nvidia Jetson Nano under tight latency and memory limits."
 
-  - company: "Societe Génerale"
+  - company: "Société Générale"
     role: "Data Scientist"
     start: "2017-02"
     end: "2017-09"
     highlights:
-      - "Built a customer churn indicator from transaction narratives using unsupervised text clustering."
-      - "Benchmarked imbalanced classification methods and shared practical training material with the data science team."
+      - "Developed customer scoring models using Python, PySpark, and Scikit-learn."
+      - "Performed text clustering using TF-IDF, K-means, embeddings, UMAP, and HDBSCAN."
+      - "Provided internal Data Science training on imbalanced classification, Deep Learning, Autoencoders, and Tabular Data Augmentation."
 
 education:
   - institution: "LISN - Paris-Saclay University"
@@ -75,6 +76,11 @@ publications:
     year: 2026
     url: "https://hal.science/hal-05546569"
 
+  - title: "Small generative models for industrial applications"
+    venue: "My thesis manuscript"
+    year: 2026
+    url: "https://theses.hal.science/tel-05572429"
+
 projects:
   - title: "Fine-Tuning Tiny Models for On-Device Inference"
     details: "Optimized sub-500M models for mobile and edge deployment and published checkpoints on Hugging Face."
@@ -100,11 +106,5 @@ skills:
     items: ["Linux", "Git", "SLURM"]
   - category: "Outils IA"
     items: ["Claude Code", "Open Code", "Cursor"]
-
-languages:
-  - name: "French"
-    level: "Native"
-  - name: "English"
-    level: "Professional"
-  - name: "German"
-    level: "Basic"
+  - category: "Languages"
+    items: ["French (Native)", "English (Professional)", "German (Basic)"]
