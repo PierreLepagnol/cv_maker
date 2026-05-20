@@ -8,6 +8,7 @@ meta:
   linkedin: "pierre-lepagnol"
   github: "PierreLepagnol"
   huggingface: "PierreLepagnol"
+  scholar: "_moUVX4AAAAJ"
   portfolio: "https://pierre.lepagnol.net"
   show_summary: false
 
@@ -20,7 +21,7 @@ summary: >
 experience:
   - company: "LISN Lab, Paris-Saclay University"
     role: "PhD Student"
-    start: "2022-02"
+    start: "2023-02"
     end: "present"
     highlights:
       - "Designed and built reproducible LLM evaluation pipelines across classification, NER, sentiment, and intent tasks, including few-shot and zero-shot benchmarking protocols."
@@ -108,7 +109,13 @@ skills:
     items: ["PyTorch", "Transformers", "Hugging Face", "vLLM", "Unsloth"]
   - category: "LLM Engineering"
     items:
-      ["Fine-Tuning", "Benchmark Design", "Few-Shot Evaluation", "Inference Optimization", "Reproducible Tooling"]
+      [
+        "Fine-Tuning",
+        "Benchmark Design",
+        "Few-Shot Evaluation",
+        "Inference Optimization",
+        "Reproducible Tooling",
+      ]
   - category: "Infra & Tooling"
     items: ["Linux", "Git", "Docker", "SLURM", "PySpark"]
   - category: "Languages"

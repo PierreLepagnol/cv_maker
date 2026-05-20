@@ -1,6 +1,6 @@
 meta:
   name: "Pierre Lepagnol, PhD."
-  title: "AI Scientist & Engineer"
+  title: "AI Research Engineer"
   lang: "en"
   email: "pierre@lepagnol.net"
   phone: "+33 6 72 18 80 01"
@@ -8,6 +8,7 @@ meta:
   linkedin: "pierre-lepagnol"
   github: "PierreLepagnol"
   huggingface: "PierreLepagnol"
+  scholar: "_moUVX4AAAAJ"
   portfolio: "https://pierre.lepagnol.net"
   show_summary: false
 
@@ -21,10 +22,10 @@ summary: >
 experience:
   - company: "LISN Lab"
     role: "PhD Student"
-    start: "2022-02"
+    start: "2023-02"
     end: "present"
     highlights:
-      - "Designed and built LLM evaluation pipelines across classical NLP tasks (classification, NER, sentiment analysis)."
+      - "Designed and built LLM evaluation pipelines across NLP tasks (classification, NER, sentiment analysis, chabot)."
       - "Studied model reliability through large-scale systematic experiments with a focus on reproducible evaluation."
       - "Worked on Jean-Zay Supercomputer (1,456 x H100, 416 x A100, 1,832 x V100)"
       - "Published four international papers across LREC-COLING 2024, Interspeech 2025, LREC 2026."
@@ -104,11 +105,12 @@ projects:
 
 skills:
   - category: "Programming Languages"
-    items: ["Python", "C", "English with OpenCode"]
-  - category: "Product AI & Evaluation"
+    items: ["Python", "C"]
+  - category: "AI & Evaluation"
     items: ["SFT", "RLVR", "RLHF", "LLM Evaluation", "Information Retrieval"]
   - category: "ML & LLM Systems"
-    items: ["PyTorch", "Hugging Face", "vLLM", "LangChain", "Unsloth"]
+    items:
+      ["PyTorch", "Hugging Face", "vLLM", "Unsloth", "CUDA Kernel (Learning)"]
   - category: "Optimization & Reliability"
     items:
       ["Small Language Models", "Robustness Analysis", "Few-Shot Benchmarking"]

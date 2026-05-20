@@ -44,7 +44,8 @@ rules:
   sidebar_rule_gap: "4pt"
   sidebar_spacing: "6pt"
   header_gap: "4pt"
-  header_bottom_gap: "12pt"
+  header_bottom_gap: "4pt"
+  header_bottom_gap_no_summary: "-6pt"
 
 macros:
   cvname:

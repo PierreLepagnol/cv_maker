@@ -8,6 +8,7 @@ meta:
   linkedin: "pierre-lepagnol"
   github: "PierreLepagnol"
   huggingface: "PierreLepagnol"
+  scholar: "_moUVX4AAAAJ"
   portfolio: "https://pierre.lepagnol.net"
   show_summary: false
 
@@ -21,7 +22,7 @@ summary: >
 experience:
   - company: "LISN Lab"
     role: "PhD Student"
-    start: "2022-02"
+    start: "2023-02"
     end: "present"
     highlights:
       - "Designed and built LLM evaluation pipelines across classical NLP tasks, including few-shot and zero-shot benchmarking protocols."

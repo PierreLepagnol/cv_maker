@@ -37,7 +37,7 @@
 {% endmacro %}
 
 {% macro render_publications(items) %}
-\cvsectiontitle[{{ 'aside' if is_two_column else 'base' }}][{{ 'sidebar' if is_two_column else 'standard' }}]{Publications}
+\cvsectiontitle[{{ 'aside' if is_two_column else 'base' }}][{{ 'sidebar' if is_two_column else 'standard' }}]{First-Author Publications}
 {% for paper in items %}
 {% if not loop.first %}\cvblocksep{ {{- theme.rules.block_spacing -}} }{% endif %}
 \par\cventry[base][inline]
@@ -86,6 +86,8 @@
 {% if meta.linkedin | default('') %}{% set link_parts = link_parts + ['\\raisebox{-0.1em}{\\includegraphics[height=0.8em]{linkedin}} linkedin.com/in/' ~ (meta.linkedin | latex_escape)] %}{% endif %}
 {% if meta.github | default('') %}{% set link_parts = link_parts + ['\\raisebox{-0.1em}{\\includegraphics[height=0.8em]{github}} github.com/' ~ (meta.github | latex_escape)] %}{% endif %}
 {% if meta.huggingface | default('') %}{% set link_parts = link_parts + ['\\raisebox{-0.1em}{\\includegraphics[height=0.8em]{huggingface}} hf.co/' ~ (meta.huggingface | latex_escape)] %}{% endif %}
+{% if meta.scholar | default('') %}{% set link_parts = link_parts + ['\\href{https://scholar.google.com/citations?user=' ~ meta.scholar ~ '}{\\raisebox{-0.1em}{\\includegraphics[height=0.8em]{scholar}} Google Scholar}'] %}{% endif %}
+{% if meta.portfolio | default('') %}{% set link_parts = link_parts + [meta.portfolio | latex_escape] %}{% endif %}
 
 \begin{minipage}[c]{0.82\textwidth}
 \cvname[hero]{ {{ meta.name | latex_escape }} }\\[{{ theme.rules.header_gap }}]
@@ -98,9 +100,6 @@
 {% if link_parts %}
 \cvmeta[links]{ {{ link_parts | join(' ~|~ ') }} }\\
 {% endif %}
-{% if meta.portfolio | default('') %}
-\cvmeta[links]{ {{ meta.portfolio | latex_escape }} }
-{% endif %}
 \end{minipage}%
 \hfill
 \begin{minipage}[c]{0.15\textwidth}
@@ -111,10 +110,11 @@
 \end{tikzpicture}
 \end{minipage}
 
-\vspace{ {{- theme.rules.header_bottom_gap -}} }
+{% set has_summary = (summary | default('')) and (meta.show_summary | default(true) != false) %}
+\vspace{ {{- theme.rules.header_bottom_gap if (has_summary or layout != 'single') else theme.rules.header_bottom_gap_no_summary | default('-6pt') -}} }
 
 {% if layout == 'single' %}
-{% if summary | default('') and meta.show_summary | default(true) != false %}{{- render_summary(summary) }}
+{% if has_summary %}{{- render_summary(summary) }}
 \vspace{ {{- theme.rules.section_spacing -}} }
 {% endif %}
 {{- render_skills(skills) }}
@@ -128,7 +128,7 @@
 {{- render_languages(languages | default([])) }}
 {{- render_education(education) }}
 \switchcolumn
-{% if summary | default('') and meta.show_summary | default(true) != false %}{{- render_summary(summary) }}{% endif %}
+{% if has_summary %}{{- render_summary(summary) }}{% endif %}
 {{- render_experience(experience) }}
 {{- render_publications(publications | default([])) }}
 {{- render_projects(projects | default([])) }}
@@ -139,7 +139,7 @@
 {{- render_languages(languages | default([])) }}
 {{- render_education(education) }}
 \switchcolumn
-{% if summary | default('') and meta.show_summary | default(true) != false %}{{- render_summary(summary) }}{% endif %}
+{% if has_summary %}{{- render_summary(summary) }}{% endif %}
 {{- render_experience(experience) }}
 \end{paracol}
 {{- render_publications(publications | default([])) }}

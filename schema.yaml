@@ -16,6 +16,7 @@ properties:
       linkedin: { type: string }
       github: { type: string }
       huggingface: { type: string }
+      scholar: { type: string }
       portfolio: { type: string }
       show_summary: { type: boolean }
   summary:

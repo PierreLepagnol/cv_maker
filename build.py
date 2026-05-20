@@ -1131,7 +1131,7 @@ def copy_assets(output_dir: Path) -> None:
         asset = CV_DIR / asset_name
         if asset.exists():
             shutil.copy2(asset, output_dir / asset.name)
-    for svg_name in ["github.svg", "huggingface.svg", "linkedin.svg"]:
+    for svg_name in ["github.svg", "huggingface.svg", "linkedin.svg", "scholar.svg"]:
         svg = CV_DIR / svg_name
         if svg.exists():
             pdf_out = output_dir / svg.with_suffix(".pdf").name
