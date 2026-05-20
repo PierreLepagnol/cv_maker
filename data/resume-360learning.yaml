@@ -8,14 +8,13 @@ meta:
   linkedin: "pierre-lepagnol"
   github: "PierreLepagnol"
   huggingface: "PierreLepagnol"
-  # scholar: "_moUVX4AAAAJ"
+  scholar: "_moUVX4AAAAJ"
   portfolio: "https://pierre.lepagnol.net"
   show_summary: true
 
 summary: >
   I'm an AI Engineer with 4 years of building LLM-powered products from prototype to production.
-  I design agentic systems, conversational search and evaluation pipelines that survive
-  real-world constraints: token costs, latency, hallucinations, and usage spikes.
+  I design agentic systems, conversational search and evaluation pipelines for real-world NLP apps.
   I own technical delivery end-to-end, no bullshit added.
 
 experience:
@@ -25,17 +24,17 @@ experience:
     end: "present"
     highlights:
       - "Built end-to-end LLM evaluation pipelines that accelerated model selection cycles."
-      - "Ran 1,000+ experiments across 20+ model families on Jean-Zay supercomputer (1,456 × H100, 416 × A100) quantifying performance-cost tradeoffs; reduced inference latency by 10x and costs by 100x through vLLM and SLM optimization."
-      - "Authored top AI conferences publications (Interspeech, LREC-COLING, TALN) on small generative models for industrial NLP; PhD thesis defended 2026."
+      - "Ran 1,000+ experiments across 20+ model families on Jean-Zay supercomputer (+1000 H100 GPUs) quantifying performance-cost tradeoffs; reduced inference latency by 10x and costs by 100x through vLLM and SLM optimization."
+      - "Authored top AI conferences publications (Interspeech, LREC-COLING, TALN) on small generative models for industrial NLP"
 
   - company: "SCIAM"
     role: "AI Research Consultant"
     start: "2022-02"
     end: "present"
     highlights:
-      - "Shipped in production client-facing agentic LLM chatbot for major French bank (+10,000 queries/month): owned the evaluation and optimization parts. Stack: Azure OpenAI, LangGraph, Azure AI Search with guardrails."
-      - "Designed enterprise RAG pipelines for document understanding and information extraction in incomming PDF in email. Owned : The design and implementation. 20 emails/day"
-      - "Devoxx 2026 Talk : Ranked 38th/259 talks for 'Small Language Models and when to use them'. This talk aimed to bridge AI engineering to product and business audiences on cost-quality tradeoffs and optimization."
+      - "Shipped in production client-facing agentic LLM chatbot for major French bank (+10,000 queries/month). Owned: evaluation and optimization stages. Stack: Azure OpenAI, LangGraph, Azure AI Search with guardrails."
+      - "Designed enterprise RAG pipelines for document understanding and information extraction in incomming PDF in email. Owned: the design and implementation. 20 emails/day"
+      - "Devoxx 2026 Talk : Ranked 38th/259 talks for 'Small Language Models and when to use them'. Aiming to bridge AI engineering to product and business audiences on cost-quality tradeoffs and optimization."
 
   - company: "French Ministry of Army - Direction Générale de l'Armement"
     role: "AI Research Engineer - Cybersecurity"
@@ -81,9 +80,9 @@ publications:
 
 projects:
   - title: "Client-Facing Agentic LLM Chatbot"
-    details: "Shipped LLM agent for banking with guardrails for +10,000 queries/month. Designing and implementing evaluation dataset and pipeline."
+    details: "Shipped LLM agent with guardrails for +10,000 queries/month. Designing and implementing eval datasets and pipeline."
   - title: "Scientific Paper implementation"
-    details: "Implementation of undocumented scientific paper. Recently, Cross-LoRA: A Data-Free LoRA Transfer Framework across Heterogeneous LLMs"
+    details: "Recently implemented Cross-LoRA: A Data-Free LoRA Transfer Framework across Heterogeneous LLMs"
   - title: "Small Model Fine-Tuning for Personal Information Extraction App"
     details: "Fine-tuned sub-500M NER models to production-grade F1 0.88+"
 
@@ -100,7 +99,7 @@ skills:
     items:
       [
         "ElasticSearch",
-        "Vector Databases : Weaviate, pgvector",
+        "Vector Databases (Weaviate, pgvector)",
         "Langchain/LangGraph",
       ]
   - category: "Infra & Data"
