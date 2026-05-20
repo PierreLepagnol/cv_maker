@@ -1,0 +1,123 @@
+meta:
+  name: "Pierre Lepagnol, PhD."
+  title: "AI Engineer"
+  lang: "en"
+  email: "pierre@lepagnol.net"
+  phone: "+33 6 72 18 80 01"
+  location: "Paris, France"
+  linkedin: "pierre-lepagnol"
+  github: "PierreLepagnol"
+  huggingface: "PierreLepagnol"
+  scholar: "_moUVX4AAAAJ"
+  portfolio: "https://pierre.lepagnol.net"
+  show_summary: true
+
+summary: >
+  AI Engineer with 4+ years shipping LLM-powered products at scale.
+  I architect agentic systems, conversational search, and evaluation pipelines that survive
+  real-world constraints: token costs, latency, hallucinations, and usage spikes.
+  I own technical delivery end-to-end — shipping products that work, period.
+
+experience:
+  - company: "LISN Lab"
+    role: "PhD Researcher - Applied LLM Evaluation"
+    start: "2022-02"
+    end: "present"
+    highlights:
+      - "Architected end-to-end LLM evaluation pipelines (classification, NER, chatbot) that cut model-to-deployment time by 94% — weeks to 3 days."
+      - "Executed 1,000+ experiments across 20+ model families on Jean-Zay supercomputer (1,456 × H100, 416 × A100); delivered 10x latency reduction and 100x cost reduction via vLLM and SLM optimization."
+      - "Published four peer-reviewed articles (Interspeech 2025 Rank A, LREC-COLING 2024, TALN 2025) on small generative models for industrial NLP; PhD thesis defended 2026."
+      - "Identified critical deployment risks before production — comprehensively mapped hallucination modes and latency bottlenecks under real-world constraints."
+
+  - company: "SCIAM"
+    role: "AI Research Consultant"
+    start: "2022-02"
+    end: "present"
+    highlights:
+      - "Delivered production LLM chatbot for major French bank (+10,000 queries/month) — owned full lifecycle design-to-deployment. Stack: Azure OpenAI, LangGraph, Azure AI Search; controlled hallucination risk with guardrails."
+      - "Shipped 3+ enterprise RAG and agentic pipelines in production (document AI, information extraction, semantic search) with Fortune 500 clients — zero production incidents, 99.9% SLA compliance."
+      - "Reduced per-request LLM cost by 60% and halved latency via vLLM + quantized models — unlocked economical scaling with sub-300ms P95 retrieval."
+      - "Ranked 38th/259 talks at Devoxx 2026 on 'Small Language Models and when to use them' — reframed cost-quality tradeoffs for engineering and business leaders."
+
+  - company: "French Ministry of Army - Direction Générale de l'Armement"
+    role: "AI Research Engineer - Cybersecurity"
+    start: "2021-04"
+    end: "2021-09"
+    highlights:
+      - "Delivered 26M-parameter ResNet50 model for side-channel attack detection — 85% accuracy on held-out test set for critical infrastructure protection."
+      - "Characterized adversarial robustness and embedded deployment constraints — mapped attack surface and hardware limits for Jetson Nano deployment."
+      - "Deployed hardened inference on Nvidia Jetson Nano — validated robustness against adversarial attack vectors in production-critical environments."
+
+  - company: "Société Générale"
+    role: "Data Scientist"
+    start: "2017-02"
+    end: "2017-09"
+    highlights:
+      - "Delivered customer scoring models (Python, PySpark, Scikit-learn) on 50M+ records — AUC 0.92, reducing financial risk classification errors by 60%."
+      - "Engineered text clustering pipeline (TF-IDF → embeddings → UMAP → HDBSCAN) segmenting 200K+ customer profiles for risk stratification — consolidated redundant analysis across departments."
+      - "Led Data Science training program for 25+ data scientists on imbalanced classification, Deep Learning, Autoencoders, and Tabular Data Augmentation — raised team capability across the division."
+
+education:
+  - institution: "LISN - Paris-Saclay University"
+    degree: "PhD in Natural Language Processing"
+    year: "2023-2026"
+
+  - institution: "University of Rennes/INSA/ENSAI"
+    degree: "MSc in Applied Maths and Statistics"
+    year: "2019-2021"
+
+publications:
+  - title: "Small generative models for industrial applications"
+    venue: "PhD thesis manuscript"
+    year: 2026
+    url: "https://theses.hal.science/tel-05572429"
+
+  - title: "Talk Devoxx 2026"
+    venue: "Fantastic Small Language Models and how to use them"
+    year: 2026
+    url: "https://m.devoxx.com/events/devoxxfr2026/talks/12093/les-fantastiques-petits-modles-de-langue-slm-et-quand-les-utiliser"
+
+  - title: "Blog documenting AI experiments"
+    venue: "Personal blog"
+    year: 2025
+    url: "https://pierre.lepagnol.net"
+
+  - title: "Leveraging IR to Enhance SLU Prompts in Few-Shot Learning"
+    venue: "Interspeech 2025 (Rank A)"
+    year: 2025
+    url: "https://arxiv.org/pdf/2506.03035"
+
+projects:
+  - title: "Production-Grade Agentic Chatbot"
+    details: "Shipped banking LLM agent with tool use, memory, guardrails — +10,000 queries/month, zero hallucination escalations. Eliminated hallucination failures through semantic verification."
+  - title: "Enterprise Conversational Search"
+    details: "Architected semantic search system over enterprise corpus (ElasticSearch + embeddings) — sub-300ms P95 latency, 92% precision at recall >0.85. Reduced search friction by 40%."
+  - title: "LLM Cost & Latency Optimization"
+    details: "Benchmarked and shipped vLLM vs. TGI vs. API across 10+ models — achieved 40% cost reduction and 50% latency improvement. Unlocked scale at 1/3 previous cost."
+  - title: "Small Model Fine-Tuning"
+    details: "Fine-tuned sub-500M NER models to F1 0.88+ in production; published checkpoints on HuggingFace. Reduced deployment cost 60% vs. large models while maintaining accuracy."
+
+skills:
+  - category: "Languages & Frameworks"
+    items: ["Rust", "Python", "FastAPI", "Pydantic AI", "LangFuse"]
+  - category: "LLM & AI Systems"
+    items:
+      [
+        "MS Azure (OpenAI, AI Search, )",
+        "Anthropic/Mistral",
+        "Hugging Face",
+        "vLLM",
+      ]
+  - category: "Search & RAG"
+    items:
+      [
+        "ElasticSearch",
+        "Vector Databases (Weaviate, pgvector, pinecone)",
+        "RAG & Agentic Systems (Langchain/LangGraph)",
+      ]
+  - category: "Evaluation & Observability"
+    items: ["LLM Evaluation", "LLM-as-Judge", "LangFuse"]
+  - category: "Infra & Data"
+    items: ["Docker", "Linux", "Git", "PySpark", "SQL"]
+  - category: "Languages"
+    items: ["French (Native)", "English (Professional)", "German (Basic)"]

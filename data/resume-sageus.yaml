@@ -1,0 +1,110 @@
+meta:
+  name: "Pierre Lepagnol, PhD."
+  title: "Senior Data Scientist & AI Engineer"
+  lang: "en"
+  email: "pierre@lepagnol.net"
+  phone: "+33 6 72 18 80 01"
+  location: "Paris, France"
+  linkedin: "pierre-lepagnol"
+  github: "PierreLepagnol"
+  huggingface: "PierreLepagnol"
+  scholar: "_moUVX4AAAAJ"
+  portfolio: "https://pierre.lepagnol.net"
+  show_summary: true
+
+summary: >
+  AI Engineer and consultant with hands-on experience designing and
+  industrializing GenAI/ML solutions for enterprise. I build
+  RAG and agentic systems, orchestrate and deploy them with MLOps/LLMOps practices on cloud infrastructure. Bridge research rigor and business impact.
+
+experience:
+  - company: "SCIAM"
+    role: "AI Research Consultant"
+    start: "2022-02"
+    end: "present"
+    highlights:
+      - "Designed and delivered a client-facing LLM-based banking chatbot, from architecture to production deployment."
+      - "Built enterprise GenAI solutions (RAG, agentic systems, document AI, information extraction) tailored to business workflows."
+      - "Industrialized LLM inference with vLLM and Hugging Face tooling, optimizing latency, cost, and throughput in production."
+      - "Modernized analytics workflows: migrating legacy SAS pipelines to Python-based stacks."
+      - "Selected speaker at Devoxx 2026 (ranked 38/259) on Small Language Models in production."
+
+  - company: "LISN Lab - Paris-Saclay University"
+    role: "PhD Researcher - Applied LLM Evaluation"
+    start: "2022-02"
+    end: "present"
+    highlights:
+      - "Built end-to-end evaluation pipelines for LLMs and NLP systems across classification, NER, sentiment analysis, and chatbot use cases."
+      - "Executed large-scale GPU experiments on the Jean-Zay supercomputer (H100, A100, V100) to compare models before deployment."
+      - "Translated academic research into practical evaluation frameworks usable by engineering and product teams."
+
+  - company: "French Ministry of Army - Direction Générale de l'Armement"
+    role: "AI Research Engineer - Cybersecurity"
+    start: "2021-04"
+    end: "2021-09"
+    highlights:
+      - "Designed and trained a 26M-parameter ResNet50 for side-channel attacks, reaching 85 percent accuracy on held-out data."
+      - "Studied adversarial robustness and hardware deployment constraints for embedded systems in critical environments."
+      - "Deployed optimized inference on Nvidia Jetson Nano under tight latency and memory limits."
+
+  - company: "Société Générale"
+    role: "Data Scientist"
+    start: "2017-02"
+    end: "2017-09"
+    highlights:
+      - "Developed customer scoring models using Python, PySpark, and Scikit-learn on large banking datasets."
+      - "Delivered internal Data Science training on imbalanced classification, Deep Learning, Autoencoders, and Tabular Data Augmentation."
+
+education:
+  - institution: "LISN - Paris-Saclay University"
+    degree: "PhD in Natural Language Processing"
+    year: "2023-2026"
+
+  - institution: "University of Rennes / INSA / ENSAI"
+    degree: "MSc in Applied Maths and Statistics"
+    year: "2019-2021"
+
+publications:
+  - title: "Talk Devoxx 2026 - Fantastic Small Language Models and how to use them"
+    venue: "Devoxx France 2026 (38/259 best talks)"
+    year: 2026
+    url: "https://m.devoxx.com/events/devoxxfr2026/talks/12093/les-fantastiques-petits-modles-de-langue-slm-et-quand-les-utiliser"
+
+  - title: "Small generative models for industrial applications"
+    venue: "PhD Thesis Manuscript"
+    year: 2026
+    url: "https://theses.hal.science/tel-05572429"
+
+  - title: "Leveraging IR to Enhance SLU Prompts in Few-Shot Learning"
+    venue: "Interspeech (Rank A)"
+    year: 2025
+    url: "https://arxiv.org/pdf/2506.03035"
+
+  - title: "Personal blog - applied AI experiments"
+    venue: "pierre.lepagnol.net"
+    year: 2025
+    url: "https://pierre.lepagnol.net"
+
+projects:
+  - title: "LLM & RAG for Client-Facing Banking Chatbot"
+    details: "Build and Industrialized Eval LLM-based agentic chatbot over OpenAI models for top 3 Bank in France."
+  - title: "LLM Reliability and Data Leakage Watch"
+    details: "Studied benchmark contamination and evaluation integrity to define when GenAI results can be trusted in production decisions."
+  - title: "Fine-Tuning Tiny Models for On-Device Inference"
+    details: "Optimized sub-500M models for constrained deployments, with published checkpoints on Hugging Face for client reuse."
+
+skills:
+  - category: "GenAI & Foundation Models"
+    items:
+      ["OpenAI", "Anthropic", "Mistral", "Llama", "Gemini", "RAG", "Agentic AI"]
+  - category: "Orchestration & ML Frameworks"
+    items:
+      ["LangChain", "LangGraph", "PyTorch", "Hugging Face", "vLLM", "Unsloth"]
+  - category: "ML Lifecycle & Evaluation"
+    items: ["SFT", "RLHF", "RLVR", "LLM Evaluation", "MLOps", "LLMOps"]
+  - category: "Cloud & Infra"
+    items: ["MS Azure", "Docker", "Linux", "Terraform (IaC)", "Git"]
+  - category: "Programming & Data"
+    items: ["Python", "Bash", "SQL", "PySpark", "C"]
+  - category: "Languages"
+    items: ["French (Native)", "English (Professional)", "German (Basic)"]

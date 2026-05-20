@@ -1,0 +1,109 @@
+meta:
+  name: "Pierre Lepagnol, PhD."
+  title: "AI Engineer @ 360Learning"
+  lang: "en"
+  email: "pierre@lepagnol.net"
+  phone: "+33 6 72 18 80 01"
+  location: "Paris, France"
+  linkedin: "pierre-lepagnol"
+  github: "PierreLepagnol"
+  huggingface: "PierreLepagnol"
+  # scholar: "_moUVX4AAAAJ"
+  portfolio: "https://pierre.lepagnol.net"
+  show_summary: true
+
+summary: >
+  I'm an AI Engineer with 4 years of building LLM-powered products from prototype to production.
+  I design agentic systems, conversational search and evaluation pipelines that survive
+  real-world constraints: token costs, latency, hallucinations, and usage spikes.
+  I own technical delivery end-to-end, no bullshit added.
+
+experience:
+  - company: "LISN Lab"
+    role: "PhD Researcher - Applied LLM Evaluation"
+    start: "2023-02"
+    end: "present"
+    highlights:
+      - "Built end-to-end LLM evaluation pipelines that accelerated model selection cycles."
+      - "Ran 1,000+ experiments across 20+ model families on Jean-Zay supercomputer (1,456 × H100, 416 × A100) quantifying performance-cost tradeoffs; reduced inference latency by 10x and costs by 100x through vLLM and SLM optimization."
+      - "Authored top AI conferences publications (Interspeech, LREC-COLING, TALN) on small generative models for industrial NLP; PhD thesis defended 2026."
+
+  - company: "SCIAM"
+    role: "AI Research Consultant"
+    start: "2022-02"
+    end: "present"
+    highlights:
+      - "Shipped in production client-facing agentic LLM chatbot for major French bank (+10,000 queries/month): owned the evaluation and optimization parts. Stack: Azure OpenAI, LangGraph, Azure AI Search with guardrails."
+      - "Designed enterprise RAG pipelines for document understanding and information extraction in incomming PDF in email. Owned : The design and implementation. 20 emails/day"
+      - "Devoxx 2026 Talk : Ranked 38th/259 talks for 'Small Language Models and when to use them'. This talk aimed to bridge AI engineering to product and business audiences on cost-quality tradeoffs and optimization."
+
+  - company: "French Ministry of Army - Direction Générale de l'Armement"
+    role: "AI Research Engineer - Cybersecurity"
+    start: "2021-04"
+    end: "2021-09"
+    highlights:
+      - "Trained a ResNet50 reaching 85% accuracy on held-out data for side-channel attack detection in critical systems."
+      - "Studied adversarial robustness and hardware deployment constraints for embedded systems under tight latency and memory limits."
+      - "Deployed optimized inference on Nvidia Jetson Nano."
+
+  - company: "Société Générale"
+    role: "Data Scientist"
+    start: "2017-02"
+    end: "2017-09"
+    highlights:
+      - "Developed customer scoring models and text clustering pipeline  (Python, PySpark, Scikit-learn) on 50M+ customers to predict multi-banking"
+      - "Provided internal Data Science training on imbalanced classification, Deep Learning and Data Augmentation to +25 data scientists."
+
+education:
+  - institution: "LISN - Paris-Saclay University"
+    degree: "PhD in AI / Natural Language Processing / LLM"
+    year: "2023-2026"
+
+  - institution: "University of Rennes/INSA/ENSAI"
+    degree: "MSc in Applied Maths and Statistics"
+    year: "2019-2021"
+
+publications:
+  - title: "Talk Devoxx 2026"
+    venue: "Fantastic Small Language Models and how to use them"
+    year: 2026
+    url: "https://m.devoxx.com/events/devoxxfr2026/talks/12093/les-fantastiques-petits-modles-de-langue-slm-et-quand-les-utiliser"
+
+  - title: "Blog documenting AI experiments"
+    venue: "Personal blog"
+    year: 2025
+    url: "https://pierre.lepagnol.net"
+
+  - title: "Small generative models for industrial applications"
+    venue: "Industrial PhD thesis manuscript"
+    year: 2026
+    url: "https://theses.hal.science/tel-05572429"
+
+projects:
+  - title: "Client-Facing Agentic LLM Chatbot"
+    details: "Shipped LLM agent for banking with guardrails for +10,000 queries/month. Designing and implementing evaluation dataset and pipeline."
+  - title: "Scientific Paper implementation"
+    details: "Implementation of undocumented scientific paper. Recently, Cross-LoRA: A Data-Free LoRA Transfer Framework across Heterogeneous LLMs"
+  - title: "Small Model Fine-Tuning for Personal Information Extraction App"
+    details: "Fine-tuned sub-500M NER models to production-grade F1 0.88+"
+
+skills:
+  - category: "Languages & Frameworks"
+    items: ["Rust", "Python", "FastAPI", "Pydantic AI"]
+  - category: "LLM & AI Systems"
+    items:
+      [
+        "MS Azure (OpenAI, AI Search, Document Intelligence)",
+        "vLLM/Hugging Face",
+      ]
+  - category: "Search & RAG"
+    items:
+      [
+        "ElasticSearch",
+        "Vector Databases : Weaviate, pgvector",
+        "Langchain/LangGraph",
+      ]
+  - category: "Infra & Data"
+    items: ["Docker", "Linux", "Git", "PySpark", "SQL"]
+  - category: "Languages"
+    items: ["French (Native)", "English (Professional)", "German (Basic)"]

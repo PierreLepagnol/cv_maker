@@ -1,0 +1,113 @@
+meta:
+  name: "Pierre Lepagnol, PhD."
+  title: "AI & Machine Learning Engineer"
+  lang: "en"
+  email: "pierre@lepagnol.net"
+  phone: "+33 6 72 18 80 01"
+  location: "Paris, France"
+  linkedin: "pierre-lepagnol"
+  github: "PierreLepagnol"
+  huggingface: "PierreLepagnol"
+  scholar: "_moUVX4AAAAJ"
+  portfolio: "https://pierre.lepagnol.net"
+  show_summary: false
+
+summary: >
+  Machine Learning Engineer with experience improving LLM-powered features through rigorous
+  evaluation, prompt iteration, and efficient deployment. I build practical NLP
+  systems, define measurable quality criteria, and run fast experiments to
+  improve task success, retrieval quality, reliability, latency, and cost under
+  production constraints.
+
+experience:
+  - company: "LISN Lab"
+    role: "PhD Researcher - Applied LLM Evaluation"
+    start: "2023-02"
+    end: "present"
+    highlights:
+      - "Built end-to-end evaluation pipelines for LLMs and NLP systems across classification, NER, sentiment analysis, and chatbot use cases."
+      - "Evaluated model reliability at scale through systematic experiments, helping identify performance limits, failure modes"
+      - "Executed large-scale GPU experiments on the Jean-Zay supercomputer using H100, A100, and V100 resources."
+      - "Translated academic research into practical evaluation frameworks for comparing models before deployment."
+      - "Authored four international publications in top language technology venues."
+
+  - company: "SCIAM"
+    role: "AI Research Consultant"
+    start: "2022-02"
+    end: "present"
+    highlights:
+      - "Build client-facing LLM-based Chatbot for Banking"
+      - "Build AI solutions for enterprise use cases (Information Extraction, Document AI, etc.), with RAG/Agentic Systems."
+      - "Improved LLM deployment efficiency by optimizing inference with vLLM and Hugging Face tooling."
+      - "Modernized analytics workflows by migrating SAS projects to Python-based data science pipelines."
+      - Talk Devoxx 2026 - 38/259 best talk
+
+  - company: "French Ministry of Army - Direction Générale de l'Armement"
+    role: "AI Research Engineer - Cybersecurity"
+    start: "2021-04"
+    end: "2021-09"
+    highlights:
+      - "Designed and trained a 26M-parameter ResNet50 for side-channel attacks, reaching 85 percent accuracy on held-out data."
+      - "Studied adversarial robustness and hardware deployment constraints for embedded systems in critical environments."
+      - "Deployed optimized inference on Nvidia Jetson Nano under tight latency and memory limits."
+
+  - company: "Société Générale"
+    role: "Data Scientist"
+    start: "2017-02"
+    end: "2017-09"
+    highlights:
+      - "Developed customer scoring models using Python, PySpark, and Scikit-learn."
+      - "Performed text clustering using TF-IDF, K-means, embeddings, UMAP, and HDBSCAN."
+      - "Provided internal Data Science training on imbalanced classification, Deep Learning, Autoencoders, and Tabular Data Augmentation."
+
+education:
+  - institution: "LISN - Paris-Saclay University"
+    degree: "PhD in Natural Language Processing"
+    year: "2023-2026"
+
+  - institution: "University of Rennes/INSA/ENSAI"
+    degree: "MSc in Applied Maths and Statistics"
+    year: "2019-2021"
+
+publications:
+  - title: "Small generative models for industrial applications"
+    venue: "My thesis manuscript"
+    year: 2026
+    url: "https://theses.hal.science/tel-05572429"
+
+  - title: "Talk Devoxx 2026"
+    venue: "Fantastic Small Language Models and how to use them"
+    year: 2026
+    url: "https://m.devoxx.com/events/devoxxfr2026/talks/12093/les-fantastiques-petits-modles-de-langue-slm-et-quand-les-utiliser"
+
+  - title: "Blog keeping track of my AI experiments"
+    venue: "Personnal blog"
+    year: 2025
+    url: "https://pierre.lepagnol.net"
+
+  - title: "Leveraging IR to Enhance SLU Prompts in Few-Shot Learning"
+    venue: "Interspeech (Rank A)"
+    year: 2025
+    url: "https://arxiv.org/pdf/2506.03035"
+
+projects:
+  - title: "LLM Reliability and Data Leakage Watch"
+    details: "Studied contamination detection and benchmark integrity to better characterize when evaluation results can be trusted."
+  - title: "NER Evaluation Pipeline"
+    details: "Open-sourced reproducible training and evaluation tooling for named entity recognition benchmarks and model comparisons."
+  - title: "Implementing and documenting scientific papers"
+    details: "Lastly : Cross-LoRA: A Data-Free LoRA Transfer Framework across Heterogeneous LLMs"
+  - title: "Fine-Tuning Tiny Models for On-Device Inference"
+    details: "Optimized sub-500M models for constrained deployments and published checkpoints on Hugging Face."
+
+skills:
+  - category: "Programming Languages"
+    items: ["Python", "C", "English with OpenCode"]
+  - category: "Product AI & Evaluation"
+    items: ["SFT/RLVR/RLHF", "LLM Evaluation", "RAG", "Agentic AI"]
+  - category: "ML & LLM Systems"
+    items: ["PCA", "PyTorch", "Hugging Face", "vLLM", "Unsloth"]
+  - category: "Infra & Data"
+    items: ["Docker", "Linux", "Git", "MS Azure", "PySpark", "SQL"]
+  - category: "Languages"
+    items: ["French (Native)", "English (Professional)", "German (Basic)"]

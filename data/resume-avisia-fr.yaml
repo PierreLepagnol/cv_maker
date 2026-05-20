@@ -1,0 +1,113 @@
+meta:
+  name: "Pierre Lepagnol, PhD."
+  title: "AI Engineer"
+  lang: "fr"
+  email: "pierre@lepagnol.net"
+  phone: "+33 6 72 18 80 01"
+  location: "Paris, France"
+  linkedin: "pierre-lepagnol"
+  github: "PierreLepagnol"
+  huggingface: "PierreLepagnol"
+  scholar: "_moUVX4AAAAJ"
+  portfolio: "https://pierre.lepagnol.net"
+  show_summary: true
+
+summary: >
+  Ingénieur IA avec plus de 4 ans d'expérience à construire des produits LLM-powered de la conception au déploiement en production.
+  Je conçois des systèmes agentiques, de recherche conversationnelle et des pipelines d'évaluation qui survivent aux contraintes réelles : coûts de tokens, latence, hallucinations, et pics d'usage.
+  Je pilote la livraison technique de bout en bout sans bullshit.
+
+experience:
+  - company: "Laboratoire LISN"
+    role: "Chercheur Doctorant - Évaluation des LLM"
+    start: "2022-02"
+    end: "present"
+    highlights:
+      - "Construction de pipelines d'évaluation LLM pour accélérer les cycles de développement et déploiement de produit."
+      - "1 000+ expériences sur 20+ familles de modèles sur le supercomputer Jean-Zay (1 456 x GPU H100, 416 x GPU A100)."
+      - "Evaluation et Optimisations performance-coût pour les modèles LLM: Reduction des temps de réponse (10x) et des coûts d'inférence avec vLLM et SLMs (100x)."
+      - "4 publications en top conférences internationales sur l'IA générative pour NLP industriel ; thèse défendue 2026."
+
+  - company: "SCIAM"
+    role: "Consultant Recherche IA"
+    start: "2022-02"
+    end: "present"
+    highlights:
+      - "Chatbot LLM client en production pour une grande banque française. +10 000 requêtes/mois, cycle de vie complet (design -> déploiement). Stack: Azure OpenAI, LangGraph, Azure AI Search."
+      - "Réduction de 60% des coûts d'inférence LLM et latence divisée par 2 en migrant vers un système agentique."
+      - "38ème/259 talks classé à Devoxx 2026 pour 'Small Language Models and when to use them' pour bridger acculturer les décideurs et techs aux problèmes des opérationnels des produits de GenIA."
+
+  - company: "Ministère des Armées - Direction Générale de l'Armement"
+    role: "Ingénieur Recherche IA - Cybersécurité"
+    start: "2021-04"
+    end: "2021-09"
+    highlights:
+      - "ResNet50 26M paramètres entraîné pour détection d'attaques par canal auxiliaire : 85% accuracy en test de démo."
+      - "Analyse de robustesse adversariale et contraintes de déploiement matériel pour systèmes embarqués (latence <200ms, mémoire <5Go)."
+      - "Déploiement d'inférence optimisé sur Nvidia Jetson Nano ; réduction de 40% de la consommation mémoire via quantification 8-bit."
+
+  - company: "Société Générale"
+    role: "Data Scientist"
+    start: "2017-02"
+    end: "2017-09"
+    highlights:
+      - "Modèles de scoring client (Python, PySpark, Scikit-learn) sur 50M+ enregistrements pour évaluation du risque financier ; AUC 0.92."
+      - "Pipeline de clustering texte (TF-IDF / embeddings / UMAP / HDBSCAN) segmentant 200K+ clients non structurées."
+      - "Formation interne Data Science pour 25+ data scientists sur classification déséquilibrée, Deep Learning, Autoencoders, Augmentation de données tabulaires."
+education:
+  - institution: "LISN - Université Paris-Saclay"
+    degree: "PhD en Traitement Automatique du Langage"
+    year: "2023-2026"
+
+  - institution: "Université de Rennes/INSA/ENSAI"
+    degree: "Master en Mathématiques Appliquées et Statistiques"
+    year: "2019-2021"
+
+publications:
+  - title: "Talk Devoxx 2026"
+    venue: "Les Fantastiques Petits Modèles de Langue (SLM) et quand les utiliser"
+    year: 2026
+    url: "https://m.devoxx.com/events/devoxxfr2026/talks/12093/les-fantastiques-petits-modles-de-langue-slm-et-quand-les-utiliser"
+
+  - title: "Blog documentant mes expériences IA"
+    venue: "Blog personnel"
+    year: 2025
+    url: "https://pierre.lepagnol.net"
+
+  - title: "Petits modèles génératifs pour applications industrielles"
+    venue: "Manuscrit de thèse de doctorat"
+    year: 2026
+    url: "https://theses.hal.science/tel-05572429"
+
+projects:
+  - title: "Chatbot Agentique en production"
+    details: "Agent LLM bancaire avec guardrails: +10 000 requêtes/mois traitées en production"
+  - title: "Recherche Conversationnelle POC"
+    details: "Pipeline de recherche lexical sur corpus documentaire entreprise avec ElasticSearch et embeddings"
+  - title: "Fine-Tuning de Petits Modèles"
+    details: "Fine-tuned modèles <500M paramètres pour NER atteignant scores F1 production-grade"
+
+skills:
+  - category: "Langages & Frameworks"
+    items: ["Rust", "Python", "FastAPI", "Pydantic AI", "LangFuse"]
+  - category: "Systèmes LLM & IA"
+    items:
+      [
+        "MS Azure (OpenAI, AI Search)",
+        "Anthropic/Mistral",
+        "Hugging Face",
+        "vLLM",
+      ]
+  - category: "Recherche & RAG"
+    items:
+      [
+        "ElasticSearch",
+        "Bases de Vecteurs (Weaviate, pgvector, pinecone)",
+        "RAG & Systèmes Agentiques (Langchain/LangGraph)",
+      ]
+  - category: "Évaluation & Observabilité"
+    items: ["Évaluation LLM", "LLM-as-Judge", "LangFuse"]
+  - category: "Infra & Données"
+    items: ["Docker", "Linux", "Git", "PySpark", "SQL"]
+  - category: "Langues"
+    items: ["Français (Natif)", "Anglais (Professionnel)", "Allemand (Basique)"]

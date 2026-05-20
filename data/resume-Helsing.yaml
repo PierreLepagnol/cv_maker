@@ -1,0 +1,121 @@
+meta:
+  name: "Pierre Lepagnol, PhD."
+  title: "AI Research Engineer - Foundation Models"
+  lang: "en"
+  email: "pierre@lepagnol.net"
+  phone: "+33 6 72 18 80 01"
+  location: "Paris, France"
+  linkedin: "pierre-lepagnol"
+  github: "PierreLepagnol"
+  huggingface: "PierreLepagnol"
+  scholar: "_moUVX4AAAAJ"
+  portfolio: "https://pierre.lepagnol.net"
+  show_summary: false
+
+summary: >
+  AI Research Engineer at the intersection of foundation-model research and ML engineering.
+  PhD in NLP with a track record training and fine-tuning LLMs and multimodal backbones on
+  large-scale GPU clusters (H100/A100), authoring custom training loops, loss functions, and
+  evaluation pipelines in PyTorch. First-principles practitioner: I read, reproduce, and ship
+  ArXiv papers into production codebases. Mission-driven, with prior experience applying deep
+  learning to defence problems for the French DGA.
+
+experience:
+  - company: "LISN Lab - Paris-Saclay University"
+    role: "PhD Researcher - Foundation Models & Evaluation"
+    start: "2023-02"
+    end: "present"
+    highlights:
+      - "Trained and fine-tuned LLMs via SFT/RLVR/RLHF, with distributed training (Data Parallelism & Pipeline Parallelism)."
+      - "Ran large-scale GPU experiments on the Jean-Zay supercomputer (H100, A100, V100)."
+      - "Built end-to-end LLM evaluation pipelines for standard NLP tasks: Classification, NER, SLU with high-throughput inference with vLLM"
+      - "Designed evaluation frameworks measuring reliability, contamination, and failure modes of models before downstream deployment."
+      - "Authored 4 publications in international venues (Interspeech, LREC, COLING) + Thesis on small LMs for industrial applications"
+
+  - company: "SCIAM"
+    role: "AI Research Consultant"
+    start: "2022-02"
+    end: "present"
+    highlights:
+      - 'Implemented recent (undocumented) ArXiv papers (Lastly : "Cross-LoRA: Data-Free LoRA Transfer across Heterogeneous LLMs")'
+      - "Deployed LLM systems for enterprise clients (Document AI, information extraction, RAG, agentic workflows)."
+      - "Selected for Devoxx 2026 (top 38/259) - talk on Small Language Models and when to use them."
+      - "Constant technology monitoring on AI: weekly review on the SCIAM social networks."
+
+  - company: "French Ministry of Armed Forces - Direction Générale de l'Armement (DGA)"
+    role: "AI Research Engineer - Defence & Cybersecurity"
+    start: "2021-04"
+    end: "2021-09"
+    highlights:
+      - "Designed and trained a ResNet50 from scratch for side-channel attacks, reaching 85% accuracy on held-out data."
+      - "Studied adversarial robustness and hardware deployment constraints for embedded AI in critical defence environments."
+      - "Deployed optimised inference on Nvidia Jetson Nano under tight latency, power, and memory budgets."
+
+  - company: "Société Générale"
+    role: "Data Scientist"
+    start: "2017-02"
+    end: "2017-09"
+    highlights:
+      - "Built customer scoring models in Python, PySpark, and Scikit-learn on tabular financial data."
+      - "Delivered text clustering pipelines using TF-IDF, embeddings, UMAP, and HDBSCAN."
+      - "Led internal Data Science training on imbalanced classification, deep learning and tabular augmentation."
+
+education:
+  - institution: "LISN - Paris-Saclay University"
+    degree: "PhD in Natural Language Processing + DL Optimization for Large-Scale Models (CNRS)"
+    year: "2023-2026"
+
+  - institution: "University of Rennes / INSA / ENSAI"
+    degree: "MSc in Applied Mathematics and Statistics"
+    year: "2019-2021"
+
+publications:
+  - title: "Small Generative Models for Industrial Applications"
+    venue: "PhD Thesis, Paris-Saclay University"
+    year: 2026
+    url: "https://theses.hal.science/tel-05572429"
+
+  - title: "Leveraging IR to Enhance SLU Prompts in Few-Shot Learning"
+    venue: "Interspeech (Rank A)"
+    year: 2025
+    url: "https://arxiv.org/pdf/2506.03035"
+
+  - title: "Fantastic Small Language Models and when to use them"
+    venue: "Devoxx France 2026 (selected, top 38/259)"
+    year: 2026
+    url: "https://m.devoxx.com/events/devoxxfr2026/talks/12093/les-fantastiques-petits-modles-de-langue-slm-et-quand-les-utiliser"
+
+  - title: "Research blog - paper reimplementations and AI experiments"
+    venue: "pierre.lepagnol.net"
+    year: 2025
+    url: "https://pierre.lepagnol.net"
+
+projects:
+  - title: "Large-Scale SLM/LLM Training"
+    details: "Custom PyTorch training loops with mixed precision, gradient checkpointing and parallelism on Jean-Zay (H100/A100)."
+  - title: "Tiny Models for On-Device Inference"
+    details: "Optimised sub-500M LLMs for constrained deployments"
+  - title: "Client-Facing Agentic Chatbot for top 3 French banking compagny"
+    details: "Chatbot for Q&A on banking products using multi agents workflow using LangGraph"
+
+skills:
+  - category: "Foundation Models"
+    items: ["LLM training & fine-tuning (SFT/RLVR/RLHF)"]
+  - category: "DL Frameworks"
+    items: ["PyTorch", "Hugging Face", "vLLM", "Unsloth"]
+  - category: "Infrastructure"
+    items:
+      [
+        "Distributed training (ZeRO, Data Parallelism, Pipeline Parallelism)",
+        "Docker",
+        "SLURM",
+        "Linux",
+        "Azure",
+        "Git",
+      ]
+  - category: "Data & Evaluation"
+    items: ["PySpark", "SQL", "Eval frameworks"]
+  - category: "Programming"
+    items: ["Python", "C", "Bash", "LaTeX"]
+  - category: "Languages"
+    items: ["French (Native)", "English (Professional)", "German (Basic)"]
