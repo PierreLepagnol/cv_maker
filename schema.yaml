@@ -21,6 +21,16 @@ properties:
       show_summary: { type: boolean }
   summary:
     type: string
+  section_titles:
+    type: object
+    additionalProperties: false
+    properties:
+      skills: { type: string }
+      experience: { type: string }
+      education: { type: string }
+      projects: { type: string }
+      publications: { type: string }
+      languages: { type: string }
   experience:
     type: array
     items:

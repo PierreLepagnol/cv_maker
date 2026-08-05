@@ -1,0 +1,96 @@
+meta:
+  name: "Pierre Lepagnol, PhD."
+  title: "AI/ML Engineer - LLM Agents & Evaluation"
+  lang: "en"
+  email: "pierre@lepagnol.net"
+  phone: "+33 6 72 18 80 01"
+  location: "Paris, France"
+  linkedin: "pierre-lepagnol"
+  github: "PierreLepagnol"
+  huggingface: "PierreLepagnol"
+  scholar: "_moUVX4AAAAJ"
+  portfolio: "https://pierre.lepagnol.net"
+  show_summary: true
+
+summary: >
+  AI/ML Engineer specializing in LLM-powered applications and AI agents in production. I design
+  prompting, chaining, and tool-use workflows, build evaluation frameworks (offline benchmarks,
+  failure-mode analysis, non-regression datasets), and define the metrics that guide fast,
+  data-driven iteration. I have shipped a client-facing LLM chatbot and collaborate
+  cross-functionally with engineers and PMs to improve task success, reliability, and business
+  outcomes.
+
+experience:
+  - company: "SCIAM"
+    role: "AI Research Consultant"
+    start: "2022-02"
+    end: "present"
+    highlights:
+      - "Built and shipped a client-facing LLM chatbot for banking, handling real customer conversations in production."
+      - "Designed RAG and agentic LLM systems (information extraction, Document AI) using prompting, chaining, and tool usage."
+      - "Improved production LLM efficiency by optimizing inference latency and cost with vLLM and Hugging Face tooling."
+      - "Collaborated cross-functionally with clients and stakeholders to prioritize and ship high-impact AI features."
+
+  - company: "LISN Lab - Paris-Saclay University"
+    role: "PhD Researcher - Applied LLM Evaluation"
+    start: "2023-02"
+    end: "present"
+    highlights:
+      - "Built end-to-end evaluation frameworks for LLMs and conversational NLP systems (classification, NER, sentiment, chatbot use cases)."
+      - "Reviewed large volumes of model outputs to identify failure modes, reliability limits, and regression risks at scale."
+      - "Defined measurable quality metrics and maintained reproducible datasets for continuous improvement and non-regression testing."
+      - "Authored four international publications, translating research into practical evaluation frameworks used before deployment."
+
+  - company: "French Ministry of Army - Direction Générale de l'Armement"
+    role: "AI Research Engineer - Cybersecurity"
+    start: "2021-04"
+    end: "2021-09"
+    highlights:
+      - "Designed and trained a 26M-parameter ResNet50 for side-channel attacks, reaching 85 percent accuracy on held-out data."
+      - "Deployed optimized inference on Nvidia Jetson Nano under tight latency and memory limits."
+
+  - company: "Société Générale"
+    role: "Data Scientist"
+    start: "2017-02"
+    end: "2017-09"
+    highlights:
+      - "Developed customer scoring models from real-world data using Python, PySpark, and Scikit-learn."
+      - "Performed text clustering on customer text data using TF-IDF, K-means, embeddings, UMAP, and HDBSCAN."
+
+education:
+  - institution: "LISN - Paris-Saclay University"
+    degree: "PhD in Natural Language Processing"
+    year: "2023-2026"
+
+  - institution: "University of Rennes/INSA/ENSAI"
+    degree: "MSc in Applied Maths and Statistics"
+    year: "2019-2021"
+
+publications:
+  - title: "Leveraging IR to Enhance SLU Prompts in Few-Shot Learning"
+    venue: "Interspeech (Rank A)"
+    year: 2025
+    url: "https://arxiv.org/pdf/2506.03035"
+
+  - title: "Talk Devoxx 2026"
+    venue: "Fantastic Small Language Models and how to use them"
+    year: 2026
+    url: "https://m.devoxx.com/events/devoxxfr2026/talks/12093/les-fantastiques-petits-modles-de-langue-slm-et-quand-les-utiliser"
+
+projects:
+  - title: "NER Evaluation Pipeline"
+    details: "Open-sourced reproducible training and evaluation tooling for named entity recognition benchmarks and model comparisons."
+  - title: "LLM Reliability and Data Leakage Watch"
+    details: "Studied contamination detection and benchmark integrity to characterize when LLM evaluation results can be trusted."
+
+skills:
+  - category: "LLM Applications & Agents"
+    items: ["AI Agents", "Prompt Engineering (chaining, few-shot, tool use)", "RAG", "SFT/RLVR/RLHF"]
+  - category: "Evaluation & Experimentation"
+    items: ["LLM Evaluation", "Offline Benchmarks", "Failure-mode Analysis", "Metrics & Non-regression Datasets"]
+  - category: "ML & LLM Systems"
+    items: ["PyTorch", "Hugging Face", "vLLM", "Unsloth"]
+  - category: "Programming & Infra"
+    items: ["Python", "C", "Docker", "Linux", "Git", "MS Azure", "PySpark", "SQL"]
+  - category: "Languages"
+    items: ["French (Native)", "English (Professional)", "German (Basic)"]

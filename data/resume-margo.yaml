@@ -1,0 +1,152 @@
+meta:
+  name: "Pierre Lepagnol, PhD."
+  title: "Lead Data Scientist – AI & GenAI"
+  lang: "en"
+  email: "pierre@lepagnol.net"
+  phone: "+33 6 72 18 80 01"
+  location: "Paris, France"
+  linkedin: "pierre-lepagnol"
+  github: "PierreLepagnol"
+  huggingface: "PierreLepagnol"
+  scholar: "_moUVX4AAAAJ"
+  portfolio: "https://pierre.lepagnol.net"
+  show_summary: true
+
+section_titles:
+  publications: "Articles and Publications"
+
+summary: >
+  Lead Data Scientist / AI Consultant (PhD in NLP) with 4+ years delivering GenAI, LLM and
+  Machine Learning systems for financial services, from prototype to industrialized production.
+  Led production AI serving 10,000+ monthly queries, ran 1,000+ LLM experiments across
+  20+ model families, and built data-science pipelines at 50M+ customer scale. I pilot complex
+  AI projects, mentor data scientists and AI engineers, and partner with data, backend and
+  frontend teams to ship reliable, high-impact models under demanding banking constraints —
+  quality-first delivery, stakeholder alignment and measurable business value.
+
+experience:
+  - company: "SCIAM"
+    role: "Lead AI Consultant – GenAI for Banking"
+    start: "2022-02"
+    end: "present"
+    highlights:
+      - "Led delivery of a production-grade agentic LLM chatbot for a major French banking group in a BFI-like environment, serving 10,000+ queries/month. Owned evaluation, optimization, guardrails and industrialization. Stack: Azure OpenAI, LangGraph, Azure AI Search."
+      - "Designed and industrialized enterprise RAG and document-intelligence pipelines for financial documents, partnering with data engineering, backend and frontend teams to integrate models into user-facing decision-support workflows."
+      - "Drove LLM industrialization under production constraints: optimized inference with vLLM and Hugging Face tooling, cutting latency ~10x and serving costs ~100x while enforcing reliability and quality gates before deployment."
+      - "Mentored 3–5 data scientists, AI engineers and consultants on RAG architecture, LLM evaluation, Python ML workflows and production-readiness standards; migrated legacy SAS workflows to Python data-science pipelines."
+      - "Devoxx 2026 Talk: ranked 38th/259, 'Small Language Models and when to use them' — bridging AI engineering with product and business audiences on cost-quality tradeoffs."
+
+  - company: "LISN - Paris-Saclay University"
+    role: "PhD Researcher – Applied LLM & GenAI Evaluation"
+    start: "2023-02"
+    end: "present"
+    highlights:
+      - "Built end-to-end evaluation pipelines for LLM and NLP systems (classification, NER, sentiment, conversational agents), defining measurable quality gates before deployment."
+      - "Applied NLP and LLM evaluation methods to multilingual and document-understanding use cases, with emphasis on reliability, latency and user-facing quality."
+      - "Ran 1,000+ experiments across 20+ model families on the Jean-Zay supercomputer (H100/A100/V100), quantifying performance-cost tradeoffs and characterizing failure modes and reliability limits."
+      - "Mentored junior researchers and translated academic research into practical, reusable evaluation frameworks."
+      - "Authored four international publications in top language-technology venues (Interspeech, LREC-COLING, LREC, TALN)."
+
+  - company: "French Ministry of Army – Direction Générale de l'Armement"
+    role: "AI Research Engineer – Cybersecurity"
+    start: "2021-04"
+    end: "2021-09"
+    highlights:
+      - "Designed and trained a 26M-parameter ResNet50 for side-channel attack detection, reaching 85% accuracy on held-out data."
+      - "Studied adversarial robustness and hardware deployment constraints, deploying optimized inference on Nvidia Jetson Nano under tight latency and memory limits."
+
+  - company: "Société Générale"
+    role: "Data Scientist"
+    start: "2017-02"
+    end: "2017-09"
+    highlights:
+      - "Developed customer scoring models and text clustering pipelines (Python, PySpark, Scikit-learn) on 50M+ customers to predict multi-banking behavior."
+      - "Delivered internal Data Science training to 25+ data scientists on imbalanced classification, Deep Learning and data augmentation."
+
+education:
+  - institution: "LISN - Paris-Saclay University"
+    degree: "PhD in AI / Natural Language Processing / LLM"
+    year: "2023-2026"
+
+  - institution: "University of Rennes/INSA/ENSAI"
+    degree: "MSc in Applied Maths and Statistics"
+    year: "2019-2021"
+
+publications:
+  - title: "Talk Devoxx 2026: Fantastic Small Language Models and how to use them"
+    venue: "Devoxx 2026"
+    year: 2026
+    url: "https://www.youtube.com/watch?v=dLDUVIcOElM"
+
+  - title: "Small generative models for industrial applications"
+    venue: "Industrial PhD thesis manuscript"
+    year: 2026
+    url: "https://theses.hal.science/tel-05572429"
+
+  - title: "Leveraging IR to Enhance SLU Prompts in Few-Shot Learning"
+    venue: "Interspeech (Rank A)"
+    year: 2025
+    url: "https://arxiv.org/pdf/2506.03035"
+
+  - title: "Blog documenting AI experiments"
+    venue: "Personal blog"
+    year: 2025
+    url: "https://pierre.lepagnol.net"
+
+projects:
+  - title: "Client-Facing Agentic LLM Chatbot for Banking"
+    details: "Shipped and industrialized an LLM agent with guardrails for a major French banking group (10,000+ queries/month), owning the evaluation datasets and pipeline."
+  - title: "Enterprise RAG for Financial Document Intelligence"
+    details: "Designed RAG pipelines for information extraction from incoming financial documents, deployed to production with data and engineering teams."
+  - title: "LLM Industrialization & Inference Optimization"
+    details: "Optimized models for production serving (vLLM, Hugging Face), cutting latency ~10x and serving costs ~100x under production constraints."
+
+skills:
+  - category: "AI, GenAI & NLP"
+    items:
+      [
+        "LLM / GenAI",
+        "RAG",
+        "Agentic AI",
+        "LLM Evaluation",
+        "NLP",
+        "NER",
+        "Document Intelligence",
+        "Multilingual NLP",
+      ]
+  - category: "Machine Learning & Deep Learning"
+    items:
+      [
+        "Scikit-learn",
+        "PyTorch",
+        "TensorFlow",
+        "XGBoost",
+        "Hugging Face",
+        "vLLM",
+      ]
+  - category: "Industrialization & MLOps"
+    items:
+      [
+        "Model Industrialization",
+        "CI/CD",
+        "MLflow",
+        "FastAPI",
+        "Monitoring",
+        "Evaluation Pipelines",
+        "Docker",
+        "Git",
+        "Linux",
+      ]
+  - category: "Leadership & Delivery"
+    items:
+      [
+        "Technical Project Leadership",
+        "Mentoring",
+        "Cross-functional Collaboration",
+        "Client-facing Consulting",
+        "Business Impact",
+      ]
+  - category: "Cloud & Data"
+    items: ["MS Azure (OpenAI, AI Search)", "Python", "SQL", "PySpark"]
+  - category: "Languages"
+    items: ["French (Native)", "English (Professional)", "German (Basic)"]

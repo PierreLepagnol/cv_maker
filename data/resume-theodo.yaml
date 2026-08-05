@@ -1,0 +1,127 @@
+meta:
+  name: "Pierre Lepagnol, PhD."
+  title: "AI Engineer - GenAI, ML & Production Delivery"
+  lang: "en"
+  email: "pierre@lepagnol.net"
+  phone: "+33 6 72 18 80 01"
+  location: "Paris, France"
+  linkedin: "pierre-lepagnol"
+  github: "PierreLepagnol"
+  huggingface: "PierreLepagnol"
+  scholar: "_moUVX4AAAAJ"
+  portfolio: "https://pierre.lepagnol.net"
+  show_summary: true
+
+summary: >
+  AI engineer and consultant.
+  I deliver value end-to-end (technical design to production monitoring), build both GenAI and Trad ML; No-Bullshit added.
+  GenAI Technical leader and Devoxx speaker.
+
+experience:
+  - company: "SCIAM"
+    role: "AI Engineer Consultant"
+    start: "2022-02"
+    end: "present"
+    highlights:
+      - "Delivered [N] client-facing AI projects end-to-end over [N] years, from technical design to production deployment and monitoring, translating ambiguous business needs into measurable outcomes."
+      - "Built a client-facing LLM chatbot (RAG + agentic) for banking and enterprise solutions, automating Information Extraction / Document AI and cutting manual processing time by [N]% across [N] document types."
+      - "Optimized LLM inference with vLLM and Hugging Face on Azure, reducing latency by [N]% (and cost by [N]%) while sustaining [N] req/s under production constraints."
+      - "Migrated [N] legacy SAS analytics workflows to Python-based data science pipelines, cutting runtime by [N]%."
+      - "Shared technical convictions externally: Devoxx 2026 talk on Small Language Models, selected at rank 38/259 (top 15%)."
+
+  - company: "LISN Lab, Paris-Saclay University"
+    role: "PhD Researcher - Applied LLM & ML Evaluation"
+    start: "2023-02"
+    end: "present"
+    highlights:
+      - "Built reproducible evaluation pipelines benchmarking [N] LLMs across 3 NLP tasks (classification, NER, sentiment), guiding model choices before deployment."
+      - "Quantified model reliability across [N] systematic experiments, identifying performance limits and failure modes that inform pragmatic production trade-offs."
+      - "Ran large-scale GPU experiments on the Jean-Zay supercomputer (H100, A100, V100), consuming [N]k GPU-hours across [N] runs."
+      - "Authored 4 international publications in top language-technology venues (incl. Interspeech, Rank A)."
+
+  - company: "French Ministry of Army - Direction Générale de l'Armement"
+    role: "AI Research Engineer - Cybersecurity"
+    start: "2021-04"
+    end: "2021-09"
+    highlights:
+      - "Designed and trained a 26M-parameter ResNet50 computer-vision model for side-channel attacks, reaching 85% accuracy on held-out data."
+      - "Studied adversarial robustness and hardware deployment constraints for embedded systems in critical public-sector environments, evaluating against [N] attack scenarios."
+      - "Deployed optimized inference on Nvidia Jetson Nano under [N]ms latency and [N]MB memory limits."
+
+  - company: "Société Générale"
+    role: "Data Scientist"
+    start: "2017-02"
+    end: "2017-09"
+    highlights:
+      - "Developed customer scoring models on [N]M+ records using Python, PySpark, and Scikit-learn, improving [metric] by [N]%."
+      - "Performed text clustering over [N]k documents using TF-IDF, K-means, embeddings, UMAP, and HDBSCAN."
+      - "Coached [N] colleagues through internal Data Science training on imbalanced classification, Deep Learning, Autoencoders, and Tabular Data Augmentation."
+
+education:
+  - institution: "LISN - Paris-Saclay University"
+    degree: "PhD in Natural Language Processing"
+    year: "2023-2026"
+
+  - institution: "University of Rennes/INSA/ENSAI"
+    degree: "MSc in Applied Maths and Statistics"
+    year: "2019-2021"
+
+publications:
+  - title: "Talk Devoxx 2026 - Fantastic Small Language Models and when to use them"
+    venue: "Devoxx France (ranked 38/259)"
+    year: 2026
+    url: "https://m.devoxx.com/events/devoxxfr2026/talks/12093/les-fantastiques-petits-modles-de-langue-slm-et-quand-les-utiliser"
+
+  - title: "Leveraging IR to Enhance SLU Prompts in Few-Shot Learning"
+    venue: "Interspeech (Rank A)"
+    year: 2025
+    url: "https://arxiv.org/pdf/2506.03035"
+
+  - title: "Small generative models for industrial applications"
+    venue: "PhD thesis manuscript"
+    year: 2026
+    url: "https://theses.hal.science/tel-05572429"
+
+  - title: "Blog keeping track of my AI experiments"
+    venue: "Personal blog"
+    year: 2025
+    url: "https://pierre.lepagnol.net"
+
+projects:
+  - title: "Client RAG & Agentic Systems"
+    details: "Built retrieval-augmented and agentic LLM systems for enterprise use cases, reaching [N]% answer faithfulness / [N]% retrieval precision on real business workflows."
+  - title: "NER Evaluation Pipeline"
+    details: "Open-sourced reproducible training and evaluation tooling spanning [N] NER benchmarks and [N] model comparisons."
+  - title: "Fine-Tuning Tiny Models for On-Device Inference"
+    details: "Optimized sub-500M models for constrained deployments, matching [N]% of a [N]B baseline at [N]x lower latency; published [N] checkpoints on Hugging Face."
+
+skills:
+  - category: "Programming"
+    items: ["Python", "C", "SQL"]
+  - category: "Generative AI"
+    items:
+      ["RAG", "Agentic AI", "LLM Evaluation", "Prompt Engineering", "SFT/RLHF"]
+  - category: "Traditional ML & Data Science"
+    items:
+      [
+        "PyTorch",
+        "Scikit-learn",
+        "Computer Vision",
+        "Classification",
+        "Clustering",
+      ]
+  - category: "Cloud, MLOps & Production"
+    items:
+      ["MS Azure", "Docker", "Linux", "Git", "vLLM", "Inference Optimization"]
+  - category: "Data Engineering"
+    items: ["PySpark", "SQL", "Data Pipelines", "Hugging Face"]
+  - category: "Ways of Working"
+    items:
+      [
+        "Client Delivery",
+        "Mentoring",
+        "Code & Methodology Quality",
+        "Pragmatism",
+      ]
+  - category: "Languages"
+    items: ["French (Native)", "English (Professional)", "German (Basic)"]

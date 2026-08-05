@@ -1,0 +1,118 @@
+meta:
+  name: "Pierre Lepagnol, PhD."
+  title: "AI Research Engineer - Generative Models & Diffusion"
+  lang: "en"
+  email: "pierre@lepagnol.net"
+  phone: "+33 6 72 18 80 01"
+  location: "Paris, France"
+  linkedin: "pierre-lepagnol"
+  github: "PierreLepagnol"
+  huggingface: "PierreLepagnol"
+  scholar: "_moUVX4AAAAJ"
+  portfolio: "https://pierre.lepagnol.net"
+  show_summary: false
+
+summary: >
+  AI Research Engineer with 3+ years of applied R&D experience in generative models,
+  foundation model training, and post-training optimization. Specialized in designing and
+  training large-scale models with expertise across pre-training, fine-tuning, and post-training
+  stages. Strong background in applied mathematics and practical deep learning systems,
+  with proven ability to develop production-grade generative models and collaborate with
+  product teams to deliver real-world AI features.
+
+experience:
+  - company: "LISN Lab"
+    role: "PhD Researcher - Generative Models & Evaluation"
+    start: "2023-02"
+    end: "present"
+    highlights:
+      - "Conducted applied R&D on generative model training, focusing on post-training optimization, RLHF, and evaluation methodologies for language models."
+      - "Designed and built comprehensive evaluation pipelines for generative models across multiple scales and architectures."
+      - "Executed large-scale GPU training experiments on Jean-Zay Supercomputer with 1,456 H100, 416 A100, and 1,832 V100 GPUs."
+      - "Published four peer-reviewed papers in top-tier language technology venues (LREC-COLING 2024, Interspeech 2025, LREC 2026)."
+      - "Studied model reliability, robustness, and capability improvements through systematic experimentation."
+
+  - company: "SCIAM"
+    role: "AI Research Consultant"
+    start: "2022-02"
+    end: "present"
+    highlights:
+      - "Designed and trained custom generative models for production NLP applications, including fine-tuning and post-training optimization."
+      - "Developed efficient diffusion-based systems and inference pipelines optimized for real-world constraints."
+      - "Built robust evaluation frameworks for benchmark design and model capability assessment."
+      - "Optimized inference for deployment with Hugging Face, vLLM, and industry-standard ML systems."
+      - "Collaborated with product teams to translate research into practical, deployable AI solutions."
+
+  - company: "French Ministry of Army - Direction Générale de l'Armement"
+    role: "AI Research Engineer"
+    start: "2021-04"
+    end: "2021-09"
+    highlights:
+      - "Designed, trained, and optimized deep learning models for applied R&D objectives (26M-parameter ResNet50 for security applications)."
+      - "Studied model behavior under real-world constraints including adversarial robustness and hardware deployment optimization."
+      - "Deployed optimized inference on embedded systems (Nvidia Jetson Nano) under tight latency and memory constraints."
+      - "Demonstrated end-to-end capability from model design through production deployment."
+
+  - company: "Société Générale"
+    role: "Data Scientist"
+    start: "2017-02"
+    end: "2017-09"
+    highlights:
+      - "Developed machine learning models using Python, PySpark, and Scikit-learn for production systems."
+      - "Applied unsupervised learning and dimensionality reduction techniques (t-SNE, UMAP) for model analysis."
+
+education:
+  - institution: "LISN - Paris-Saclay University"
+    degree: "PhD in Natural Language Processing"
+    year: "2023-2026"
+    details: "Focus on generative models, post-training optimization, and model evaluation methodologies."
+
+  - institution: "University of Rennes/INSA/ENSAI"
+    degree: "MSc in Applied Mathematics and Statistics"
+    year: "2019-2021"
+    details: "Advanced coursework in machine learning, statistical inference, and applied mathematics."
+
+publications:
+  - title: "Small generative models for industrial applications"
+    venue: "PhD thesis manuscript"
+    year: 2026
+    url: "https://theses.hal.science/tel-05572429"
+
+  - title: "Small Language Models are Good Too: An Empirical Study of Zero-Shot Classification"
+    venue: "LREC-COLING"
+    year: 2024
+    url: "https://aclanthology.org/2024.lrec-main.1299.pdf"
+
+  - title: "Leveraging IR to Enhance SLU Prompts in Few-Shot Learning"
+    venue: "Interspeech"
+    year: 2025
+    url: "https://arxiv.org/pdf/2506.03035"
+
+  - title: "Format Matters: A Critical Evaluation of Output Formats for Prompting LLMs in SLU and NER"
+    venue: "LREC"
+    year: 2026
+    url: "https://hal.science/hal-05546569"
+
+projects:
+  - title: "Post-Training Optimization for Generative Models"
+    details: "Implemented and tested advanced post-training techniques including SFT, RLHF, and RLVR for model capability improvement."
+  - title: "Large-Scale GPU Training Infrastructure"
+    details: "Designed and executed training experiments on supercomputer-scale GPU clusters with hundreds of processors."
+  - title: "Generative Model Evaluation Frameworks"
+    details: "Built comprehensive evaluation pipelines to benchmark generative models against academic and industry standards."
+  - title: "Efficient Model Deployment Systems"
+    details: "Optimized inference for production deployment with focus on latency, throughput, and resource constraints."
+
+skills:
+  - category: "Generative Models & ML"
+    items: ["Diffusion Models", "Foundation Models", "Pre-Training/Fine-Tuning", "Post-Training (SFT/RLHF/RLVR)", "PyTorch", "Transformers"]
+  - category: "Deep Learning & ML Systems"
+    items: ["Large-Scale GPU Training", "Model Evaluation & Benchmarking", "Inference Optimization", "Hugging Face", "vLLM", "PEFT/LoRA"]
+  - category: "Programming Languages"
+    items: ["Python", "C", "Shell scripting"]
+  - category: "Infrastructure & Data"
+    items: ["SLURM", "Distributed GPU Training", "Linux", "Docker", "Git", "MLFlow", "SQL", "PySpark"]
+  - category: "Applied Mathematics"
+    items: ["Statistical Inference", "Linear Algebra", "Optimization Theory", "Probability Theory"]
+  - category: "Languages"
+    items: ["French (Native)", "English (Professional)", "German (Basic)"]

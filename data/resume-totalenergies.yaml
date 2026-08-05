@@ -1,0 +1,114 @@
+meta:
+  name: "Pierre Lepagnol, PhD."
+  title: "AI Engineer - ML Industrialization & Production"
+  lang: "en"
+  email: "pierre@lepagnol.net"
+  phone: "+33 6 72 18 80 01"
+  location: "Paris, France"
+  linkedin: "pierre-lepagnol"
+  github: "PierreLepagnol"
+  huggingface: "PierreLepagnol"
+  scholar: "_moUVX4AAAAJ"
+  portfolio: "https://pierre.lepagnol.net"
+  show_summary: true
+
+summary: >
+  AI Engineer focused on taking ML and LLM systems from prototype to reliable
+  production. I design deployment architectures, build automated evaluation and
+  monitoring pipelines, and optimize inference for performance, robustness, and
+  cost under real-world constraints. Comfortable driving technical choices across
+  Data, IT, and Product teams, mentoring engineers through code review, and
+  shipping AI for industrial and enterprise use cases on Azure with Docker, vLLM,
+  and Hugging Face. Native French, professional English.
+
+experience:
+  - company: "SCIAM"
+    role: "AI Research Consultant - LLM Systems in Production"
+    start: "2022-02"
+    end: "present"
+    highlights:
+      - "Deployed a client-facing LLM chatbot for banking into production, owning reliability, latency, and serving-cost constraints end to end."
+      - "Built enterprise AI solutions (Information Extraction, Document AI) using RAG and agentic systems for industrial use cases."
+      - "Optimized LLM inference and deployment efficiency with vLLM and Hugging Face tooling, reducing latency and serving cost."
+      - "Containerized and shipped AI services with Docker on Microsoft Azure."
+      - "Mentored data scientists, ran code reviews, and migrated legacy SAS analytics to maintainable Python data pipelines."
+      - "Talk Devoxx 2026 - ranked 38/259 best talk: explaining small language models to a broad technical audience."
+
+  - company: "LISN Lab - Paris-Saclay University"
+    role: "PhD Researcher - LLM Evaluation & Reliability at Scale"
+    start: "2023-02"
+    end: "present"
+    highlights:
+      - "Designed end-to-end evaluation and monitoring pipelines for LLM/NLP systems (classification, NER, sentiment, chatbots), surfacing failure modes and performance drift before deployment."
+      - "Defined measurable quality criteria and reproducible, automated benchmarking frameworks to compare and select models before production rollout."
+      - "Ran large-scale GPU experiments (H100, A100, V100) on the Jean-Zay supercomputer, managing distributed training and inference workloads."
+      - "Assessed model reliability at scale to characterize performance limits and the conditions under which results can be trusted."
+      - "Authored four international publications in top language-technology venues."
+
+  - company: "French Ministry of Army - Direction Générale de l'Armement"
+    role: "AI Research Engineer - Embedded & Cybersecurity"
+    start: "2021-04"
+    end: "2021-09"
+    highlights:
+      - "Deployed optimized model inference on Nvidia Jetson Nano under tight latency and memory limits for critical embedded systems."
+      - "Designed and trained a 26M-parameter ResNet50 for side-channel attacks, reaching 85 percent accuracy on held-out data."
+      - "Studied adversarial robustness and hardware deployment constraints, addressing security and maintainability of production models."
+
+  - company: "Société Générale"
+    role: "Data Scientist"
+    start: "2017-02"
+    end: "2017-09"
+    highlights:
+      - "Built customer scoring models in production using Python, PySpark, and Scikit-learn on large-scale data."
+      - "Engineered text-clustering pipelines with TF-IDF, K-means, embeddings, UMAP, and HDBSCAN."
+      - "Delivered internal Data Science training on imbalanced classification, Deep Learning, and Tabular Data Augmentation."
+
+education:
+  - institution: "LISN - Paris-Saclay University"
+    degree: "PhD in Natural Language Processing"
+    year: "2023-2026"
+
+  - institution: "University of Rennes/INSA/ENSAI"
+    degree: "MSc in Applied Mathematics and Statistics"
+    year: "2019-2021"
+
+publications:
+  - title: "Talk Devoxx 2026"
+    venue: "Fantastic Small Language Models and how to use them"
+    year: 2026
+    url: "https://m.devoxx.com/events/devoxxfr2026/talks/12093/les-fantastiques-petits-modles-de-langue-slm-et-quand-les-utiliser"
+
+  - title: "Leveraging IR to Enhance SLU Prompts in Few-Shot Learning"
+    venue: "Interspeech (Rank A)"
+    year: 2025
+    url: "https://arxiv.org/pdf/2506.03035"
+
+  - title: "Small generative models for industrial applications"
+    venue: "PhD thesis manuscript"
+    year: 2026
+    url: "https://theses.hal.science/tel-05572429"
+
+  - title: "Blog keeping track of my AI experiments"
+    venue: "Personal blog"
+    year: 2025
+    url: "https://pierre.lepagnol.net"
+
+projects:
+  - title: "Fine-Tuning Tiny Models for On-Device Inference"
+    details: "Optimized sub-500M models for constrained edge deployments and published deployable checkpoints on Hugging Face."
+  - title: "NER Evaluation Pipeline"
+    details: "Open-sourced reproducible training and evaluation tooling for benchmarking and model comparison before deployment."
+  - title: "LLM Reliability and Data Leakage Watch"
+    details: "Built contamination-detection and benchmark-integrity checks to monitor when evaluation results can be trusted."
+
+skills:
+  - category: "Languages & Programming"
+    items: ["Python", "C", "SQL"]
+  - category: "MLOps & Deployment"
+    items: ["Docker", "vLLM", "Hugging Face", "Model Evaluation & Monitoring", "Git", "Linux"]
+  - category: "Cloud & Infra"
+    items: ["Microsoft Azure", "GPU/HPC (Jean-Zay, H100/A100)", "PySpark"]
+  - category: "AI Systems"
+    items: ["PyTorch", "RAG", "Agentic AI", "SFT/RLVR/RLHF", "Unsloth"]
+  - category: "Spoken Languages"
+    items: ["French (Native)", "English (Professional)", "German (Basic)"]

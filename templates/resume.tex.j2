@@ -6,8 +6,8 @@
 \cvbody[lead]{ {{ text | md_to_latex }} }
 {% endmacro %}
 
-{% macro render_experience(items) %}
-\cvsectiontitle[{{ 'aside' if is_two_column else 'base' }}][{{ 'sidebar' if is_two_column else 'standard' }}]{Experience}
+{% macro render_experience(items, title='Experience') %}
+\cvsectiontitle[{{ 'aside' if is_two_column else 'base' }}][{{ 'sidebar' if is_two_column else 'standard' }}]{ {{ title | latex_escape }} }
 {% for exp in items %}
 {% if not loop.first %}\cvblocksep{ {{- theme.rules.block_spacing -}} }{% endif %}
 \par\cventry[base][{{ 'standard' if is_two_column else 'inline_left' }}]
@@ -21,8 +21,8 @@
 {% endfor %}
 {% endmacro %}
 
-{% macro render_education(items) %}
-\cvsectiontitle[{{ 'aside' if is_two_column else 'base' }}][{{ 'sidebar' if is_two_column else 'standard' }}]{Education}
+{% macro render_education(items, title='Education') %}
+\cvsectiontitle[{{ 'aside' if is_two_column else 'base' }}][{{ 'sidebar' if is_two_column else 'standard' }}]{ {{ title | latex_escape }} }
 {% for edu in items %}
 {% if not loop.first %}\cvblocksep{ {{- theme.rules.block_spacing -}} }{% endif %}
 \par\cventry[base][{{ 'standard' if is_two_column else 'inline_left' }}]
@@ -36,8 +36,8 @@
 {% endfor %}
 {% endmacro %}
 
-{% macro render_publications(items) %}
-\cvsectiontitle[{{ 'aside' if is_two_column else 'base' }}][{{ 'sidebar' if is_two_column else 'standard' }}]{First-Author Publications}
+{% macro render_publications(items, title='First-Author Publications') %}
+\cvsectiontitle[{{ 'aside' if is_two_column else 'base' }}][{{ 'sidebar' if is_two_column else 'standard' }}]{ {{ title | latex_escape }} }
 {% for paper in items %}
 {% if not loop.first %}\cvblocksep{ {{- theme.rules.block_spacing -}} }{% endif %}
 \par\cventry[base][inline]
@@ -48,8 +48,8 @@
 {% endfor %}
 {% endmacro %}
 
-{% macro render_projects(items) %}
-\cvsectiontitle[{{ 'aside' if is_two_column else 'base' }}][{{ 'sidebar' if is_two_column else 'standard' }}]{Projects}
+{% macro render_projects(items, title='Projects') %}
+\cvsectiontitle[{{ 'aside' if is_two_column else 'base' }}][{{ 'sidebar' if is_two_column else 'standard' }}]{ {{ title | latex_escape }} }
 {% for project in items %}
 {% if not loop.first %}\cvblocksep{ {{- theme.rules.project_item_spacing -}} }{% endif %}
 \par\cventry[base][stacked]
@@ -60,16 +60,16 @@
 {% endfor %}
 {% endmacro %}
 
-{% macro render_skills(items) %}
-\cvsectiontitle[{{ 'aside' if is_two_column else 'base' }}][{{ 'sidebar' if is_two_column else 'standard' }}]{Skills}
+{% macro render_skills(items, title='Skills') %}
+\cvsectiontitle[{{ 'aside' if is_two_column else 'base' }}][{{ 'sidebar' if is_two_column else 'standard' }}]{ {{ title | latex_escape }} }
 {% for group in items %}
 \cvskill[{{ 'aside' if is_two_column else 'base' }}][{{ 'stacked' if is_two_column else 'inline' }}]{ {{ group.category | latex_escape }} }{ {{ group['items'] | join(', ') | latex_escape }} }
 {% endfor %}
 {% endmacro %}
 
-{% macro render_languages(items) %}
+{% macro render_languages(items, title='Languages') %}
 {% if items %}
-\cvsectiontitle[{{ 'aside' if is_two_column else 'base' }}][{{ 'sidebar' if is_two_column else 'standard' }}]{Languages}
+\cvsectiontitle[{{ 'aside' if is_two_column else 'base' }}][{{ 'sidebar' if is_two_column else 'standard' }}]{ {{ title | latex_escape }} }
 {% for language in items %}
 \cvskill[base][inline]{ {{ language.name | latex_escape }} }{ {{ language.level | latex_escape }} }
 {% endfor %}
@@ -111,39 +111,46 @@
 \end{minipage}
 
 {% set has_summary = (summary | default('')) and (meta.show_summary | default(true) != false) %}
+{% set st = section_titles | default({}) %}
+{% set title_skills = st.skills | default('Skills') %}
+{% set title_experience = st.experience | default('Experience') %}
+{% set title_education = st.education | default('Education') %}
+{% set title_projects = st.projects | default('Projects') %}
+{% set title_publications = st.publications | default('First-Author Publications') %}
+{% set title_languages = st.languages | default('Languages') %}
 \vspace{ {{- theme.rules.header_bottom_gap if (has_summary or layout != 'single') else theme.rules.header_bottom_gap_no_summary | default('-6pt') -}} }
 
 {% if layout == 'single' %}
 {% if has_summary %}{{- render_summary(summary) }}
 \vspace{ {{- theme.rules.section_spacing -}} }
 {% endif %}
-{{- render_skills(skills) }}
-{{- render_experience(experience) }}
-{{- render_education(education) }}
-{{- render_publications(publications | default([])) }}
-{{- render_projects(projects | default([])) }}
+{{- render_skills(skills, title_skills) }}
+{{- render_experience(experience, title_experience) }}
+{{- render_education(education, title_education) }}
+{{- render_projects(projects | default([]), title_projects) }}
+{{- render_publications(publications | default([]), title_publications) }}
 {% elif layout == 'twocol' %}
 \begin{paracol}{2}
-{{- render_skills(skills) }}
-{{- render_languages(languages | default([])) }}
-{{- render_education(education) }}
+{{- render_skills(skills, title_skills) }}
+{{- render_languages(languages | default([]), title_languages) }}
+{{- render_education(education, title_education) }}
 \switchcolumn
 {% if has_summary %}{{- render_summary(summary) }}{% endif %}
-{{- render_experience(experience) }}
-{{- render_publications(publications | default([])) }}
-{{- render_projects(projects | default([])) }}
+{{- render_experience(experience, title_experience) }}
+{{- render_projects(projects | default([]), title_projects) }}
+{{- render_publications(publications | default([]), title_publications) }}
 \end{paracol}
 {% elif layout == 'twocol-footer' %}
 \begin{paracol}{2}
-{{- render_skills(skills) }}
-{{- render_languages(languages | default([])) }}
-{{- render_education(education) }}
+{{- render_skills(skills, title_skills) }}
+{{- render_languages(languages | default([]), title_languages) }}
+{{- render_education(education, title_education) }}
 \switchcolumn
 {% if has_summary %}{{- render_summary(summary) }}{% endif %}
-{{- render_experience(experience) }}
+{{- render_experience(experience, title_experience) }}
 \end{paracol}
-{{- render_publications(publications | default([])) }}
-{{- render_projects(projects | default([])) }}
+{{- render_projects(projects | default([]), title_projects) }}
+{{- render_publications(publications | default([]), title_publications) }}
 {% endif %}
 
 \end{document}
